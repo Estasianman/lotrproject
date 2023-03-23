@@ -1,0 +1,35 @@
+
+a {
+    list-style: none;
+  text-decoration: none;
+}
+
+#quiz-landing {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+#quiz-landing img {
+    border-radius: 5px;
+    height: auto;
+    max-width: 100%;
+    opacity: 70%;
+  }
+
+#quiz-landing img:hover {
+    opacity: 100%;
+    transition: 1s;
+  }
+
+.quiz-choice {
+    padding: 5rem;
+}
+
+.quiz-choice a {
+    color: black;
+    font-size: 20px;
+    position: relative;
+    text-align: center;
+}
