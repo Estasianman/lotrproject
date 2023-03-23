@@ -1,18 +1,79 @@
 body {
-    margin-left: 20px;
+  margin-left: 20px;
 }
 
 img {
-    width: 500px;
+  width: 500px;
 }
 
 h1 {
-    text-transform: uppercase;
-    padding-top: 20px;
-    padding-left: 20px;
-    padding-bottom: 10px;
+  text-transform: uppercase;
+  padding-top: 20px;
+  padding-left: 20px;
+  padding-bottom: 10px;
 }
 
 header h1 {
-    font-size: larger;
+  font-size: larger;
+}
+
+.landing-page {
+  position: relative;
+}
+
+.landing-page header {
+  padding: 200px 0 100px 80px;
+  font-size: 48px;
+}
+
+.landing-page button {
+  position: absolute;
+  right: 100px;
+  top: 50px;
+  width: 110px;
+  height: 40px;
+  border-radius: 15%;
+  border: none;
+  font-size: 16px;
+}
+
+.landing-page main figure img {
+  width: 200px;
+  height: 150px;
+  margin: 30px 30px 20px 30px;
+}
+
+.landing-page figure {
+  margin: 10px 20px 20px 10px;
+  background-color: #ececec;
+  border-radius: 10%;
+}
+
+.landing-page .flickity-page-dots {
+  display: none;
+}
+
+.landing-page .flickity-button {
+  background: #333;
+}
+
+.landing-page .flickity-button:hover {
+  background: #105d97;
+}
+
+.landing-page .flickity-prev-next-button {
+  width: 30px;
+  height: 30px;
+  border-radius: 5px;
+}
+/* icon color */
+.landing-page .flickity-button-icon {
+  fill: white;
+}
+/* position outside */
+.flickity-prev-next-button.previous {
+  left: -50px;
+}
+.flickity-prev-next-button.next {
+  right: -40px;
 }

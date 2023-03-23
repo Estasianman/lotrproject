@@ -1,81 +1,97 @@
 <!DOCTYPE html>
 <html lang="nl-BE">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/reset.css">
-    <link rel="stylesheet" href="css/style.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./css/reset.css" />
+    <link rel="stylesheet" href="./css/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/flickity@2/dist/flickity.min.css"
+    />
+    <script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
+    <script src="./js/flickity.js" defer></script>
     <title>home</title>
-</head>
+  </head>
 
-<body>
+  <body class="landing-page">
     <header>
-        <h1>PROJECT IT</h1>
+      <h1>PROJECT IT</h1>
+      <button>Log-in</button>
     </header>
-    <nav>
-        <ul>
-            <li><a href="index.html">home</a></li>
-            <li><a href="quiz.html">quiz</a></li>
-            <li><a href="blacklist.html">blacklist</a></li>
-            <li><a href="favorites.html">favorieten</a></li>
-            <li><a href="#">log-in</a></li>
-        </ul>
-    </nav>
-    <main>
-        <section>
-            <h1>Fifa</h1>
-            <figure><img
-                    src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/FIFA_series_logo_%282020-present%29.svg/800px-FIFA_series_logo_%282020-present%29.svg.png"
-                    alt="fifa">
-                <figcaption>Bron: Wikipedia.com</figcaption>
-            </figure>
-        </section>
-        <section>
-            <h1>Fortnite</h1>
-            <figure><img src="https://hwimg.nl/fortnite.png" alt="fortnite">
-                <figcaption>Bron: gamecomputers.nl</figcaption>
-            </figure>
-        </section>
-        <section>
-            <h1>LegoMasters</h1>
-            <figure><img src="https://upload.wikimedia.org/wikipedia/commons/2/24/LEGO_logo.svg" alt="lego">
-                <figcaption>Bron: Wikipedia.com</figcaption>
-            </figure>
-        </section>
-        <section>
-            <h1>MTG</h1>
-            <figure><img
-                    src="https://techraptor.net/sites/default/files/styles/herobanner_desktop/public/2020-11/magic_0.jpg?itok=T3P2ae2X"
-                    alt="lego">
-                <figcaption>Bron: Fandom.com</figcaption>
-            </figure>
-        </section>
-        <section>
-            <h1>NBB</h1>
-            <figure><img src="https://www.nbb.be/sites/nbb.be/themes/tricia/images/svgmin/logos/logo-nl.svg" alt="lego">
-                <figcaption>Bron: nbb.be</figcaption>
-            </figure>
-        </section>
-        <section>
-            <h1>Pokémon</h1>
-            <figure><img
-                    src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/International_Pok%C3%A9mon_logo.svg/390px-International_Pok%C3%A9mon_logo.svg.png"
-                    alt="lego">
-                <figcaption>Bron: Wikipedia.com</figcaption>
-            </figure>
-        </section>
-        <section>
-            <h1>LOTR</h1>
-            <figure><img
-                    src="https://legendary-digital-network-assets.s3.amazonaws.com/wp-content/uploads/2023/02/23141819/Lord-of-the-Rings-Frodo-Confused.jpg"
-                    alt="LOTR">
-                <figcaption>Bron: nerdist.com</figcaption>
-            </figure>
-        </section>>
+
+    <main class = "main-carousel">
+      <section>
+        <!--  <h1>Fifa</h1> -->
+        <a href="#"> <figure>
+          <img
+            src="https://pngimg.com/d/fifa_PNG26.png"
+            alt="fifa"
+
+          />
+          <!-- <figcaption>Bron: Wikipedia.com</figcaption> -->
+        </figure></a>
+      </section>
+      <section>
+        <!-- <h1>Fortnite</h1> -->
+        <a href="#"><figure>
+          <img src="https://www.freepnglogos.com/uploads/fortnite-png/characters-fortnite-icon-moxalis-deviantart-23.png" alt="fortnite" />
+          <!-- <figcaption>Bron: gamecomputers.nl</figcaption> -->
+        </figure></a>
+      </section>
+      <section>
+        <!-- <h1>LegoMasters</h1> -->
+        <a href="#"><figure>
+          <img
+            src="https://logos-world.net/wp-content/uploads/2020/10/LEGO-Logo-1952.png"
+            alt="lego"
+          />
+          <!-- <figcaption>Bron: Wikipedia.com</figcaption> -->
+        </figure></a>
+      </section>
+      <section>
+        <!-- <h1>MTG</h1> -->
+        <a href="#"> <figure>
+          <img
+            src="https://1000logos.net/wp-content/uploads/2022/10/Magic-The-Gathering-Logo-1993.png"
+            alt="MTG"
+          />
+          <!-- <figcaption>Bron: Fandom.com</figcaption> -->
+        </figure></a>
+      </section>
+      <section>
+        <!-- <h1>NBB</h1> -->
+        <a href="#"></a><figure>
+          <img
+            src="https://www.nbb.be/sites/nbb.be/themes/tricia/images/svgmin/logos/logo-nl.svg"
+            alt="nbb"
+          />
+          <!-- <figcaption>Bron: nbb.be</figcaption> -->
+        </figure></a>
+      </section>
+      <section>
+        <!-- <h1>Pokémon</h1> -->
+        <a href="#"> <figure>
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/International_Pok%C3%A9mon_logo.svg/390px-International_Pok%C3%A9mon_logo.svg.png"
+            alt="pokemon"
+          />
+          <!-- <figcaption>Bron: Wikipedia.com</figcaption> -->
+        </figure></a>
+      </section>
+      <section>
+        <!-- <h1>LOTR</h1> -->
+        <a href="#">
+        <figure>
+          <img
+            src="https://www.metalearth.com/Themes/MetalEarth/Content/images/cate-lotr-logo.png?v=1"
+            alt="LOTR"
+          />
+          <!-- <figcaption>Bron: nerdist.com</figcaption> -->
+        </figure></a>
+      </section>
     </main>
     <footer></footer>
-</body>
-
+  </body>
 </html>
