@@ -1,11 +1,41 @@
+@font-face {
+    font-family: 'ringbearermedium';
+    src: url('../assets/fonts/ringm___-webfont.woff2') format('woff2'),
+         url('../assets/fonts/ringm___-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    height: 100vh;
+}
+
+header {
+    display:  flex;
+    padding: 35px;
+}
+
+header h1 {
+    font-family: 'ringbearermedium', Arial, sans-serif;
+    font-size: 50px;
+    color: goldenrod;
+    margin:  0 auto;
+}
 
 a {
     list-style: none;
-  text-decoration: none;
+    text-decoration: none;
 }
+
+main {
+    display: flex;
+}
+
 
 #quiz-landing {
     display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
     justify-content: center;
     align-items: center;
     width: 100%;
@@ -27,9 +57,10 @@ a {
     padding: 5rem;
 }
 
-.quiz-choice a {
+.quiz-choice h2 {
     color: black;
-    font-size: 20px;
+    font-size: 25px;
     position: relative;
     text-align: center;
+    padding: 10px;
 }
