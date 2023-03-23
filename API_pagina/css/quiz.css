@@ -1,0 +1,33 @@
+@font-face {
+    font-family: 'ringbearermedium';
+    src: url('../assets/fonts/ringm___-webfont.woff2') format('woff2'),
+         url('../assets/fonts/ringm___-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    margin-left: 20px;
+}
+
+header {
+    display:  flex;
+    
+}
+
+img {
+    width: 500px;
+}
+
+h1 {
+    font-family: 'ringbearermedium', Arial, sans-serif;
+    text-transform: uppercase;
+    padding-top: 20px;
+    padding-left: 20px;
+    padding-bottom: 10px;
+    margin:  0 auto;
+}
+
+header h1 {
+    font-size: larger;
+}
