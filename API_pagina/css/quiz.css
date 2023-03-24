@@ -8,20 +8,20 @@
 
 body,
 html {
-  height: 100vh;
   margin: 0;
 }
-
 
 body {
     display: grid;
     grid-template-areas:
         'main'
     ;
-    /* line-height: normal; */
+    line-height: normal;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     height: fit-content;
     background-color: #8C3414;
+    height: 100vh;
+    overflow: hidden;
 }
 
 
@@ -34,7 +34,7 @@ body {
 main {
     grid-area: main;
     background-color: #8C3414;
-    height: 100vh;
+    /* height: 100vh; */
     width: auto;
     display: flex;
     flex-direction: column;
@@ -58,8 +58,6 @@ p {
     padding: 1rem;
 }
 
-
-
 a:active {
     color: #D98B2B;
 }
@@ -69,35 +67,26 @@ a:active {
 
 
 
+
 /*#region----------------------------------PHOTO SECTION----------------------------------------*/
+
+
+
+
 
 #photo-section {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     flex: 1;
     background-color: #8C3414;
     color: #D98B2B;
-    width: 90%;
+    width: 100%;
     height: auto;
     align-items: center;
     justify-content: center;
     text-align: center;
     flex-wrap: wrap;
     margin: 0 auto;
-}
-
-#quote-section {
-    display: flex;
-    flex-direction: row;
-    background-color: #D98B2B;
-    color: #8C3414;
-    width: 100%;
-    height: auto;
-    align-items: center;
-    justify-content: space-between;
-    text-align: center;
-    max-height: 20%;
-    flex-wrap: wrap;
 }
 
 article {
@@ -135,31 +124,28 @@ li {
     max-height: max-content;
     margin: 0 auto;
     border-radius: 8px;
-
 }
 
 figure {
     max-height: 350px;
     max-width: 250px;
-    min-height: 250px;
-    min-width: 150px;
+    /* min-height: 250px;
+    min-width: 150px; */
     width: 100%;
     height: auto;
     margin: 0 auto;
-    
 }
 
 img {
     max-height: 350px;
     max-width: 250px;
-    min-height: 250px;
-    min-width: 150px;
+    /* min-height: 250px;
+    min-width: 150px; */
     border-radius: 8px;
     width: 100%;
     height: auto;
     box-shadow: 3px 3px 2px 2px #02234047;
     transition: 0.5s transform, 0.5s box-shadow;
-
 }
 
 .names-button {
@@ -182,9 +168,11 @@ img {
 }
 
 .names-button:hover, img:hover {
-    transform: scale(1.1);
+    transform: scale(1.5);
     box-shadow: 4px 4px 3px 2px #02234047, -2px -2px 2px 1px #02234047;
 }
+
+
 
 /*#endregion*/
 
@@ -195,13 +183,33 @@ img {
 
 
 
+
+#quote-section {
+    display: flex;
+    flex-direction: row;
+    background-color: #D98B2B;
+    color: #8C3414;
+    width: 100%;
+    height: auto;
+    align-items: center;
+    justify-content: space-between;
+    text-align: center;
+    max-height: 40%;
+    flex-wrap: wrap;
+    padding: 4rem 0 4rem 0;
+}
+
+#quote-section > h3 {
+    padding: 1rem;
+}
+
 #quote {
     flex: 1;
     font-family: 'ringbearermedium', 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     padding: 1rem;
     font-size: 32px;
     max-width: max-content;
-
+    border-bottom: 1px #8C3414 solid;
 }
 
 .link-button {
@@ -227,7 +235,10 @@ img {
     font-size: 14px;
 }
 
+
+
 /*#endregion*/
+
 
 
 
@@ -235,14 +246,28 @@ img {
 
 
 
-@media all and (max-width:970px) {
+
+
+@media all and (max-width:885px) {
+
+    body {
+        overflow: auto;
+    }
 
     #quote-section {
         flex-direction: column;
         justify-content: center;
         margin: 0 auto;
         height: auto;
-        max-height: fit-content;
+        padding: 0;
+    }
+
+    #quote-section > h3 {
+        padding: 0.5rem 0 0 0;
+    }
+
+    #quote {
+        padding: 0;
     }
 }
 
@@ -252,7 +277,6 @@ img {
         position: sticky;
         left: 0;
         bottom: 0;
-
     }
 
     #quote {
