@@ -6,6 +6,12 @@
     font-style: normal;
 }
 
+body,
+html {
+  height: 100vh;
+  margin: 0;
+}
+
 
 body {
     display: grid;
@@ -15,6 +21,7 @@ body {
     /* line-height: normal; */
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     height: fit-content;
+    background-color: #8C3414;
 }
 
 
@@ -28,13 +35,14 @@ main {
     grid-area: main;
     background-color: #8C3414;
     height: 100vh;
+    width: auto;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
 }
 
 h1 {
-    font-family: 'ringbearermedium', Arial, sans-serif;
+    font-family: 'ringbearermedium', 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     text-transform: uppercase;
     padding: 1rem;
     font-size: 32px;
@@ -69,19 +77,18 @@ a:active {
     flex: 1;
     background-color: #8C3414;
     color: #D98B2B;
-    width: 100%;
+    width: 90%;
     height: auto;
     align-items: center;
     justify-content: center;
     text-align: center;
     flex-wrap: wrap;
-
+    margin: 0 auto;
 }
 
 #quote-section {
     display: flex;
     flex-direction: row;
-
     background-color: #D98B2B;
     color: #8C3414;
     width: 100%;
@@ -98,6 +105,7 @@ article {
     flex-direction: row;
     height: auto;
     width: 100%;
+    flex: 1;
     height: min-content;
     align-items: center;
     justify-content: space-evenly;
@@ -109,7 +117,7 @@ ul {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    flex: 1 1 auto;
+    flex: 1;
     justify-content: space-evenly;
     vertical-align: middle;
     align-items: center;
@@ -155,7 +163,7 @@ img {
 }
 
 .names-button {
-    font-family: 'ringbearermedium', Arial, sans-serif;
+    font-family: 'ringbearermedium', 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     display: inline-block;
     margin: 4px;
     padding: 10px 20px;
@@ -163,7 +171,7 @@ img {
     font-size: 18px;
     text-decoration: none;
     color: #8C3414;
-    background-color: black;
+    background-color: #000000;
     border-radius: 8px;
     outline: none;
 }
@@ -189,7 +197,7 @@ img {
 
 #quote {
     flex: 1;
-    font-family: 'ringbearermedium', Arial, sans-serif;
+    font-family: 'ringbearermedium', 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     padding: 1rem;
     font-size: 32px;
     max-width: max-content;
