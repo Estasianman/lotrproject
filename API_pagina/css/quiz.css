@@ -58,7 +58,7 @@ p {
     padding: 1rem;
 }
 
-a:active {
+a:focus {
     color: #D98B2B;
 }
 
@@ -160,16 +160,15 @@ img {
     background-color: #000000;
     border-radius: 8px;
     outline: none;
-}
-
-.names-button {
-    transition: 0.5s transform, 0.5s box-shadow;
+    transition: 0.5s transform, 0.5s box-shadow, 0.5s color, 0.5s background-color;
     box-shadow: 3px 3px 2px 2px #02234047;
 }
 
 .names-button:hover, img:hover {
     transform: scale(1.5);
     box-shadow: 4px 4px 3px 2px #02234047, -2px -2px 2px 1px #02234047;
+    color: #D98B2B;
+    background-color: #000000df;
 }
 
 
