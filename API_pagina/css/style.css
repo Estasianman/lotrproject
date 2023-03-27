@@ -1,3 +1,11 @@
+@font-face {
+  font-family: "ringbearermedium";
+  src: url("../assets/fonts/ringm___-webfont.woff2") format("woff2"),
+    url("../assets/fonts/ringm___-webfont.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
 body {
   margin-left: 20px;
 }
@@ -16,6 +24,8 @@ h1 {
 header h1 {
   font-size: larger;
 }
+
+/* Index */
 
 .landing-page {
   position: relative;
@@ -47,6 +57,11 @@ header h1 {
   margin: 10px 20px 20px 10px;
   background-color: #ececec;
   border-radius: 10%;
+  transition-duration: 0.5s;
+}
+
+.landing-page figure:hover {
+  transform: scale(1.1);
 }
 
 .landing-page .flickity-page-dots {
@@ -76,4 +91,29 @@ header h1 {
 }
 .flickity-prev-next-button.next {
   right: -40px;
+}
+
+/* Highscore */
+.highscore {
+  height: 100vh;
+  background-image: url("../assets/images/jpg/background2-highscore.jpg");
+}
+
+.highscore h1,
+h2 {
+  font-family: "ringbearermedium", Arial, Helvetica, sans-serif;
+
+  text-shadow: 6px 4px #000000;
+  text-align: center;
+}
+
+.highscore h1 {
+  margin-top: 150px;
+  font-size: 80px;
+  color: #e8d069;
+}
+
+.highscore h2 {
+  font-size: 65px;
+  color: white;
 }
