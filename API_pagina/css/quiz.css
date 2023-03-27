@@ -6,6 +6,13 @@
     font-style: normal;
 }
 
+:root {
+    --red-color: #8C3414;
+    --yellow-color: #D98B2B;
+    --black-color: #000000;
+  
+  }
+
 body,
 html {
   margin: 0;
@@ -19,7 +26,7 @@ body {
     line-height: normal;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     height: fit-content;
-    background-color: #8C3414;
+    background-color: var(--red-color);
     height: 100vh;
     overflow: hidden;
 }
@@ -33,7 +40,7 @@ body {
 
 main {
     grid-area: main;
-    background-color: #8C3414;
+    background-color: var(--red-color);
     /* height: 100vh; */
     width: auto;
     display: flex;
@@ -59,7 +66,7 @@ p {
 }
 
 a:focus {
-    color: #D98B2B;
+    color: var(--yellow-color);
 }
 
 
@@ -78,8 +85,8 @@ a:focus {
     display: flex;
     flex-direction: row;
     flex: 1;
-    background-color: #8C3414;
-    color: #D98B2B;
+    background-color: var(--red-color);
+    color: var(--yellow-color);
     width: 100%;
     height: auto;
     align-items: center;
@@ -100,6 +107,10 @@ article {
     justify-content: space-evenly;
     text-align: center;
     margin: 0 auto;
+}
+
+#character-photos{
+    border-left: 2px var(--black-color) solid;
 }
 
 ul {
@@ -156,8 +167,8 @@ img {
     text-align: center;
     font-size: 18px;
     text-decoration: none;
-    color: #8C3414;
-    background-color: #000000;
+    color: var(--red-color);
+    background-color: var(--black-color);
     border-radius: 8px;
     outline: none;
     transition: 0.5s transform, 0.5s box-shadow, 0.5s color, 0.5s background-color;
@@ -167,8 +178,8 @@ img {
 .names-button:hover, img:hover {
     transform: scale(1.5);
     box-shadow: 4px 4px 3px 2px #02234047, -2px -2px 2px 1px #02234047;
-    color: #D98B2B;
-    background-color: #000000df;
+    color: var(--yellow-color);
+    background-color: #000000d0;
 }
 
 
@@ -186,8 +197,8 @@ img {
 #quote-section {
     display: flex;
     flex-direction: row;
-    background-color: #D98B2B;
-    color: #8C3414;
+    background-color: var(--yellow-color);
+    color: var(--red-color);
     width: 100%;
     height: auto;
     align-items: center;
@@ -208,7 +219,7 @@ img {
     padding: 1rem;
     font-size: 32px;
     max-width: max-content;
-    border-bottom: 1px #8C3414 solid;
+    border-bottom: 1px var(--red-color) solid;
 }
 
 .link-button {
@@ -219,7 +230,7 @@ img {
     padding: 6px 15px;
     font-size: 14px;
     text-decoration: none;
-    color: #8C3414;
+    color: var(--red-color);
     background-color: black;
     border-radius: 8px;
     outline: none;
