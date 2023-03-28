@@ -96,8 +96,9 @@ header h1 {
 /* Highscore */
 .highscore {
   height: 100vh;
-  background-image: url("../assets/images/jpg/background2-highscore.jpg");
+  background-image: url("../assets/images/jpg/background-highscore_darkened.jpg"); 
 }
+
 
 .highscore h1,
 h2 {
@@ -110,8 +111,14 @@ h2 {
 .highscore h1 {
   margin-top: 150px;
   font-size: 80px;
-  color: #e8d069;
+  color: #e8d069; 
 }
+
+/* 
+#D98B2B
+#8C3414
+#e8d069
+*/
 
 .highscore h2 {
   font-size: 65px;
