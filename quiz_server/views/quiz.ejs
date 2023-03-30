@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="nl-BE">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/reset.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <title>Quiz</title>
+</head>
+<body>
+    <main>
+        <section id="photo-section">
+            <form action="/" method="post">
+            <article id="movie-photos">
+                <ul>
+                    <li>
+                        <figure>
+                            <a href="#"><img src="<%- data.movieFoto1 %>" alt="<%- dataApi.correctMovie.name %>"></a>
+                        </figure>
+                        <a href="#" class="names-button"><%- dataApi.correctMovie.name %></a><input name="checkboxMovie" type="radio" value="<%- dataApi.correctMovie.name %>">
+                    </li>
+                    <li>
+                        <figure>
+                            <a href="#"><img src="<%- data.movieFoto2 %>"
+                                    alt="<%- dataApi.wrongMovie1.name %>"></a>
+                        </figure>
+                        <a href="#" class="names-button"><%- dataApi.wrongMovie1.name %></a><input name="checkboxMovie" type="radio" value="<%- dataApi.wrongMovie1.name %>">
+                    </li>
+                    <li>
+                        <figure>
+                            <a href="#"><img src="<%- data.movieFoto3 %>" alt="<%- dataApi.wrongMovie2.name %>"></a>
+                        </figure>
+                        <a href="#" class="names-button"><%- dataApi.wrongMovie2.name %></a><input name="checkboxMovie" type="radio" value="<%- dataApi.wrongMovie2.name %>">
+                    </li>
+                </ul>
+            </article>
+            <article id="character-photos">
+                <ul>
+                    <li>
+                        <figure>
+                            <a href="#"><img src="<%- data.characterFoto1 %>"
+                                    alt="<%- dataApi.characterCorrect.name %>"></a>
+                        </figure>
+                        <a href="#" class="names-button"><%- dataApi.characterCorrect.name %></a><input name="checkboxCharacter" type="radio" value="<%- dataApi.characterCorrect.name %>">
+                    </li>
+                    <li>
+                        <figure>
+                            <a href="#"><img src="<%- data.characterFoto2 %>" alt="<%- dataApi.wrongCharacter1.name %>"></a>
+                        </figure>
+                        <a href="#" class="names-button"><%- dataApi.wrongCharacter1.name %></a></a><input name="checkboxCharacter" type="radio" value="<%- dataApi.wrongCharacter1.name %>">
+                    </li>
+                    <li>
+                        <figure>
+                            <a href="#"><img src="<%- data.characterFoto3 %>" alt="<%- dataApi.wrongCharacter2.name %>"></a>
+                        </figure>
+                        <a href="#" class="names-button"><%- dataApi.wrongCharacter2.name %></a></a><input name="checkboxCharacter" type="radio" value="<%- dataApi.wrongCharacter2.name %>">
+                    </li>
+                </ul>
+            </article>
+            <div>
+                <button type='submit'>Submit</button>
+              </div>
+        </form>
+        </section>
+        <section id="quote-section">
+            <article>
+            <a href="landing-LOTR.html" class="link-button">Home</a>
+            <h2>Quote:<br><span id="game-counter">(<%- data.gameCounter %> / 10)</span></h2>
+            <p id="quote">" <%- dataApi.quote.dialog %> "</p>
+            <h3>Your score is: <span id="points"> <%- data.scoreString %> pts</span></h3>
+            <a href="#" class="link-button">My Profile</a>
+        </article>
+        </section>
+    </main>
+</body>
+</html>
