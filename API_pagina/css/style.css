@@ -96,7 +96,7 @@ header h1 {
 /* Highscore */
 .highscore {
   height: 100vh;
-  background-image: url("../assets/images/jpg/background-highscore_darkened.jpg"); 
+  background-image: url("../assets/images/jpg/background-highscore.jpg") 
 }
 
 
@@ -131,7 +131,7 @@ h2 {
   margin: 10px auto 10px auto;
   font-family: "ringbearermedium", Arial, Helvetica, sans-serif;
   font-size: 36px;
-  color: rgba(232, 208, 105, 0.2);
+  color: rgba(232, 208, 105, 0.3);
   background-color: transparent;
   border: none;
 }
@@ -139,6 +139,7 @@ h2 {
 .retry:hover, .main-menu:hover {
   color: rgba(232, 208, 105,1);
   cursor: pointer;
+  /* border: solid rgba(232, 208, 105,1); */
 }
 
 
