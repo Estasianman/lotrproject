@@ -9,70 +9,82 @@
     <link rel="stylesheet" href="/css/style.css">
     <title>Quiz</title>
 </head>
+
 <body>
     <main>
         <section id="photo-section">
             <form action="/" method="post">
-            <article id="movie-photos">
-                <ul>
-                    <li>
-                        <figure>
-                            <a href="#"><img src="<%- data.movieFoto1 %>" alt="<%- dataApi.correctMovie.name %>"></a>
-                        </figure>
-                        <a href="#" class="names-button"><%- dataApi.correctMovie.name %></a><input name="checkboxMovie" type="radio" value="<%- dataApi.correctMovie.name %>">
-                    </li>
-                    <li>
-                        <figure>
-                            <a href="#"><img src="<%- data.movieFoto2 %>"
-                                    alt="<%- dataApi.wrongMovie1.name %>"></a>
-                        </figure>
-                        <a href="#" class="names-button"><%- dataApi.wrongMovie1.name %></a><input name="checkboxMovie" type="radio" value="<%- dataApi.wrongMovie1.name %>">
-                    </li>
-                    <li>
-                        <figure>
-                            <a href="#"><img src="<%- data.movieFoto3 %>" alt="<%- dataApi.wrongMovie2.name %>"></a>
-                        </figure>
-                        <a href="#" class="names-button"><%- dataApi.wrongMovie2.name %></a><input name="checkboxMovie" type="radio" value="<%- dataApi.wrongMovie2.name %>">
-                    </li>
-                </ul>
-            </article>
-            <article id="character-photos">
-                <ul>
-                    <li>
-                        <figure>
-                            <a href="#"><img src="<%- data.characterFoto1 %>"
-                                    alt="<%- dataApi.characterCorrect.name %>"></a>
-                        </figure>
-                        <a href="#" class="names-button"><%- dataApi.characterCorrect.name %></a><input name="checkboxCharacter" type="radio" value="<%- dataApi.characterCorrect.name %>">
-                    </li>
-                    <li>
-                        <figure>
-                            <a href="#"><img src="<%- data.characterFoto2 %>" alt="<%- dataApi.wrongCharacter1.name %>"></a>
-                        </figure>
-                        <a href="#" class="names-button"><%- dataApi.wrongCharacter1.name %></a></a><input name="checkboxCharacter" type="radio" value="<%- dataApi.wrongCharacter1.name %>">
-                    </li>
-                    <li>
-                        <figure>
-                            <a href="#"><img src="<%- data.characterFoto3 %>" alt="<%- dataApi.wrongCharacter2.name %>"></a>
-                        </figure>
-                        <a href="#" class="names-button"><%- dataApi.wrongCharacter2.name %></a></a><input name="checkboxCharacter" type="radio" value="<%- dataApi.wrongCharacter2.name %>">
-                    </li>
-                </ul>
-            </article>
-            <div>
-                <button type='submit'>Submit</button>
-              </div>
-        </form>
+                <article id="movie-photos">
+                    <ul>
+                        <li>
+                            <figure>
+                                <a href="#"><img src="<%- dataGame.moviePhotoArray[0] %>"
+                                        alt="<%- dataGame.movieArray[0].name %>"></a>
+                            </figure>
+                            <a href="#" class="names-button"><%- dataGame.movieArray[0].name %></a><input
+                                name="checkboxMovie" type="radio" value="<%- dataGame.movieArray[0].name %>">
+                        </li>
+                        <li>
+                            <figure>
+                                <a href="#"><img src="<%- dataGame.moviePhotoArray[1] %>"
+                                        alt="<%- dataGame.movieArray[1].name %>"></a>
+                            </figure>
+                            <a href="#" class="names-button"><%- dataGame.movieArray[1].name %></a><input
+                                name="checkboxMovie" type="radio" value="<%- dataGame.movieArray[1].name %>">
+                        </li>
+                        <li>
+                            <figure>
+                                <a href="#"><img src="<%- dataGame.moviePhotoArray[2] %>"
+                                        alt="<%- dataGame.movieArray[2].name %>"></a>
+                            </figure>
+                            <a href="#" class="names-button"><%- dataGame.movieArray[2].name %></a><input
+                                name="checkboxMovie" type="radio" value="<%- dataGame.movieArray[2].name %>">
+                        </li>
+                    </ul>
+                </article>
+                <article id="character-photos">
+                    <ul>
+                        <li>
+                            <figure>
+                                <a href="#"><img src="<%- dataGame.characterPhotoArray[0] %>"
+                                        alt="<%- dataGame.characterArray[0].name %>"></a>
+                            </figure>
+                            <a href="#" class="names-button"><%- dataGame.characterArray[0].name %></a><input
+                                name="checkboxCharacter" type="radio" value="<%- dataGame.characterArray[0].name %>">
+                        </li>
+                        <li>
+                            <figure>
+                                <a href="#"><img src="<%- dataGame.characterPhotoArray[1] %>"
+                                        alt="<%- dataGame.characterArray[1].name %>"></a>
+                            </figure>
+                            <a href="#" class="names-button"><%- dataGame.characterArray[1].name %></a><input
+                                name="checkboxCharacter" type="radio" value="<%- dataGame.characterArray[1].name %>">
+                        </li>
+                        <li>
+                            <figure>
+                                <a href="#"><img src="<%- dataGame.characterPhotoArray[2] %>"
+                                        alt="<%- dataGame.characterArray[2].name %>"></a>
+                            </figure>
+                            <a href="#" class="names-button"><%- dataGame.characterArray[2].name %></a><input
+                                name="checkboxCharacter" type="radio" value="<%- dataGame.characterArray[2].name %>">
+                        </li>
+                    </ul>
+                </article>
+                <div>
+                    <button type='submit'>Submit</button>
+                </div>
+            </form>
         </section>
         <section id="quote-section">
             <article>
-            <a href="landing-LOTR.html" class="link-button">Home</a>
-            <h2>Quote:<br><span id="game-counter">(<%- data.gameCounter %> / 10)</span></h2>
-            <p id="quote">" <%- dataApi.quote.dialog %> "</p>
-            <h3>Your score is: <span id="points"> <%- data.scoreString %> pts</span></h3>
-            <a href="#" class="link-button">My Profile</a>
-        </article>
+                <a href="landing.html" class="link-button">Home</a>
+                <h2>Quote:<br><span id="game-counter">(<%- dataGame.gameCounter %> / 10)</span></h2>
+                <p id="quote">" <%- dataApi.quote.dialog %> "</p>
+                <h3>Your score is: <span id="points"> <%- dataGame.score %> pts</span></h3>
+                <a href="#" class="link-button">My Profile</a>
+            </article>
         </section>
     </main>
 </body>
+
 </html>

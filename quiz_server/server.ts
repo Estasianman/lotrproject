@@ -43,100 +43,73 @@ export enum Gender {
     NaN = "NaN",
 }
 
+//quote interfaces
+export interface Quotes {
+    docs: qDoc[];
+    total: number;
+    limit: number;
+    offset: number;
+    page: number;
+    pages: number;
+}
+
+export interface qDoc {
+    _id: string;
+    dialog: string;
+    movie: Movie;
+    character: string;
+    id: string;
+}
+
+export enum Movie {
+    The5Cd95395De30Eff6Ebccde5B = "5cd95395de30eff6ebccde5b",
+    The5Cd95395De30Eff6Ebccde5D = "5cd95395de30eff6ebccde5d",
+}
+
+//Movie interface
+export interface Movies {
+    docs: MovieDoc[];
+    total: number;
+    limit: number;
+    offset: number;
+    page: number;
+    pages: number;
+}
+
+export interface MovieDoc {
+    _id: string;
+    name: string;
+    runtimeInMinutes: number;
+    budgetInMillions: number;
+    boxOfficeRevenueInMillions: number;
+    academyAwardNominations: number;
+    academyAwardWins: number;
+    rottenTomatoesScore: number;
+}
+
 interface ApiData {
-    quote: any,
-    characterCorrect: Doc,
-    correctMovie: Doc,
-    wrongCharacter1: Doc,
-    wrongCharacter2: Doc,
-    wrongMovie1: Doc,
-    wrongMovie2: Doc
+    quote: qDoc,
+    charactersArray: Doc[],
+    moviesArray: MovieDoc[];
+    correctCharacterName: string,
+    correctMovieName: string
 }
 
 let apiData: ApiData = {
-    quote: "",
-    characterCorrect: {
+    quote: {
         _id: "",
-        height: "",
-        race: "",
-        gender: Gender.Empty,
-        birth: "",
-        spouse: "",
-        death: "",
-        realm: "",
-        hair: "",
-        name: "",
-        wikiUrl: "",
+        dialog: "",
+        movie: Movie.The5Cd95395De30Eff6Ebccde5D,
+        character: "",
+        id: ""
     },
-
-    correctMovie: {
-        _id: "",
-        height: "",
-        race: "",
-        gender: Gender.Empty,
-        birth: "",
-        spouse: "",
-        death: "",
-        realm: "",
-        hair: "",
-        name: "",
-        wikiUrl: "",
-    },
-    wrongCharacter1: {
-        _id: "",
-        height: "",
-        race: "",
-        gender: Gender.Empty,
-        birth: "",
-        spouse: "",
-        death: "",
-        realm: "",
-        hair: "",
-        name: "",
-        wikiUrl: "",
-    },
-    wrongCharacter2: {
-        _id: "",
-        height: "",
-        race: "",
-        gender: Gender.Empty,
-        birth: "",
-        spouse: "",
-        death: "",
-        realm: "",
-        hair: "",
-        name: "",
-        wikiUrl: "",
-    },
-    wrongMovie1: {
-        _id: "",
-        height: "",
-        race: "",
-        gender: Gender.Empty,
-        birth: "",
-        spouse: "",
-        death: "",
-        realm: "",
-        hair: "",
-        name: "",
-        wikiUrl: "",
-    },
-    wrongMovie2: {
-        _id: "",
-        height: "",
-        race: "",
-        gender: Gender.Empty,
-        birth: "",
-        spouse: "",
-        death: "",
-        realm: "",
-        hair: "",
-        name: "",
-        wikiUrl: "",
-    }
+    charactersArray: [],
+    moviesArray: [],
+    correctCharacterName: "",
+    correctMovieName: ""
 };
 
-let quotes: any = "";
+let quotes: Quotes;
 let characters: Characters = {
     docs: [],
     total: 0,
@@ -145,7 +118,7 @@ let characters: Characters = {
     page: 0,
     pages: 0,
 };
-let movies: any = "";
+let movies: Movies;
 
 //random
 const getRandomNumber = (min: number, max: number) => {
@@ -185,61 +158,64 @@ const getApiData = async () => {
         quoteId = getRandomNumber(0, quotes.docs.length);
         apiData.quote = quotes.docs[quoteId];
         characterId = apiData.quote.character;
-        apiData.characterCorrect = characters.docs[getRandomNumber(0, characters.docs.length)];
+
         for (let i = 0; i < characters.docs.length; i++) {
             if (characterId == characters.docs[i]._id) {
-                apiData.characterCorrect = characters.docs[i];
+                apiData.charactersArray[0] = characters.docs[i];
+                apiData.correctCharacterName = characters.docs[i].name;
                 break;
             }
         }
 
-        while (apiData.characterCorrect.name == "MINOR_CHARACTER") {
+        while (apiData.charactersArray[0].name == "MINOR_CHARACTER") {
             quoteId = getRandomNumber(0, quotes.docs.length);
             apiData.quote = quotes.docs[quoteId];
             characterId = apiData.quote.character;
-            apiData.characterCorrect = characters.docs[getRandomNumber(0, characters.docs.length)];
+
             for (let i = 0; i < characters.docs.length; i++) {
                 if (characterId == characters.docs[i]._id) {
-                    apiData.characterCorrect = characters.docs[i];
+                    apiData.charactersArray[0] = characters.docs[i];
+                    apiData.correctCharacterName = characters.docs[i].name;
                     break;
                 }
             }
         };
-        apiData.correctMovie = movies.docs[getRandomNumber(0, characters.docs.length)];
+
         let movieId: string = apiData.quote.movie;
 
         //find movie
         for (let i = 0; i < movies.docs.length; i++) {
             if (movieId == movies.docs[i]._id) {
-                apiData.correctMovie = movies.docs[i];
+                apiData.moviesArray[0] = movies.docs[i];
+                apiData.correctMovieName = movies.docs[i].name;
                 break;
             }
         }
         //getting wrong characters
-        apiData.wrongCharacter1 =
+        apiData.charactersArray[1] =
             characters.docs[getRandomNumber(0, characters.docs.length)];
-        apiData.wrongCharacter2 =
+        apiData.charactersArray[2] =
             characters.docs[getRandomNumber(0, characters.docs.length)];
         while (
-            apiData.wrongCharacter1 == apiData.characterCorrect ||
-            apiData.wrongCharacter2 == apiData.characterCorrect ||
-            apiData.wrongCharacter1.name == "MINOR_CHARACTER" ||
-            apiData.wrongCharacter2.name == "MINOR_CHARACTER"
+            apiData.charactersArray[1] == apiData.charactersArray[0] ||
+            apiData.charactersArray[2] == apiData.charactersArray[0] ||
+            apiData.charactersArray[1].name == "MINOR_CHARACTER" ||
+            apiData.charactersArray[2].name == "MINOR_CHARACTER"
         ) {
-            apiData.wrongCharacter1 = characters.docs[getRandomNumber(0, characters.docs.length)];
-            apiData.wrongCharacter2 = characters.docs[getRandomNumber(0, characters.docs.length)];
+            apiData.charactersArray[1] = characters.docs[getRandomNumber(0, characters.docs.length)];
+            apiData.charactersArray[2] = characters.docs[getRandomNumber(0, characters.docs.length)];
         }
 
         //getting wrong movies
-        apiData.wrongMovie1 = movies.docs[getRandomNumber(2, movies.docs.length)];
-        apiData.wrongMovie2 = movies.docs[getRandomNumber(2, movies.docs.length)];
+        apiData.moviesArray[1] = movies.docs[getRandomNumber(2, movies.docs.length)];
+        apiData.moviesArray[2] = movies.docs[getRandomNumber(2, movies.docs.length)];
         while (
-            apiData.wrongMovie1 == apiData.correctMovie ||
-            apiData.wrongMovie2 == apiData.correctMovie ||
-            apiData.wrongMovie1 == apiData.wrongMovie2
+            apiData.moviesArray[1] == apiData.moviesArray[0] ||
+            apiData.moviesArray[2] == apiData.moviesArray[0] ||
+            apiData.moviesArray[1] == apiData.moviesArray[2]
         ) {
-            apiData.wrongMovie1 = movies.docs[getRandomNumber(2, movies.docs.length)];
-            apiData.wrongMovie2 = movies.docs[getRandomNumber(2, movies.docs.length)];
+            apiData.moviesArray[1] = movies.docs[getRandomNumber(2, movies.docs.length)];
+            apiData.moviesArray[2] = movies.docs[getRandomNumber(2, movies.docs.length)];
         }
     }
     main();
@@ -295,66 +271,61 @@ const getApiData = async () => {
         return photoSource;
     };
 
+    // const putMoviesInRandomOrder = () => {
+
+
+
+    // };
+
     interface GameVariables {
-        correctMovie: Doc,
-        correctCharacter: Doc,
+        movieArray: MovieDoc[],
+        correctMovieName: string,
+        characterArray: Doc[],
+        correctCharacterName: string,
         userMovieAnswer: string,
         userCharacterAnswer: string,
         gameCounter: number,
         score: number,
-        halfPoints: number,
-        scoreString: string,
-        movieFoto1: any,
-        movieFoto2: any,
-        movieFoto3: any,
-        characterFoto1: any,
-        characterFoto2: any,
-        characterFoto3: any,
-
-    }
+        moviePhotoArray: any[],
+        characterPhotoArray: any[],
+    };
 
     let gameData: GameVariables = {
-        correctMovie: apiData.correctMovie,
-        correctCharacter: apiData.characterCorrect,
+        movieArray: [],
+        correctMovieName: apiData.correctMovieName,
+        characterArray: [],
+        correctCharacterName: apiData.correctCharacterName,
         userMovieAnswer: "",
         userCharacterAnswer: "",
         gameCounter: 1,
         score: 0,
-        halfPoints: 0,
-        scoreString: "",
-        movieFoto1: getPhoto(apiData.correctMovie.name),
-        movieFoto2: getPhoto(apiData.wrongMovie1.name),
-        movieFoto3: getPhoto(apiData.wrongMovie2.name),
-        characterFoto1: getPhoto(apiData.characterCorrect.name),
-        characterFoto2: getPhoto(apiData.wrongCharacter1.name),
-        characterFoto3: getPhoto(apiData.wrongCharacter2.name),
+        moviePhotoArray: [],
+        characterPhotoArray: [],
     };
-    gameData.scoreString = `${gameData.score}`;
-    gameData.scoreString = (parseFloat(gameData.scoreString)).toFixed(2);
 
-    gameData.movieFoto1.then((result: any) => {
-        gameData.movieFoto1 = result;
-    });
-    gameData.movieFoto2.then((result: any) => {
-        gameData.movieFoto2 = result;
-    });
-    gameData.movieFoto3.then((result: any) => {
-        gameData.movieFoto3 = result;
-    });
+    const addArrayElements = (array: any[], arrayToAdd: any[]): void => {
+        for (let i = 0; i < 3; i++) {
+            array[i] = arrayToAdd[i];
+        }
+    };
 
-    gameData.characterFoto1.then((result: any) => {
-        gameData.characterFoto1 = result;
-    });
-    gameData.characterFoto2.then((result: any) => {
-        gameData.characterFoto2 = result;
-    });
-    gameData.characterFoto3.then((result: any) => {
-        gameData.characterFoto3 = result;
-    });
+    const addPhotoArrayElements = async (array: any[], name: any[]) => {
+        for (let i = 0; i < 3; i++) {
+            array[i] = await getPhoto(name[i].name);
+        }
+    }
+
+    addPhotoArrayElements(gameData.moviePhotoArray, apiData.moviesArray);
+    addPhotoArrayElements(gameData.characterPhotoArray, apiData.charactersArray);
+
+    addArrayElements(gameData.movieArray, apiData.moviesArray);
+    addArrayElements(gameData.characterArray, apiData.charactersArray);
+
 
     app.get("/", (req, res) => {
-        res.render('quiz', { data: gameData, dataApi: apiData });
+        res.render('quiz', { dataGame: gameData, dataApi: apiData });
     });
+
 
     app.post("/", (req, res) => {
         gameData.userMovieAnswer = req.body.checkboxMovie;
@@ -365,46 +336,23 @@ const getApiData = async () => {
         if (gameData.userCharacterAnswer == undefined) {
             gameData.userCharacterAnswer = "";
         }
-        if (gameData.userMovieAnswer == gameData.correctMovie.name && gameData.userCharacterAnswer == gameData.correctCharacter.name) {
-            gameData.scoreString = `${gameData.score + 1},${gameData.halfPoints}`;
+        if (gameData.userMovieAnswer == apiData.correctMovieName && gameData.userCharacterAnswer == apiData.correctCharacterName) {
             gameData.score++;
         }
-        else if (gameData.userMovieAnswer == gameData.correctMovie.name || gameData.userCharacterAnswer == gameData.correctCharacter.name) {
-            if (gameData.halfPoints == 0) {
-                gameData.scoreString = `${gameData.score},${gameData.halfPoints + 5}`;
-                gameData.halfPoints = gameData.halfPoints + 5;
-            }
-            else {
-                gameData.scoreString = `${gameData.score + 1},${gameData.halfPoints - 5}`;
-                gameData.score++;
-                gameData.halfPoints = gameData.halfPoints - 5;
-            }
+        else if (gameData.userMovieAnswer == apiData.correctMovieName || gameData.userCharacterAnswer == apiData.correctCharacterName) {
+            gameData.score = gameData.score + 0.5;
         }
         gameData.gameCounter++;
         main();
-        gameData.movieFoto1 = getPhoto(apiData.correctMovie.name).then((result: any) => {
-            gameData.movieFoto1 = result;
-        });
-        gameData.movieFoto2 = getPhoto(apiData.wrongMovie1.name).then((result: any) => {
-            gameData.movieFoto2 = result;
-        });
-        gameData.movieFoto3 = getPhoto(apiData.wrongMovie2.name).then((result: any) => {
-            gameData.movieFoto3 = result;
-        });
-        gameData.characterFoto1 = getPhoto(apiData.characterCorrect.name).then((result: any) => {
-            gameData.characterFoto1 = result;
-        });
-        gameData.characterFoto2 = getPhoto(apiData.wrongCharacter1.name).then((result: any) => {
-            gameData.characterFoto2 = result;
-        });
-        gameData.characterFoto3 = getPhoto(apiData.wrongCharacter2.name).then((result: any) => {
-            gameData.characterFoto3 = result;
-        });
-        gameData.correctMovie = apiData.correctMovie;
-        gameData.correctCharacter = apiData.characterCorrect;
+        addPhotoArrayElements(gameData.moviePhotoArray, apiData.moviesArray);
+        addPhotoArrayElements(gameData.characterPhotoArray, apiData.charactersArray);
+        addArrayElements(gameData.movieArray, apiData.moviesArray);
+        addArrayElements(gameData.characterArray, apiData.charactersArray);
+        gameData.correctMovieName = apiData.correctMovieName;
+        gameData.correctCharacterName = apiData.correctCharacterName;
 
         setTimeout(() => {
-            res.render('quiz', { data: gameData, dataApi: apiData });
+            res.render('quiz', { dataGame: gameData, dataApi: apiData });
         }, 1000);
     });
 
