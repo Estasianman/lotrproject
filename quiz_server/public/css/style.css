@@ -107,6 +107,7 @@ form {
     text-align: center;
     flex-wrap: wrap;
     margin: 0 auto;
+    max-width: 75%;
 }
 
 article {

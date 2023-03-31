@@ -1,3 +1,4 @@
+import { log } from "console";
 import express from "express";
 const axios = require("axios");
 const app = express();
@@ -157,7 +158,7 @@ const getRandomNumber = (min: number, max: number) => {
 
 const getApiData = async () => {
     //authorization token
-    let token: string = "XfiSnDQochu1YXhRpuz5";
+    let token: string = "UOzmNvWKAN3QRiFrHRIh";
     //authorization header
     const auth = {
         headers: {
@@ -178,6 +179,11 @@ const getApiData = async () => {
 
     // get photo from wiki page
     const getPhoto = async (name: string) => {
+        let badCharacter: boolean = false;
+        let startIndex: number = 0;
+        let endIndex: number = 0;
+        let htmlSubstring: string = "";
+        let photoSource: string = "";
 
         name = name.replace(/ /g, "_");
         switch (name) {
@@ -202,28 +208,44 @@ const getApiData = async () => {
             default:
                 break;
         }
-        const response = await axios.get(
-            `https://lotr.fandom.com/wiki/${name}`
-        );
-        const rawHtml: string = response.data;
+        if (name == "Mar" || name == "Wife_of_Barach" || name == "Argeleb_I" || name == "Carc" || name == "Éomer") {
+            badCharacter = true;
+        }
+        if (!badCharacter) {
 
-        let startIndex: number = rawHtml.indexOf('"https://static');
-        let endIndex: number = rawHtml.indexOf('"', startIndex + 1);
-        let htmlSubstring: string = rawHtml.substring(startIndex + 1, endIndex);
-        let pngIndex: number = htmlSubstring.indexOf('png' || 'PNG');
-        let jpgIndex: number = htmlSubstring.indexOf('jpg' || 'JPG');
-        let gifIndex: number = htmlSubstring.indexOf('gif' || 'GIF');
-        let photoSource: string = "";
-        if (pngIndex == -1 && gifIndex == -1) {
-            photoSource = htmlSubstring.substring(0, jpgIndex + 3);
+            const response = await axios.get(
+                `https://lotr.fandom.com/wiki/${name}`
+            );
+            const rawHtml: string = response.data;
+
+            startIndex = rawHtml.indexOf('"https://static');
+            endIndex = rawHtml.indexOf('"', startIndex + 1);
+            htmlSubstring = rawHtml.substring(startIndex + 1, endIndex);
+            let pngIndex: number = -1;
+            if (name == "Legolas"){
+                pngIndex = htmlSubstring.indexOf('PNG');
+            }
+            else{
+                pngIndex = htmlSubstring.indexOf('png');
+            }
+            
+            let jpgIndex: number = htmlSubstring.indexOf('jpg');
+            let gifIndex: number = htmlSubstring.indexOf('gif');
+
+            if (pngIndex == -1 && gifIndex == -1) {
+                photoSource = htmlSubstring.substring(0, jpgIndex + 3);
+            }
+            else if (jpgIndex == -1 && pngIndex == -1) {
+                photoSource = htmlSubstring.substring(0, gifIndex + 3);
+            }
+            else if (jpgIndex == -1 && gifIndex == -1) {
+                photoSource = htmlSubstring.substring(0, pngIndex + 3);
+            }
+            if (photoSource == "https://static.wikia.nocookie.net/lotr/images/e/e6/Site-logo.png") {
+                photoSource = "/images/character_placeholder.jpg";
+            }
         }
-        else if (jpgIndex == -1 && pngIndex == -1) {
-            photoSource = htmlSubstring.substring(0, gifIndex + 3);
-        }
-        else if (jpgIndex == -1 && gifIndex == -1) {
-            photoSource = htmlSubstring.substring(0, pngIndex + 3);
-        }
-        if (photoSource == "https://static.wikia.nocookie.net/lotr/images/e/e6/Site-logo.png"){
+        else {
             photoSource = "/images/character_placeholder.jpg";
         }
 
@@ -284,38 +306,52 @@ const getApiData = async () => {
                 break;
             }
         }
-        //getting wrong characters
-        apiData.charactersArray[1] =
-            characters.docs[getRandomNumber(0, characters.docs.length)];
-        apiData.charactersArray[2] =
-            characters.docs[getRandomNumber(0, characters.docs.length)];
-        while (
-            apiData.charactersArray[1] == apiData.charactersArray[0] ||
-            apiData.charactersArray[2] == apiData.charactersArray[0] ||
-            apiData.charactersArray[1].name == "MINOR_CHARACTER" ||
-            apiData.charactersArray[2].name == "MINOR_CHARACTER"
-        ) {
-            apiData.charactersArray[1] = characters.docs[getRandomNumber(0, characters.docs.length)];
-            apiData.charactersArray[2] = characters.docs[getRandomNumber(0, characters.docs.length)];
-        }
 
         //getting wrong movies
-        apiData.moviesArray[1] = movies.docs[getRandomNumber(2, movies.docs.length)];
-        apiData.moviesArray[2] = movies.docs[getRandomNumber(2, movies.docs.length)];
-        while (
+
+        do {
+            apiData.moviesArray[1] = movies.docs[getRandomNumber(2, movies.docs.length)];
+            apiData.moviesArray[2] = movies.docs[getRandomNumber(2, movies.docs.length)];
+
+        }while(
             apiData.moviesArray[1] == apiData.moviesArray[0] ||
             apiData.moviesArray[2] == apiData.moviesArray[0] ||
             apiData.moviesArray[1] == apiData.moviesArray[2]
-        ) {
-            apiData.moviesArray[1] = movies.docs[getRandomNumber(2, movies.docs.length)];
-            apiData.moviesArray[2] = movies.docs[getRandomNumber(2, movies.docs.length)];
-        }
-        gameData.correctMovieName = apiData.correctMovieName;
-        gameData.correctCharacterName = apiData.correctCharacterName;
-        gameData.randomNumber = getRandomNumber(1,3);
-
+        );
         addPhotoArrayElements(gameData.moviePhotoArray, apiData.moviesArray);
         addPhotoArrayElements(gameData.characterPhotoArray, apiData.charactersArray);
+        gameData.correctMovieName = apiData.correctMovieName;
+        gameData.correctCharacterName = apiData.correctCharacterName;
+        gameData.randomNumber = getRandomNumber(1, 3);
+
+        //getting wrong characters
+
+        const getWrongCharacters = (array: Doc): Doc => {
+            let hasQuotes: boolean = false;
+            let allQuotes: qDoc[] = quotes.docs;
+
+            do {
+                hasQuotes = false;
+                array = characters.docs[getRandomNumber(0, characters.docs.length)];
+
+                //check if character has quotes in the API. Otherwise get a different character
+                for (let j = 0; j < allQuotes.length && hasQuotes == false; j++) {
+                    if (array._id == allQuotes[j].character) {
+                        hasQuotes = true;
+                    }
+                }
+            } while (!hasQuotes || array.name == apiData.charactersArray[0].name ||
+                    array.name == "MINOR_CHARACTER" ||
+                    array.name == "User:Technobliterator/Showcase");
+
+            return array;
+        }
+        apiData.charactersArray[1] = getWrongCharacters(apiData.charactersArray[1]);
+        apiData.charactersArray[2] = getWrongCharacters(apiData.charactersArray[2]);
+
+        while(apiData.charactersArray[1] == apiData.charactersArray[2]){
+            apiData.charactersArray[1] = getWrongCharacters(apiData.charactersArray[1]);
+        }
 
         addArrayElements(gameData.movieArray, apiData.moviesArray);
         addArrayElements(gameData.characterArray, apiData.charactersArray);
@@ -348,7 +384,7 @@ const getApiData = async () => {
 
         setTimeout(() => {
             res.render('quiz', { dataGame: gameData, dataApi: apiData });
-        }, 500);
+        }, 1000);
     });
 
     // app.post("/sudden_death", (req, res) => {
