@@ -10,12 +10,12 @@
     --red-color: #8C3414;
     --yellow-color: #D98B2B;
     --black-color: #000000;
-  
-  }
+
+}
 
 body,
 html {
-  margin: 0;
+    margin: 0;
 }
 
 body {
@@ -95,6 +95,20 @@ a:focus {
     margin: 0 auto;
 }
 
+form {
+
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    width: 100%;
+    height: auto;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    flex-wrap: wrap;
+    margin: 0 auto;
+}
+
 article {
     display: flex;
     flex-direction: row;
@@ -107,10 +121,6 @@ article {
     text-align: center;
     margin: 0 auto;
 }
-
-/* #character-photos{
-    border-left: 2px var(--black-color) solid;
-} */
 
 ul {
     display: flex;
@@ -139,8 +149,6 @@ li {
 figure {
     max-height: 350px;
     max-width: 250px;
-    /* min-height: 250px;
-    min-width: 150px; */
     width: 100%;
     height: auto;
     margin: 0 auto;
@@ -149,8 +157,6 @@ figure {
 img {
     max-height: 350px;
     max-width: 250px;
-    /* min-height: 250px;
-    min-width: 150px; */
     border-radius: 8px;
     width: 100%;
     height: auto;
@@ -174,12 +180,29 @@ img {
     box-shadow: 3px 3px 2px 2px #02234047;
 }
 
-/* .names-button:hover, img:hover {
-    transform: scale(1.5);
-    box-shadow: 4px 4px 3px 2px #02234047, -2px -2px 2px 1px #02234047;
+input[type="radio"] {
+    height: 20px;
+    width: 20px;
+    margin: 0 auto;
+    display: block;
+}
+
+#submit-button {
+    font-family: 'ringbearermedium', 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    display: inline-block;
+    margin: 4px;
+    padding: 10px 20px;
+    text-align: center;
+    font-size: 18px;
+    text-decoration: none;
     color: var(--yellow-color);
-    background-color: #000000d0;
-} */
+    background-color: var(--black-color);
+    border-radius: 8px;
+    outline: none;
+    transition: 0.5s transform, 0.5s box-shadow, 0.5s color, 0.5s background-color;
+    box-shadow: 3px 3px 2px 2px #02234047;
+
+}
 
 
 
@@ -209,7 +232,7 @@ img {
     padding: 4rem 0 4rem 0;
 }
 
-#quote-section > h3 {
+#quote-section>h3 {
     padding: 1rem;
 }
 
@@ -272,7 +295,15 @@ img {
         padding: 0;
     }
 
-    #quote-section > h3 {
+    #quote-article {
+        flex-direction: column;
+        justify-content: center;
+        margin: 0 auto;
+        height: auto;
+        padding: 0;
+    }
+
+    #quote-section>h3 {
         padding: 0.5rem 0 0 0;
     }
 

@@ -120,6 +120,34 @@ let characters: Characters = {
 };
 let movies: Movies;
 
+interface GameVariables {
+    movieArray: MovieDoc[],
+    correctMovieName: string,
+    characterArray: Doc[],
+    correctCharacterName: string,
+    userMovieAnswer: string,
+    userCharacterAnswer: string,
+    gameCounter: number,
+    score: number,
+    randomNumber: number,
+    moviePhotoArray: any[],
+    characterPhotoArray: any[],
+};
+
+let gameData: GameVariables = {
+    movieArray: [],
+    correctMovieName: "",
+    characterArray: [],
+    correctCharacterName: "",
+    userMovieAnswer: "",
+    userCharacterAnswer: "",
+    gameCounter: 1,
+    score: 0,
+    randomNumber: 0,
+    moviePhotoArray: [],
+    characterPhotoArray: [],
+};
+
 //random
 const getRandomNumber = (min: number, max: number) => {
     return Math.floor(Math.random() * (max - min) + min);
@@ -148,6 +176,71 @@ const getApiData = async () => {
     result = await axios.get("https://the-one-api.dev/v2/movie", auth);
     movies = result.data;
 
+    // get photo from wiki page
+    const getPhoto = async (name: string) => {
+
+        name = name.replace(/ /g, "_");
+        switch (name) {
+            case "The_Unexpected_Journey":
+                name = `The_Hobbit:_An_Unexpected_Journey`;
+                break;
+            case "The_Desolation_of_Smaug":
+                name = `The_Hobbit:_${name}`;
+                break;
+            case "The_Battle_of_the_Five_Armies":
+                name = `The_Hobbit:_${name}`;
+                break;
+            case "The_Fellowship_of_the_Ring":
+                name = `The_Lord_of_the_Rings:_${name}`;
+                break;
+            case "The_Two_Towers":
+                name = `The_Lord_of_the_Rings:_${name}`;
+                break;
+            case "The_Return_of_the_King":
+                name = `The_Lord_of_the_Rings:_${name}`;
+                break;
+            default:
+                break;
+        }
+        const response = await axios.get(
+            `https://lotr.fandom.com/wiki/${name}`
+        );
+        const rawHtml: string = response.data;
+
+        let startIndex: number = rawHtml.indexOf('"https://static');
+        let endIndex: number = rawHtml.indexOf('"', startIndex + 1);
+        let htmlSubstring: string = rawHtml.substring(startIndex + 1, endIndex);
+        let pngIndex: number = htmlSubstring.indexOf('png');
+        let jpgIndex: number = htmlSubstring.indexOf('jpg');
+        let gifIndex: number = htmlSubstring.indexOf('gif');
+        let photoSource: string = "";
+        if (pngIndex == -1 && gifIndex == -1) {
+            photoSource = htmlSubstring.substring(0, jpgIndex + 3);
+        }
+        else if (jpgIndex == -1 && pngIndex == -1) {
+            photoSource = htmlSubstring.substring(0, gifIndex + 3);
+        }
+        else if (jpgIndex == -1 && gifIndex == -1) {
+            photoSource = htmlSubstring.substring(0, pngIndex + 3);
+        }
+        if (photoSource == "https://static.wikia.nocookie.net/lotr/images/e/e6/Site-logo.png"){
+            photoSource = "/images/character_placeholder.jpg";
+        }
+
+        return photoSource;
+    };
+
+    const addArrayElements = (array: any[], arrayToAdd: any[]): void => {
+        for (let i = 0; i < 3; i++) {
+            array[i] = arrayToAdd[i];
+        }
+    };
+
+    const addPhotoArrayElements = async (array: any[], name: any[]) => {
+        for (let i = 0; i < 3; i++) {
+            array[i] = await getPhoto(name[i].name);
+        }
+    }
 
     const main = async () => {
 
@@ -217,115 +310,21 @@ const getApiData = async () => {
             apiData.moviesArray[1] = movies.docs[getRandomNumber(2, movies.docs.length)];
             apiData.moviesArray[2] = movies.docs[getRandomNumber(2, movies.docs.length)];
         }
+        gameData.correctMovieName = apiData.correctMovieName;
+        gameData.correctCharacterName = apiData.correctCharacterName;
+        gameData.randomNumber = getRandomNumber(1,3);
+
+        addPhotoArrayElements(gameData.moviePhotoArray, apiData.moviesArray);
+        addPhotoArrayElements(gameData.characterPhotoArray, apiData.charactersArray);
+
+        addArrayElements(gameData.movieArray, apiData.moviesArray);
+        addArrayElements(gameData.characterArray, apiData.charactersArray);
     }
     main();
-
-    //extra code to get character photo from wiki page
-    const getPhoto = async (name: string) => {
-
-        name = name.replace(/ /g, "_");
-        switch (name) {
-            case "The_Unexpected_Journey":
-                name = `The_Hobbit:_An_Unexpected_Journey`;
-                break;
-            case "The_Desolation_of_Smaug":
-                name = `The_Hobbit:_${name}`;
-                break;
-            case "The_Battle_of_the_Five_Armies":
-                name = `The_Hobbit:_${name}`;
-                break;
-            case "The_Fellowship_of_the_Ring":
-                name = `The_Lord_of_the_Rings:_${name}`;
-                break;
-            case "The_Two_Towers":
-                name = `The_Lord_of_the_Rings:_${name}`;
-                break;
-            case "The_Return_of_the_King":
-                name = `The_Lord_of_the_Rings:_${name}`;
-                break;
-            default:
-                break;
-        }
-        const response = await axios.get(
-            `https://lotr.fandom.com/wiki/${name}`
-        );
-        const rawHtml: string = response.data;
-
-        let startIndex: number = rawHtml.indexOf('"https://static');
-        let endIndex: number = rawHtml.indexOf('"', startIndex + 1);
-        let htmlSubstring: string = rawHtml.substring(startIndex + 1, endIndex);
-        let pngIndex: number = htmlSubstring.indexOf('png');
-        let jpgIndex: number = htmlSubstring.indexOf('jpg');
-        let gifIndex: number = htmlSubstring.indexOf('gif');
-        let photoSource: string = "";
-        if (pngIndex == -1 && gifIndex == -1) {
-            photoSource = htmlSubstring.substring(0, jpgIndex + 3);
-        }
-        else if (jpgIndex == -1 && pngIndex == -1) {
-            photoSource = htmlSubstring.substring(0, gifIndex + 3);
-        }
-        else if (jpgIndex == -1 && gifIndex == -1) {
-            photoSource = htmlSubstring.substring(0, pngIndex + 3);
-        }
-
-        return photoSource;
-    };
-
-    // const putMoviesInRandomOrder = () => {
-
-
-
-    // };
-
-    interface GameVariables {
-        movieArray: MovieDoc[],
-        correctMovieName: string,
-        characterArray: Doc[],
-        correctCharacterName: string,
-        userMovieAnswer: string,
-        userCharacterAnswer: string,
-        gameCounter: number,
-        score: number,
-        moviePhotoArray: any[],
-        characterPhotoArray: any[],
-    };
-
-    let gameData: GameVariables = {
-        movieArray: [],
-        correctMovieName: apiData.correctMovieName,
-        characterArray: [],
-        correctCharacterName: apiData.correctCharacterName,
-        userMovieAnswer: "",
-        userCharacterAnswer: "",
-        gameCounter: 1,
-        score: 0,
-        moviePhotoArray: [],
-        characterPhotoArray: [],
-    };
-
-    const addArrayElements = (array: any[], arrayToAdd: any[]): void => {
-        for (let i = 0; i < 3; i++) {
-            array[i] = arrayToAdd[i];
-        }
-    };
-
-    const addPhotoArrayElements = async (array: any[], name: any[]) => {
-        for (let i = 0; i < 3; i++) {
-            array[i] = await getPhoto(name[i].name);
-        }
-    }
-
-    addPhotoArrayElements(gameData.moviePhotoArray, apiData.moviesArray);
-    addPhotoArrayElements(gameData.characterPhotoArray, apiData.charactersArray);
-
-    addArrayElements(gameData.movieArray, apiData.moviesArray);
-    addArrayElements(gameData.characterArray, apiData.charactersArray);
-
 
     app.get("/", (req, res) => {
         res.render('quiz', { dataGame: gameData, dataApi: apiData });
     });
-
 
     app.post("/", (req, res) => {
         gameData.userMovieAnswer = req.body.checkboxMovie;
@@ -344,16 +343,10 @@ const getApiData = async () => {
         }
         gameData.gameCounter++;
         main();
-        addPhotoArrayElements(gameData.moviePhotoArray, apiData.moviesArray);
-        addPhotoArrayElements(gameData.characterPhotoArray, apiData.charactersArray);
-        addArrayElements(gameData.movieArray, apiData.moviesArray);
-        addArrayElements(gameData.characterArray, apiData.charactersArray);
-        gameData.correctMovieName = apiData.correctMovieName;
-        gameData.correctCharacterName = apiData.correctCharacterName;
 
         setTimeout(() => {
             res.render('quiz', { dataGame: gameData, dataApi: apiData });
-        }, 1000);
+        }, 500);
     });
 
     app.listen(app.get("port"), () =>
