@@ -322,11 +322,13 @@ const getApiData = async () => {
     }
     main();
 
-    app.get("/", (req, res) => {
+    let routes = ["/quiz", "/sudden_death", "/highscore"];
+
+    app.get(routes, (req, res) => {
         res.render('quiz', { dataGame: gameData, dataApi: apiData });
     });
 
-    app.post("/", (req, res) => {
+    app.post("/quiz", (req, res) => {
         gameData.userMovieAnswer = req.body.checkboxMovie;
         gameData.userCharacterAnswer = req.body.checkboxCharacter;
         if (gameData.userMovieAnswer == undefined) {
@@ -347,6 +349,44 @@ const getApiData = async () => {
         setTimeout(() => {
             res.render('quiz', { dataGame: gameData, dataApi: apiData });
         }, 500);
+    });
+
+    // app.post("/sudden_death", (req, res) => {
+    //     gameData.userMovieAnswer = req.body.checkboxMovie;
+    //     gameData.userCharacterAnswer = req.body.checkboxCharacter;
+    //     if (gameData.userMovieAnswer == undefined) {
+    //         gameData.userMovieAnswer = "";
+    //     }
+    //     if (gameData.userCharacterAnswer == undefined) {
+    //         gameData.userCharacterAnswer = "";
+    //     }
+    //     if (gameData.userMovieAnswer == apiData.correctMovieName && gameData.userCharacterAnswer == apiData.correctCharacterName) {
+    //         gameData.score++;
+    //     }
+    //     else  {
+    //         res.render('quiz', { dataGame: gameData, dataApi: apiData });
+    //     }
+    //     gameData.gameCounter++;
+    //     main();
+
+    //     setTimeout(() => {
+    //         res.render('quiz', { dataGame: gameData, dataApi: apiData });
+    //     }, 500);
+    // });
+
+    app.post("/highscore", (req, res) => {
+        gameData.userMovieAnswer = req.body.checkboxMovie;
+        gameData.userCharacterAnswer = req.body.checkboxCharacter;
+        if (gameData.userMovieAnswer == undefined) {
+            gameData.userMovieAnswer = "";
+        }
+        if (gameData.userCharacterAnswer == undefined) {
+            gameData.userCharacterAnswer = "";
+        }
+        if (gameData.userMovieAnswer == apiData.correctMovieName && gameData.userCharacterAnswer == apiData.correctCharacterName) {
+            gameData.score++;
+        }
+        res.render('highscore', { dataGame: gameData, dataApi: apiData });
     });
 
     app.listen(app.get("port"), () =>

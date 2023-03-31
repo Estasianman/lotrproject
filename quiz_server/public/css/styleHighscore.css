@@ -1,0 +1,81 @@
+@font-face {
+  font-family: "ringbearermedium";
+  src: url("../assets/fonts/ringm___-webfont.woff2") format("woff2"),
+    url("../assets/fonts/ringm___-webfont.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+  margin-left: 20px;
+}
+
+img {
+  width: 500px;
+}
+
+h1 {
+  text-transform: uppercase;
+  padding-top: 20px;
+  padding-left: 20px;
+  padding-bottom: 10px;
+}
+
+header h1 {
+  font-size: larger;
+}
+
+/* Highscore */
+.highscore {
+  height: 100vh;
+  background-image: url("../images/background-highscore.jpg") 
+}
+
+
+.highscore h1, .highscore
+h2 {
+  font-family: "ringbearermedium", Arial, Helvetica, sans-serif;
+
+  text-shadow: 6px 4px #000000;
+  text-align: center;
+}
+
+.highscore h1 {
+  margin-top: 100px;
+  font-size: 80px;
+  color: #e8d069; 
+}
+
+/* 
+#D98B2B
+#8C3414
+#e8d069
+*/
+
+.highscore h2 {
+  font-size: 65px;
+  color: white;
+}
+
+
+.retry, .main-menu {
+  display: block;
+  margin: 10px auto 10px auto;
+  font-family: "ringbearermedium", Arial, Helvetica, sans-serif;
+  font-size: 36px;
+  color: rgba(232, 208, 105, 0.3);
+  background-color: transparent;
+  border: none;
+}
+
+.retry:hover, .main-menu:hover {
+  color: rgba(232, 208, 105,1);
+  cursor: pointer;
+  /* border: solid rgba(232, 208, 105,1); */
+}
+
+
+
+
+
+
