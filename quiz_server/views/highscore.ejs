@@ -10,9 +10,11 @@
   <body class="highscore">
     <h1>Your Highscore</h1>
     <h2><%- dataGame.score %></h2>
-
+    <form action="/quiz" method="post">
+        <% dataGame.score = 0 %>
+        <% dataGame.gameCounter = 0 %>
     <button class = "retry">Retry</button> 
-
+    </form>
     <button class = "main-menu">Main Menu</button>
 
   </body>

@@ -210,9 +210,9 @@ const getApiData = async () => {
         let startIndex: number = rawHtml.indexOf('"https://static');
         let endIndex: number = rawHtml.indexOf('"', startIndex + 1);
         let htmlSubstring: string = rawHtml.substring(startIndex + 1, endIndex);
-        let pngIndex: number = htmlSubstring.indexOf('png');
-        let jpgIndex: number = htmlSubstring.indexOf('jpg');
-        let gifIndex: number = htmlSubstring.indexOf('gif');
+        let pngIndex: number = htmlSubstring.indexOf('png' || 'PNG');
+        let jpgIndex: number = htmlSubstring.indexOf('jpg' || 'JPG');
+        let gifIndex: number = htmlSubstring.indexOf('gif' || 'GIF');
         let photoSource: string = "";
         if (pngIndex == -1 && gifIndex == -1) {
             photoSource = htmlSubstring.substring(0, jpgIndex + 3);
