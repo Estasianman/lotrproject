@@ -1,3 +1,4 @@
+import { log } from "console";
 import express from "express";
 import ejs from "ejs";
 
@@ -89,6 +90,14 @@ export interface MovieDoc {
   rottenTomatoesScore: number;
 }
 
+interface RandomFunction {
+    (min: number, max: number): number
+}
+
+interface CombineArrayElements {
+    (arrayEmpty: any[], arrayToTransfer: any[]): void | Promise<void>
+}
+
 interface ApiData {
   quote: qDoc;
   charactersArray: Doc[];
@@ -123,133 +132,138 @@ let characters: Characters = {
 let movies: Movies;
 
 interface GameVariables {
-  movieArray: MovieDoc[];
-  correctMovieName: string;
-  characterArray: Doc[];
-  correctCharacterName: string;
-  userMovieAnswer: string;
-  userCharacterAnswer: string;
-  gameCounter: number;
-  score: number;
-  randomNumber: number;
-  moviePhotoArray: any[];
-  characterPhotoArray: any[];
-}
+    movieArray: MovieDoc[],
+    correctMovieName: string,
+    characterArray: Doc[],
+    correctCharacterName: string,
+    userMovieAnswer: string,
+    userCharacterAnswer: string,
+    gameCounter: number,
+    score: number,
+    randomNumber: number,
+    moviePhotoArray: any[],
+    characterPhotoArray: any[],
+};
 
 let gameData: GameVariables = {
-  movieArray: [],
-  correctMovieName: "",
-  characterArray: [],
-  correctCharacterName: "",
-  userMovieAnswer: "",
-  userCharacterAnswer: "",
-  gameCounter: 1,
-  score: 0,
-  randomNumber: 0,
-  moviePhotoArray: [],
-  characterPhotoArray: [],
+    movieArray: [],
+    correctMovieName: "",
+    characterArray: [],
+    correctCharacterName: "",
+    userMovieAnswer: "",
+    userCharacterAnswer: "",
+    gameCounter: 1,
+    score: 0,
+    randomNumber: 0,
+    moviePhotoArray: [],
+    characterPhotoArray: [],
 };
 
 //random
 const getRandomNumber = (min: number, max: number) => {
-  return Math.floor(Math.random() * (max - min) + min);
+    return Math.floor(Math.random() * (max - min) + min);
 };
+
+
 
 //get API
 
 const getApiData = async () => {
-  //authorization token
-  let token: string = "XfiSnDQochu1YXhRpuz5";
-  //authorization header
-  const auth = {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  };
-  //get quotes
-  let result = await axios.get("https://the-one-api.dev/v2/quote", auth);
-  quotes = result.data;
+    //authorization token
+    let token: string = "XfiSnDQochu1YXhRpuz5";
+    //authorization header
+    const auth = {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    }
+    //get quotes
+    let result = await axios.get("https://the-one-api.dev/v2/quote", auth);
+    quotes = result.data;
 
   //get characters
   result = await axios.get("https://the-one-api.dev/v2/character", auth);
   characters = result.data;
 
-  //get movies
-  result = await axios.get("https://the-one-api.dev/v2/movie", auth);
-  movies = result.data;
+    //get movies
+    result = await axios.get("https://the-one-api.dev/v2/movie", auth);
+    movies = result.data;
 
-  // get photo from wiki page
-  const getPhoto = async (name: string) => {
-    name = name.replace(/ /g, "_");
-    switch (name) {
-      case "The_Unexpected_Journey":
-        name = `The_Hobbit:_An_Unexpected_Journey`;
-        break;
-      case "The_Desolation_of_Smaug":
-        name = `The_Hobbit:_${name}`;
-        break;
-      case "The_Battle_of_the_Five_Armies":
-        name = `The_Hobbit:_${name}`;
-        break;
-      case "The_Fellowship_of_the_Ring":
-        name = `The_Lord_of_the_Rings:_${name}`;
-        break;
-      case "The_Two_Towers":
-        name = `The_Lord_of_the_Rings:_${name}`;
-        break;
-      case "The_Return_of_the_King":
-        name = `The_Lord_of_the_Rings:_${name}`;
-        break;
-      default:
-        break;
-    }
-    const response = await axios.get(`https://lotr.fandom.com/wiki/${name}`);
-    const rawHtml: string = response.data;
+    // get photo from wiki page
+    const getPhoto = async (name: string) => {
 
-    let startIndex: number = rawHtml.indexOf('"https://static');
-    let endIndex: number = rawHtml.indexOf('"', startIndex + 1);
-    let htmlSubstring: string = rawHtml.substring(startIndex + 1, endIndex);
-    let pngIndex: number = htmlSubstring.indexOf("png" || "PNG");
-    let jpgIndex: number = htmlSubstring.indexOf("jpg" || "JPG");
-    let gifIndex: number = htmlSubstring.indexOf("gif" || "GIF");
-    let photoSource: string = "";
-    if (pngIndex == -1 && gifIndex == -1) {
-      photoSource = htmlSubstring.substring(0, jpgIndex + 3);
-    } else if (jpgIndex == -1 && pngIndex == -1) {
-      photoSource = htmlSubstring.substring(0, gifIndex + 3);
-    } else if (jpgIndex == -1 && gifIndex == -1) {
-      photoSource = htmlSubstring.substring(0, pngIndex + 3);
-    }
-    if (
-      photoSource ==
-      "https://static.wikia.nocookie.net/lotr/images/e/e6/Site-logo.png"
-    ) {
-      photoSource = "/images/character_placeholder.jpg";
-    }
+        name = name.replace(/ /g, "_");
+        switch (name) {
+            case "The_Unexpected_Journey":
+                name = `The_Hobbit:_An_Unexpected_Journey`;
+                break;
+            case "The_Desolation_of_Smaug":
+                name = `The_Hobbit:_${name}`;
+                break;
+            case "The_Battle_of_the_Five_Armies":
+                name = `The_Hobbit:_${name}`;
+                break;
+            case "The_Fellowship_of_the_Ring":
+                name = `The_Lord_of_the_Rings:_${name}`;
+                break;
+            case "The_Two_Towers":
+                name = `The_Lord_of_the_Rings:_${name}`;
+                break;
+            case "The_Return_of_the_King":
+                name = `The_Lord_of_the_Rings:_${name}`;
+                break;
+            default:
+                break;
+        }
+        const response = await axios.get(
+            `https://lotr.fandom.com/wiki/${name}`
+        );
+        const rawHtml: string = response.data;
+
+        let startIndex: number = rawHtml.indexOf('"https://static');
+        let endIndex: number = rawHtml.indexOf('"', startIndex + 1);
+        let htmlSubstring: string = rawHtml.substring(startIndex + 1, endIndex);
+        let pngIndex: number = htmlSubstring.indexOf('png' || 'PNG');
+        let jpgIndex: number = htmlSubstring.indexOf('jpg' || 'JPG');
+        let gifIndex: number = htmlSubstring.indexOf('gif' || 'GIF');
+        let photoSource: string = "";
+        if (pngIndex == -1 && gifIndex == -1) {
+            photoSource = htmlSubstring.substring(0, jpgIndex + 3);
+        }
+        else if (jpgIndex == -1 && pngIndex == -1) {
+            photoSource = htmlSubstring.substring(0, gifIndex + 3);
+        }
+        else if (jpgIndex == -1 && gifIndex == -1) {
+            photoSource = htmlSubstring.substring(0, pngIndex + 3);
+        }
+        if (photoSource == "https://static.wikia.nocookie.net/lotr/images/e/e6/Site-logo.png"){
+            photoSource = "/images/character_placeholder.jpg";
+        }
 
     return photoSource;
   };
 
-  const addArrayElements = (array: any[], arrayToAdd: any[]): void => {
-    for (let i = 0; i < 3; i++) {
-      array[i] = arrayToAdd[i];
-    }
-  };
+    const addArrayElements = (array: any[], arrayToAdd: any[]): void => {
+        for (let i = 0; i < 3; i++) {
+            array[i] = arrayToAdd[i];
+        }
+    };
 
-  const addPhotoArrayElements = async (array: any[], name: any[]) => {
-    for (let i = 0; i < 3; i++) {
-      array[i] = await getPhoto(name[i].name);
+    const addPhotoArrayElements = async (array: any[], name: any[]) => {
+        for (let i = 0; i < 3; i++) {
+            array[i] = await getPhoto(name[i].name);
+        }
     }
-  };
 
-  const main = async () => {
-    //find quote and character
-    let quoteId: number = 0;
-    let characterId: string = "";
-    //find character
-    quoteId = getRandomNumber(0, quotes.docs.length);
-    apiData.quote = quotes.docs[quoteId];
-    characterId = apiData.quote.character;
+    const main = async () => {
+
+        //find quote and character
+        let quoteId: number = 0;
+        let characterId: string = "";
+        //find character
+        quoteId = getRandomNumber(0, quotes.docs.length);
+        apiData.quote = quotes.docs[quoteId];
+        characterId = apiData.quote.character;
 
     for (let i = 0; i < characters.docs.length; i++) {
       if (characterId == characters.docs[i]._id) {
@@ -264,66 +278,57 @@ const getApiData = async () => {
       apiData.quote = quotes.docs[quoteId];
       characterId = apiData.quote.character;
 
-      for (let i = 0; i < characters.docs.length; i++) {
-        if (characterId == characters.docs[i]._id) {
-          apiData.charactersArray[0] = characters.docs[i];
-          apiData.correctCharacterName = characters.docs[i].name;
-          break;
+            for (let i = 0; i < characters.docs.length; i++) {
+                if (characterId == characters.docs[i]._id) {
+                    apiData.charactersArray[0] = characters.docs[i];
+                    apiData.correctCharacterName = characters.docs[i].name;
+                    break;
+                }
+            }
+        };
+
+        let movieId: string = apiData.quote.movie;
+
+        //find movie
+        for (let i = 0; i < movies.docs.length; i++) {
+            if (movieId == movies.docs[i]._id) {
+                apiData.moviesArray[0] = movies.docs[i];
+                apiData.correctMovieName = movies.docs[i].name;
+                break;
+            }
         }
-      }
-    }
+        //getting wrong characters
+        apiData.charactersArray[1] =
+            characters.docs[getRandomNumber(0, characters.docs.length)];
+        apiData.charactersArray[2] =
+            characters.docs[getRandomNumber(0, characters.docs.length)];
+        while (
+            apiData.charactersArray[1] == apiData.charactersArray[0] ||
+            apiData.charactersArray[2] == apiData.charactersArray[0] ||
+            apiData.charactersArray[1].name == "MINOR_CHARACTER" ||
+            apiData.charactersArray[2].name == "MINOR_CHARACTER"
+        ) {
+            apiData.charactersArray[1] = characters.docs[getRandomNumber(0, characters.docs.length)];
+            apiData.charactersArray[2] = characters.docs[getRandomNumber(0, characters.docs.length)];
+        }
 
-    let movieId: string = apiData.quote.movie;
+        //getting wrong movies
+        apiData.moviesArray[1] = movies.docs[getRandomNumber(2, movies.docs.length)];
+        apiData.moviesArray[2] = movies.docs[getRandomNumber(2, movies.docs.length)];
+        while (
+            apiData.moviesArray[1] == apiData.moviesArray[0] ||
+            apiData.moviesArray[2] == apiData.moviesArray[0] ||
+            apiData.moviesArray[1] == apiData.moviesArray[2]
+        ) {
+            apiData.moviesArray[1] = movies.docs[getRandomNumber(2, movies.docs.length)];
+            apiData.moviesArray[2] = movies.docs[getRandomNumber(2, movies.docs.length)];
+        }
+        gameData.correctMovieName = apiData.correctMovieName;
+        gameData.correctCharacterName = apiData.correctCharacterName;
+        gameData.randomNumber = getRandomNumber(1,3);
 
-    //find movie
-    for (let i = 0; i < movies.docs.length; i++) {
-      if (movieId == movies.docs[i]._id) {
-        apiData.moviesArray[0] = movies.docs[i];
-        apiData.correctMovieName = movies.docs[i].name;
-        break;
-      }
-    }
-    //getting wrong characters
-    apiData.charactersArray[1] =
-      characters.docs[getRandomNumber(0, characters.docs.length)];
-    apiData.charactersArray[2] =
-      characters.docs[getRandomNumber(0, characters.docs.length)];
-    while (
-      apiData.charactersArray[1] == apiData.charactersArray[0] ||
-      apiData.charactersArray[2] == apiData.charactersArray[0] ||
-      apiData.charactersArray[1].name == "MINOR_CHARACTER" ||
-      apiData.charactersArray[2].name == "MINOR_CHARACTER"
-    ) {
-      apiData.charactersArray[1] =
-        characters.docs[getRandomNumber(0, characters.docs.length)];
-      apiData.charactersArray[2] =
-        characters.docs[getRandomNumber(0, characters.docs.length)];
-    }
-
-    //getting wrong movies
-    apiData.moviesArray[1] =
-      movies.docs[getRandomNumber(2, movies.docs.length)];
-    apiData.moviesArray[2] =
-      movies.docs[getRandomNumber(2, movies.docs.length)];
-    while (
-      apiData.moviesArray[1] == apiData.moviesArray[0] ||
-      apiData.moviesArray[2] == apiData.moviesArray[0] ||
-      apiData.moviesArray[1] == apiData.moviesArray[2]
-    ) {
-      apiData.moviesArray[1] =
-        movies.docs[getRandomNumber(2, movies.docs.length)];
-      apiData.moviesArray[2] =
-        movies.docs[getRandomNumber(2, movies.docs.length)];
-    }
-    gameData.correctMovieName = apiData.correctMovieName;
-    gameData.correctCharacterName = apiData.correctCharacterName;
-    gameData.randomNumber = getRandomNumber(1, 3);
-
-    addPhotoArrayElements(gameData.moviePhotoArray, apiData.moviesArray);
-    addPhotoArrayElements(
-      gameData.characterPhotoArray,
-      apiData.charactersArray
-    );
+        addPhotoArrayElements(gameData.moviePhotoArray, apiData.moviesArray);
+        addPhotoArrayElements(gameData.characterPhotoArray, apiData.charactersArray);
 
     addArrayElements(gameData.movieArray, apiData.moviesArray);
     addArrayElements(gameData.characterArray, apiData.charactersArray);
@@ -336,33 +341,28 @@ const getApiData = async () => {
     res.render("quiz", { dataGame: gameData, dataApi: apiData });
   });
 
-  app.post("/quiz", (req, res) => {
-    gameData.userMovieAnswer = req.body.checkboxMovie;
-    gameData.userCharacterAnswer = req.body.checkboxCharacter;
-    if (gameData.userMovieAnswer == undefined) {
-      gameData.userMovieAnswer = "";
-    }
-    if (gameData.userCharacterAnswer == undefined) {
-      gameData.userCharacterAnswer = "";
-    }
-    if (
-      gameData.userMovieAnswer == apiData.correctMovieName &&
-      gameData.userCharacterAnswer == apiData.correctCharacterName
-    ) {
-      gameData.score++;
-    } else if (
-      gameData.userMovieAnswer == apiData.correctMovieName ||
-      gameData.userCharacterAnswer == apiData.correctCharacterName
-    ) {
-      gameData.score = gameData.score + 0.5;
-    }
-    gameData.gameCounter++;
-    main();
+    app.post("/quiz", (req, res) => {
+        gameData.userMovieAnswer = req.body.checkboxMovie;
+        gameData.userCharacterAnswer = req.body.checkboxCharacter;
+        if (gameData.userMovieAnswer == undefined) {
+            gameData.userMovieAnswer = "";
+        }
+        if (gameData.userCharacterAnswer == undefined) {
+            gameData.userCharacterAnswer = "";
+        }
+        if (gameData.userMovieAnswer == apiData.correctMovieName && gameData.userCharacterAnswer == apiData.correctCharacterName) {
+            gameData.score++;
+        }
+        else if (gameData.userMovieAnswer == apiData.correctMovieName || gameData.userCharacterAnswer == apiData.correctCharacterName) {
+            gameData.score = gameData.score + 0.5;
+        }
+        gameData.gameCounter++;
+        main();
 
-    setTimeout(() => {
-      res.render("quiz", { dataGame: gameData, dataApi: apiData });
-    }, 500);
-  });
+        setTimeout(() => {
+            res.render('quiz', { dataGame: gameData, dataApi: apiData });
+        }, 500);
+    });
 
   // app.post("/sudden_death", (req, res) => {
   //     gameData.userMovieAnswer = req.body.checkboxMovie;
@@ -387,23 +387,20 @@ const getApiData = async () => {
   //     }, 500);
   // });
 
-  app.post("/highscore", (req, res) => {
-    gameData.userMovieAnswer = req.body.checkboxMovie;
-    gameData.userCharacterAnswer = req.body.checkboxCharacter;
-    if (gameData.userMovieAnswer == undefined) {
-      gameData.userMovieAnswer = "";
-    }
-    if (gameData.userCharacterAnswer == undefined) {
-      gameData.userCharacterAnswer = "";
-    }
-    if (
-      gameData.userMovieAnswer == apiData.correctMovieName &&
-      gameData.userCharacterAnswer == apiData.correctCharacterName
-    ) {
-      gameData.score++;
-    }
-    res.render("highscore", { dataGame: gameData, dataApi: apiData });
-  });
+    app.post("/highscore", (req, res) => {
+        gameData.userMovieAnswer = req.body.checkboxMovie;
+        gameData.userCharacterAnswer = req.body.checkboxCharacter;
+        if (gameData.userMovieAnswer == undefined) {
+            gameData.userMovieAnswer = "";
+        }
+        if (gameData.userCharacterAnswer == undefined) {
+            gameData.userCharacterAnswer = "";
+        }
+        if (gameData.userMovieAnswer == apiData.correctMovieName && gameData.userCharacterAnswer == apiData.correctCharacterName) {
+            gameData.score++;
+        }
+        res.render('highscore', { dataGame: gameData, dataApi: apiData });
+    });
 
   app.listen(app.get("port"), () =>
     console.log("[server] http://localhost:" + app.get("port"))

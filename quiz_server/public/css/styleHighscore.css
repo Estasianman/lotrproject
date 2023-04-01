@@ -1,13 +1,20 @@
 @font-face {
-  font-family: "ringbearermedium";
-  src: url("../assets/fonts/ringm___-webfont.woff2") format("woff2"),
-    url("../assets/fonts/ringm___-webfont.woff") format("woff");
+  font-family: 'ringbearermedium';
+  src: url('/fonts/ringm___-webfont.woff2') format('woff2'),
+      url('/fonts/ringm___-webfont.woff') format('woff');
   font-weight: normal;
   font-style: normal;
 }
 
+:root {
+  --red-color: #8C3414;
+  --yellow-color: #D98B2B;
+  --black-color: #000000;
+}
+
 body {
   margin-left: 20px;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
 img {
@@ -99,10 +106,23 @@ header h1 {
   background-image: url("../images/background-highscore.jpg") 
 }
 
+li {
+  margin: 0 auto;
+}
+
+.quotes-list{
+  text-align: center;
+  color: var(--yellow-color);
+}
+
+h3.quotes-list{
+  text-align: center;
+  color:#e8d069;
+}
 
 .highscore h1, .highscore
 h2 {
-  font-family: "ringbearermedium", Arial, Helvetica, sans-serif;
+  font-family: 'ringbearermedium', 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 
   text-shadow: 6px 4px #000000;
   text-align: center;
@@ -125,11 +145,10 @@ h2 {
   color: white;
 }
 
-
 .retry, .main-menu {
   display: block;
   margin: 10px auto 10px auto;
-  font-family: "ringbearermedium", Arial, Helvetica, sans-serif;
+  font-family: 'ringbearermedium', 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
   font-size: 36px;
   color: rgba(232, 208, 105, 0.3);
   background-color: transparent;
