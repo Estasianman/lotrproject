@@ -1,8 +1,31 @@
 <%- include("partials/headQuiz") %>
+<section id="quote-section">
+    <article id="quote-article">
+        <a href="landing.html" class="link-button">Home</a>
+        <h2>Quote:<br><span id="game-counter">(<%- dataGame.gameCounter %> / 10)</span></h2>
+        <p id="quote">" <%- dataApi.quote.dialog %> "</p>
+        <h3>Je score is: <span id="points"> <%- dataGame.score %> pts</span></h3>
+        <a href="#" class="link-button">Mijn Profiel</a>
+    </article>
+</section>
+<section id="previous-answers">
+    <p><%- dataGame.previousQuizAnswers %></p>
+</section>
+<section id="photo-section">
+
+    <% if (dataGame.gameCounter == 10){ %>
+        <form action="/highscore" method="post">
+            <article id="movie-photos">
+                <ul>
+    <%} else {%>
+    <form action="/quiz" method="post">
+        <article id="movie-photos">
+            <ul>
+            <%}%>
 
             <% if (dataGame.randomNumber == 1){ %>
 
-                <% for (let i = 0; i < 3; i++) {%>
+                <% for (let i = 0; i < dataGame.moviePhotoArray.length; i++) {%>
                     <li>
                         <figure>
                             <img src="<%- dataGame.moviePhotoArray[i] %>"
@@ -76,7 +99,7 @@
 
                     <article id="character-photos">
                         <ul>
-                            <% for (let i = 2; i >= 0; i--) {%>
+                            <% for (let i = 0; i < dataGame.characterPhotoArray.length; i++) {%>
                                 <li>
                                     <figure>
                                         <img src="<%- dataGame.characterPhotoArray[i] %>"
@@ -158,16 +181,6 @@
                                 <button id="submit-button" type='submit'>Submit</button>
                             </div>
                             </form>
-                            </section>
-
-                            <section id="quote-section">
-                                <article id="quote-article">
-                                    <a href="landing.html" class="link-button">Home</a>
-                                    <h2>Quote:<br><span id="game-counter">(<%- dataGame.gameCounter %> / 10)</span></h2>
-                                    <p id="quote">" <%- dataApi.quote.dialog %> "</p>
-                                    <h3>Your score is: <span id="points"> <%- dataGame.score %> pts</span></h3>
-                                    <a href="#" class="link-button">My Profile</a>
-                                </article>
                             </section>
                             </main>
                             </body>

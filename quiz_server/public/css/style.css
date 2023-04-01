@@ -51,18 +51,18 @@ main {
 h1 {
     font-family: 'ringbearermedium', 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     text-transform: uppercase;
-    padding: 1rem;
+    padding: 0.25rem;
     font-size: 32px;
     margin: 0 auto;
 }
 
 h2 {
-    padding: 1rem;
+    padding: 0.25rem;
     font-size: 24px;
 }
 
 p {
-    padding: 1rem;
+    padding: 0.25rem;
 }
 
 a:focus {
@@ -93,6 +93,7 @@ a:focus {
     text-align: center;
     flex-wrap: wrap;
     margin: 0 auto;
+    background-image: url("../images/background-highscore.jpg"); 
 }
 
 form {
@@ -139,7 +140,6 @@ ul {
 
 li {
     flex: 1;
-    padding: 0.5rem;
     width: 100%;
     height: auto;
     max-height: max-content;
@@ -230,24 +230,20 @@ input[type="radio"] {
     text-align: center;
     max-height: 30%;
     flex-wrap: wrap;
-    padding: 4rem 0 4rem 0;
-}
-
-#quote-section>h3 {
-    padding: 1rem;
+    padding: 0.25rem 0 0.25rem 0;
 }
 
 #quote {
     flex: 1;
     font-family: 'ringbearermedium', 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-    padding: 1rem;
+    padding: 0.25rem;
     font-size: 28px;
     max-width: max-content;
     border-bottom: 1px var(--red-color) solid;
 }
 
 .link-button {
-    margin: 1rem;
+    margin: 0.25rem;
     font-weight: bold;
     display: inline-block;
     text-align: center;
@@ -267,6 +263,23 @@ input[type="radio"] {
 
 #game-counter {
     font-size: 14px;
+}
+
+#previous-answers{
+    text-align: center;
+    background-image: url("../images/background-highscore.jpg"); 
+    width: 100%;
+    color: var(--yellow-color);
+}
+
+#previous-answers p {
+    padding: 0.25rem 0 0.5rem 0;
+
+}
+
+#answers-span {
+    font-family: 'ringbearermedium', 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    border-bottom: 0.5px var(--yellow-color) solid;
 }
 
 

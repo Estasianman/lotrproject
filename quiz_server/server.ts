@@ -88,6 +88,14 @@ export interface MovieDoc {
     rottenTomatoesScore: number;
 }
 
+interface RandomFunction {
+    (min: number, max: number): number
+}
+
+interface CombineArrayElements {
+    (arrayEmpty: any[], arrayToTransfer: any[]): void | Promise<void>
+}
+
 interface ApiData {
     quote: qDoc,
     charactersArray: Doc[],
@@ -133,6 +141,7 @@ interface GameVariables {
     randomNumber: number,
     moviePhotoArray: any[],
     characterPhotoArray: any[],
+    previousQuizAnswers: string
 };
 
 let gameData: GameVariables = {
@@ -142,21 +151,29 @@ let gameData: GameVariables = {
     correctCharacterName: "",
     userMovieAnswer: "",
     userCharacterAnswer: "",
-    gameCounter: 1,
+    gameCounter: 7,
     score: 0,
     randomNumber: 0,
     moviePhotoArray: [],
     characterPhotoArray: [],
+    previousQuizAnswers: ""
 };
 
-//random
-const getRandomNumber = (min: number, max: number) => {
-    return Math.floor(Math.random() * (max - min) + min);
+interface SaveQuotes {
+    gameQuotesArray: string[],
+    characterFromQuoteArray: string[]
+}
+
+let saveGameQuotes: SaveQuotes = {
+    gameQuotesArray: [],
+    characterFromQuoteArray: []
 };
+
+
 
 //get API
 
-const getApiData = async () => {
+const getApiData = async (): Promise<void> => {
     //authorization token
     let token: string = "UOzmNvWKAN3QRiFrHRIh";
     //authorization header
@@ -177,8 +194,11 @@ const getApiData = async () => {
     result = await axios.get("https://the-one-api.dev/v2/movie", auth);
     movies = result.data;
 
+    //random
+    const getRandomNumber : RandomFunction = (min, max) => Math.floor(Math.random() * (max - min) + min);
+
     // get photo from wiki page
-    const getPhoto = async (name: string) => {
+    const getPhoto = async (name: string): Promise<string> => {
         let badCharacter: boolean = false;
         let startIndex: number = 0;
         let endIndex: number = 0;
@@ -252,19 +272,19 @@ const getApiData = async () => {
         return photoSource;
     };
 
-    const addArrayElements = (array: any[], arrayToAdd: any[]): void => {
+    const addArrayElements : CombineArrayElements = (arrayEmpty, arrayToTransfer) => {
         for (let i = 0; i < 3; i++) {
-            array[i] = arrayToAdd[i];
+            arrayEmpty[i] = arrayToTransfer[i];
         }
     };
 
-    const addPhotoArrayElements = async (array: any[], name: any[]) => {
+    const addPhotoArrayElements: CombineArrayElements = async (arrayEmpty, name) => {
         for (let i = 0; i < 3; i++) {
-            array[i] = await getPhoto(name[i].name);
+            arrayEmpty[i] = await getPhoto(name[i].name);
         }
     }
 
-    const main = async () => {
+    const main = async (): Promise<void> => {
 
         //find quote and character
         let quoteId: number = 0;
@@ -272,6 +292,7 @@ const getApiData = async () => {
         //find character
         quoteId = getRandomNumber(0, quotes.docs.length);
         apiData.quote = quotes.docs[quoteId];
+        
         characterId = apiData.quote.character;
 
         for (let i = 0; i < characters.docs.length; i++) {
@@ -295,10 +316,16 @@ const getApiData = async () => {
                 }
             }
         };
-
-        let movieId: string = apiData.quote.movie;
+        // Save Quotes and characters in array
+        if (saveGameQuotes.gameQuotesArray[0] != "" && gameData.gameCounter == 1){
+            saveGameQuotes.gameQuotesArray.splice(0, saveGameQuotes.gameQuotesArray.length);
+            saveGameQuotes.characterFromQuoteArray.splice(0, saveGameQuotes.characterFromQuoteArray.length);
+        }
+        saveGameQuotes.gameQuotesArray.push(apiData.quote.dialog);
+        saveGameQuotes.characterFromQuoteArray.push(apiData.correctCharacterName);
 
         //find movie
+        let movieId: string = apiData.quote.movie;
         for (let i = 0; i < movies.docs.length; i++) {
             if (movieId == movies.docs[i]._id) {
                 apiData.moviesArray[0] = movies.docs[i];
@@ -322,7 +349,7 @@ const getApiData = async () => {
         addPhotoArrayElements(gameData.characterPhotoArray, apiData.charactersArray);
         gameData.correctMovieName = apiData.correctMovieName;
         gameData.correctCharacterName = apiData.correctCharacterName;
-        gameData.randomNumber = getRandomNumber(1, 3);
+        gameData.randomNumber = getRandomNumber(1, 4);
 
         //getting wrong characters
 
@@ -367,6 +394,7 @@ const getApiData = async () => {
     app.post("/quiz", (req, res) => {
         gameData.userMovieAnswer = req.body.checkboxMovie;
         gameData.userCharacterAnswer = req.body.checkboxCharacter;
+        gameData.previousQuizAnswers = "";
         if (gameData.userMovieAnswer == undefined) {
             gameData.userMovieAnswer = "";
         }
@@ -375,9 +403,18 @@ const getApiData = async () => {
         }
         if (gameData.userMovieAnswer == apiData.correctMovieName && gameData.userCharacterAnswer == apiData.correctCharacterName) {
             gameData.score++;
+            gameData.previousQuizAnswers = `Beide juiste antwoorden! Movie was:<span id="answers-span">  ${gameData.correctMovieName}</span>. Karakter was:<span id="answers-span">  ${gameData.correctCharacterName}</span>.`;
         }
-        else if (gameData.userMovieAnswer == apiData.correctMovieName || gameData.userCharacterAnswer == apiData.correctCharacterName) {
+        else if (gameData.userMovieAnswer == apiData.correctMovieName && gameData.userCharacterAnswer != apiData.correctCharacterName) {
             gameData.score = gameData.score + 0.5;
+            gameData.previousQuizAnswers = `Alleen filmantwoord correct. Movie was:<span id="answers-span">  ${gameData.correctMovieName}</span>. Karakter was:<span id="answers-span">  ${gameData.correctCharacterName}</span>.`;
+        }
+        else if(gameData.userMovieAnswer != apiData.correctMovieName && gameData.userCharacterAnswer == apiData.correctCharacterName){
+            gameData.score = gameData.score + 0.5;
+            gameData.previousQuizAnswers = `Alleen karakterantwoord correct. Movie was:<span id="answers-span">  ${gameData.correctMovieName}</span>. Karakter was:<span id="answers-span">  ${gameData.correctCharacterName}</span>.`;
+        }
+        else if (gameData.gameCounter != 0){
+            gameData.previousQuizAnswers = `Beide foute antwoorden. Movie was:<span id="answers-span">  ${gameData.correctMovieName}</span>. Karakter was:<span id="answers-span">  ${gameData.correctCharacterName}</span>.`;
         }
         gameData.gameCounter++;
         main();
@@ -422,7 +459,7 @@ const getApiData = async () => {
         if (gameData.userMovieAnswer == apiData.correctMovieName && gameData.userCharacterAnswer == apiData.correctCharacterName) {
             gameData.score++;
         }
-        res.render('highscore', { dataGame: gameData, dataApi: apiData });
+        res.render('highscore', { dataGame: gameData, dataApi: apiData, dataQuotes: saveGameQuotes });
     });
 
     app.listen(app.get("port"), () =>

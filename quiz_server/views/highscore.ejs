@@ -16,6 +16,14 @@
     <button class = "retry">Retry</button> 
     </form>
     <button class = "main-menu">Main Menu</button>
+    <h3 class="quotes-list">Quotes from your game:</h3>
+    <ul>
+    <% for (let i = 0; i < dataQuotes.gameQuotesArray.length; i++) {%>
+      <li>
+          <p class="quotes-list">" <%- dataQuotes.gameQuotesArray[i] %> " van karakter <%- dataQuotes.characterFromQuoteArray[i] %>.</p>
+      </li>
 
+  <% }; %> 
+</ul>
   </body>
 </html>
