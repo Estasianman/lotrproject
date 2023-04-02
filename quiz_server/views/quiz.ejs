@@ -6,7 +6,7 @@
         <a href="landing.html" class="link-button">Home</a>
         <h2>Quote:<br><span id="game-counter">(<%- dataGame.gameCounter %> / 10)</span></h2>
         <p id="quote">" <%- dataApi.quote.dialog %> "</p>
-        <h3>Je score is: <span id="points"> <%- dataGame.score %> pts</span></h3>
+        <h3>Score: <span id="points"> <%- dataGame.score %></span></h3>
         <a href="#" class="link-button">Mijn Profiel</a>
     </article>
 </section>
@@ -14,6 +14,8 @@
     <p><%- dataGame.previousQuizAnswers %></p>
 </section>
 <section id="photo-section">
+    <h2 class = "movie">Movie</h2>
+    <h2 class = "character">Character</h2>
 
     <% if (dataGame.gameCounter == 10){ %>
         <form action="/highscore" method="post">
@@ -180,7 +182,7 @@
                         </article>
                         <%}%>
                             <div>
-                                <button id="submit-button" type='submit'>Submit</button>
+                                <button id="submit-button" type='submit'>Next</button>
                             </div>
                             </form>
                             </section>

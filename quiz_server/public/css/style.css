@@ -58,6 +58,7 @@ h1 {
 }
 
 h2 {
+    font-family: 'ringbearermedium', 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     padding: 0.25rem;
     font-size: 24px;
 }
@@ -92,7 +93,7 @@ a:focus {
     text-align: center;
     max-height: 30%;
     flex-wrap: wrap;
-    padding: 1rem 0 1rem 0;
+    padding: 0.8rem 0 1rem 0;
     border-bottom: 5px black solid;
 }
 
@@ -100,6 +101,7 @@ a:focus {
     flex: 1;
     font-family: 'ringbearermedium', 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     padding: 0.25rem;
+    margin: 0 1rem 0 1rem;
     font-size: 28px;
     max-width: max-content;
     border-bottom: 1px var(--light-yellow-color) solid;
@@ -111,12 +113,18 @@ a:focus {
     display: inline-block;
     text-align: center;
     padding: 6px 15px;
+    margin: 0 20px;
     font-size: 14px;
     text-decoration: none;
-    color: var(--dark-yellow-color);
+    color: rgba(140, 52, 20, 0.7);
     background-color: black;
     border-radius: 8px;
     outline: none;
+    transition: 0.5s transform, 0.5s box-shadow, 0.5s color, 0.5s background-color;
+}
+
+.link-button:hover {
+    color: rgba(140, 52, 20, 1);
 }
 
 #points {
@@ -132,7 +140,7 @@ a:focus {
     text-align: center;
     width: 100%;
     color: var(--dark-yellow-color);
-    display: none
+    display: none;
 }
 
 #previous-answers p {
@@ -169,7 +177,8 @@ a:focus {
     flex-wrap: wrap;
     margin: 0 auto;
     background-image: url("../images/background2.jpg"); 
-    padding-top: 8px;
+    padding: 20px 0 20px 0;
+    position: relative;
 }
 
 form {
@@ -233,12 +242,12 @@ figure {
 }
 
 img {
-    max-height: 300px;
+    max-height: 280px;
     max-width: 200px;
     border-radius: 8px;
     width: 100%;
     height: auto;
-    box-shadow: 3px 3px 2px 2px #02234047;
+    /* box-shadow: 3px 3px 2px 2px #02234047; */
     transition: 0.5s transform, 0.5s box-shadow;
 }
 
@@ -268,23 +277,118 @@ input[type="radio"] {
     display: inline-block;
     margin: 4px;
     padding: 5px 40px 5px 40px;
-    text-align: center;
+    /* text-align: center; */
     font-size: 18px;
     text-decoration: none;
-    color: var(--dark-yellow-color);
+    color: rgba(217, 139, 43, 0.6);
     background-color: var(--black-color);
     border-radius: 8px;
     outline: none;
     transition: 0.5s transform, 0.5s box-shadow, 0.5s color, 0.5s background-color;
     box-shadow: 3px 3px 2px 2px #02234047;
+    position: absolute;
+    right: 15px;
+    top: 300px;
 
 }
 
-
+#submit-button:hover {
+    color: rgba(217, 139, 43, 1);
+}
 
 /*#endregion*/
 
+/* NEW */
+.movie {
+    position: absolute;
+    left: 20px;
+    top: 100px;
+    border-bottom: 2px solid;
+    font-size: 26px;
+    color: var(--light-yellow-color);
+}
 
+.character {
+    position:absolute;
+    left: 20px;
+    top: 450px;
+    border-bottom: 2px solid;
+    font-size: 26px;
+    color: var(--light-yellow-color);
+}
+
+
+#points {
+    color: #ffffff;
+}
+
+#movie-photos {
+    padding-bottom: 15px;
+}
+
+#movie-photos img {
+    border: 3px solid rgba(232, 208, 105, 0.3);
+    transition: 0.5s transform, 0.5s border, 0.5s color, 0.5s background-color;
+}
+
+#movie-photos img:hover{
+    border: 3px solid rgba(232, 208, 105, 1);
+}
+
+#movie-photos .names-button {
+    display:none;
+}
+
+#character-photos {
+    border-top: 2px solid #000000;
+    padding-top: 15px;
+}
+
+
+#character-photos .names-button {
+    background-color: #000000;
+    color: rgba(232, 208, 105, 0.3);
+    width: 200px;
+    margin-top: -5px;
+    padding: 0.25rem 0 0.25rem 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    /* box-shadow: 3px 3px 2px 2px #02234047; */
+}
+
+#character-photos .names-button input {
+    display:none;
+}
+
+#character-photos li img {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    border: 3px solid rgba(232, 208, 105, 0.3);
+    border-bottom: none;
+    transition: 0.5s transform, 0.5s border, 0.5s color, 0.5s background-color;
+    max-height: 250px;
+}
+
+ #character-photos li:hover img {
+    border: 3px solid rgba(232, 208, 105, 1);
+    border-bottom: none;
+} 
+
+#character-photos li p {
+    border: 3px solid rgba(232, 208, 105, 0.3);
+    border-top: none;
+    color: rgba(232, 208, 105, 1);
+    margin: 0 0 0 5px;
+    transition: 0.5s transform, 0.5s border, 0.5s color, 0.5s background-color;
+}
+
+#character-photos li:hover p{
+    border: 3px solid rgba(232, 208, 105, 1);
+    border-top: none;
+    color: rgba(232, 208, 105, 1);
+}
+
+/* END NEW */
 
 
 
