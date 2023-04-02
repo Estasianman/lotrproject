@@ -81,7 +81,7 @@ a:focus {
     display: flex;
     flex-direction: row;
     flex: 1;
-    background-image: url("/images/quotes-background.jpg");
+    background-image: url("/images/background2.jpg");
     /* background-color: var(--yellow-color); */
     color: #e8d069;
     width: 100%;
