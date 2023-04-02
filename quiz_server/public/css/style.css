@@ -82,7 +82,7 @@ a:focus {
     display: flex;
     flex-direction: row;
     flex: 1;
-    background-image: url("/images/background2.jpg");
+    background-image: url("/images/quotes-background.jpg");
     /* background-color: var(--dark-yellow-color); */
     color: var(--light-yellow-color);
     width: 100%;
@@ -92,7 +92,8 @@ a:focus {
     text-align: center;
     max-height: 30%;
     flex-wrap: wrap;
-    padding: 0.25rem 0 0.25rem 0;
+    padding: 1rem 0 1rem 0;
+    border-bottom: 5px black solid;
 }
 
 #quote {
@@ -129,9 +130,9 @@ a:focus {
 
 #previous-answers{
     text-align: center;
-    background-color: black;
     width: 100%;
     color: var(--dark-yellow-color);
+    display: none
 }
 
 #previous-answers p {
