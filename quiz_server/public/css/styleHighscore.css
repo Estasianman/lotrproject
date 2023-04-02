@@ -103,7 +103,7 @@ header h1 {
 /* Highscore */
 .highscore {
   height: 100vh;
-  background-image: url("../images/background-highscore.jpg") 
+  background-image: url("../images/background.jpg") 
 }
 
 li {
