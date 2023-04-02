@@ -8,7 +8,8 @@
 
 :root {
     --red-color: #8C3414;
-    --yellow-color: #D98B2B;
+    --light-yellow-color: #e8d069;
+    --dark-yellow-color: #D98B2B;
     --black-color: #000000;
 
 }
@@ -66,7 +67,7 @@ p {
 }
 
 a:focus {
-    color: var(--yellow-color);
+    color: var(--dark-yellow-color);
 }
 
 
@@ -82,8 +83,8 @@ a:focus {
     flex-direction: row;
     flex: 1;
     background-image: url("/images/background2.jpg");
-    /* background-color: var(--yellow-color); */
-    color: #e8d069;
+    /* background-color: var(--dark-yellow-color); */
+    color: var(--light-yellow-color);
     width: 100%;
     height: auto;
     align-items: center;
@@ -91,7 +92,7 @@ a:focus {
     text-align: center;
     max-height: 30%;
     flex-wrap: wrap;
-    padding: 1.5rem 0 1.5rem 0;
+    padding: 0.25rem 0 0.25rem 0;
 }
 
 #quote {
@@ -100,7 +101,7 @@ a:focus {
     padding: 0.25rem;
     font-size: 28px;
     max-width: max-content;
-    border-bottom: 1px #e8d069 solid;
+    border-bottom: 1px var(--light-yellow-color) solid;
 }
 
 .link-button {
@@ -111,7 +112,7 @@ a:focus {
     padding: 6px 15px;
     font-size: 14px;
     text-decoration: none;
-    color: var(--red-color);
+    color: var(--dark-yellow-color);
     background-color: black;
     border-radius: 8px;
     outline: none;
@@ -130,17 +131,17 @@ a:focus {
     text-align: center;
     background-color: black;
     width: 100%;
-    color: var(--yellow-color);
+    color: var(--dark-yellow-color);
 }
 
 #previous-answers p {
-    padding: 0.25rem 0 0.5rem 0;
+    padding: 0.25rem 0 0.25rem 0;
 
 }
 
 #answers-span {
     font-family: 'ringbearermedium', 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-    border-bottom: 0.5px var(--yellow-color) solid;
+    border-bottom: 0.5px var(--dark-yellow-color) solid;
 }
 
 
@@ -158,7 +159,7 @@ a:focus {
     flex-direction: row;
     flex: 1;
     background-color: var(--red-color);
-    color: var(--yellow-color);
+    color: var(--dark-yellow-color);
     width: 100%;
     height: auto;
     align-items: center;
@@ -167,7 +168,7 @@ a:focus {
     flex-wrap: wrap;
     margin: 0 auto;
     background-image: url("../images/background2.jpg"); 
-    padding-top: 20px;
+    padding-top: 8px;
 }
 
 form {
@@ -219,6 +220,7 @@ li {
     max-height: max-content;
     margin: 0 auto;
     border-radius: 8px;
+    padding: 0 0.5rem 0 0.5rem;
 }
 
 figure {
@@ -242,17 +244,15 @@ img {
 .names-button {
     font-family: 'ringbearermedium', 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     display: inline-block;
-    margin: 4px;
-    padding: 10px 20px;
+    margin: 4px 0 4px 0;
     text-align: center;
-    font-size: 18px;
+    font-size: 20px;
     text-decoration: none;
-    color: var(--yellow-color);
-    background-color: var(--black-color);
+    color: var(--light-yellow-color);
     border-radius: 8px;
     outline: none;
-    transition: 0.5s transform, 0.5s box-shadow, 0.5s color, 0.5s background-color;
-    box-shadow: 3px 3px 2px 2px #02234047;
+    text-shadow: 3px 2px #02234047;
+    
 }
 
 input[type="radio"] {
@@ -266,11 +266,11 @@ input[type="radio"] {
     font-family: 'ringbearermedium', 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     display: inline-block;
     margin: 4px;
-    padding: 10px 20px;
+    padding: 5px 40px 5px 40px;
     text-align: center;
     font-size: 18px;
     text-decoration: none;
-    color: var(--yellow-color);
+    color: var(--dark-yellow-color);
     background-color: var(--black-color);
     border-radius: 8px;
     outline: none;

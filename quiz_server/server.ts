@@ -3,7 +3,7 @@ const axios = require("axios");
 const app = express();
 
 app.use(express.json({ limit: '1mb' }));
-app.use(express.urlencoded({ extended: true }))
+app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
 app.set("view engine", "ejs");
@@ -99,7 +99,7 @@ interface CombineArrayElements {
 interface ApiData {
     quote: qDoc,
     charactersArray: Doc[],
-    moviesArray: MovieDoc[];
+    moviesArray: MovieDoc[],
     correctCharacterName: string,
     correctMovieName: string
 }
@@ -143,7 +143,8 @@ interface GameVariables {
     randomNumber: number,
     moviePhotoArray: any[],
     characterPhotoArray: any[],
-    previousQuizAnswers: string
+    previousQuizAnswers: string,
+    gameType: string
 };
 
 let gameData: GameVariables = {
@@ -158,18 +159,21 @@ let gameData: GameVariables = {
     randomNumber: 0,
     moviePhotoArray: [],
     characterPhotoArray: [],
-    previousQuizAnswers: ""
+    previousQuizAnswers: "",
+    gameType: ""
 };
 
 // interface to save every quote and character used during quiz
 interface SaveQuotes {
     gameQuotesArray: string[],
-    characterFromQuoteArray: string[]
+    characterFromQuoteArray: string[],
+    movieFromQuoteArray: string[]
 }
 
 let saveGameQuotes: SaveQuotes = {
     gameQuotesArray: [],
-    characterFromQuoteArray: []
+    characterFromQuoteArray: [],
+    movieFromQuoteArray: []
 };
 
 
@@ -338,15 +342,6 @@ const getApiData = async (): Promise<void> => {
                 }
             }
         };
-        
-        // Save Quotes and characters in saveGameQuotes array
-        // If the game is restarted then first make the array empty with 'splice'
-        if (saveGameQuotes.gameQuotesArray[0] != "" && gameData.gameCounter == 1){
-            saveGameQuotes.gameQuotesArray.splice(0, saveGameQuotes.gameQuotesArray.length);
-            saveGameQuotes.characterFromQuoteArray.splice(0, saveGameQuotes.characterFromQuoteArray.length);
-        }
-        saveGameQuotes.gameQuotesArray.push(apiData.quote.dialog);
-        saveGameQuotes.characterFromQuoteArray.push(apiData.correctCharacterName);
 
         //find correct movie
         let movieId: string = apiData.quote.movie;
@@ -357,6 +352,17 @@ const getApiData = async (): Promise<void> => {
                 break;
             }
         }
+
+        // Save Quotes, characters, and movies in saveGameQuotes array
+        // If the game is restarted then first make the array empty with 'splice'
+        if (saveGameQuotes.gameQuotesArray[0] != "" && gameData.gameCounter == 1){
+            saveGameQuotes.gameQuotesArray.splice(0, saveGameQuotes.gameQuotesArray.length);
+            saveGameQuotes.characterFromQuoteArray.splice(0, saveGameQuotes.characterFromQuoteArray.length);
+            saveGameQuotes.movieFromQuoteArray.splice(0,saveGameQuotes.movieFromQuoteArray.length);
+        }
+        saveGameQuotes.gameQuotesArray.push(apiData.quote.dialog);
+        saveGameQuotes.characterFromQuoteArray.push(apiData.correctCharacterName);
+        saveGameQuotes.movieFromQuoteArray.push(apiData.moviesArray[0].name);
 
         //getting wrong movies
         do {
@@ -415,7 +421,23 @@ const getApiData = async (): Promise<void> => {
     let routes = ["/quiz", "/sudden_death", "/highscore"];
 
     app.get(routes, (req, res) => {
-        res.render('quiz', { dataGame: gameData, dataApi: apiData });
+
+        let parsedUrl = new URL(`http://localhost:${app.get("port")}${req.url}`);
+        let path = parsedUrl.pathname;
+    
+        switch (path) {
+            case "/quiz":
+                gameData.gameType = "/quiz";
+                res.render('quiz', { dataGame: gameData, dataApi: apiData });
+                break;
+            case "/sudden_death":
+                gameData.gameType = "/sudden_death";
+                res.render('sudden_death', { dataGame: gameData, dataApi: apiData });
+                break;
+
+            default:
+                break;
+        }
     });
 
     app.post("/quiz", (req, res) => {
@@ -456,34 +478,54 @@ const getApiData = async (): Promise<void> => {
         // call main function to get new quote, characters, and movies
         main();
 
-        // setTimeout to give api time to load pictures from wiki page, might be able to remove later once program optimized
         setTimeout(() => {
             res.render('quiz', { dataGame: gameData, dataApi: apiData });
-        }, 500);
+        },500);
     });
 
-    // app.post("/sudden_death", (req, res) => {
-    //     gameData.userMovieAnswer = req.body.checkboxMovie;
-    //     gameData.userCharacterAnswer = req.body.checkboxCharacter;
-    //     if (gameData.userMovieAnswer == undefined) {
-    //         gameData.userMovieAnswer = "";
-    //     }
-    //     if (gameData.userCharacterAnswer == undefined) {
-    //         gameData.userCharacterAnswer = "";
-    //     }
-    //     if (gameData.userMovieAnswer == apiData.correctMovieName && gameData.userCharacterAnswer == apiData.correctCharacterName) {
-    //         gameData.score++;
-    //     }
-    //     else  {
-    //         res.render('quiz', { dataGame: gameData, dataApi: apiData });
-    //     }
-    //     gameData.gameCounter++;
-    //     main();
+    app.post("/sudden_death", (req, res) => {
+        // get user/player answers from quiz
+        gameData.userMovieAnswer = req.body.checkboxMovie;
+        gameData.userCharacterAnswer = req.body.checkboxCharacter;
+        
+        // if one of the questions was not answered then change variable from undefined to an empty string
+        if (gameData.userMovieAnswer == undefined) {
+            gameData.userMovieAnswer = "";
+        }
+        if (gameData.userCharacterAnswer == undefined) {
+            gameData.userCharacterAnswer = "";
+        }
 
-    //     setTimeout(() => {
-    //         res.render('quiz', { dataGame: gameData, dataApi: apiData });
-    //     }, 500);
-    // });
+        // check if user/player has answered questions correctly
+        gameData.previousQuizAnswers = "";
+        if (gameData.userMovieAnswer == apiData.correctMovieName && gameData.userCharacterAnswer == apiData.correctCharacterName) {
+            gameData.score++;
+            gameData.previousQuizAnswers = `Beide juiste antwoorden! Movie was:<span id="answers-span">  ${gameData.correctMovieName}</span>. Karakter was:<span id="answers-span">  ${gameData.correctCharacterName}</span>.`;
+            // Set the game round +1
+            gameData.gameCounter++;
+
+            // call main function to get new quote, characters, and movies
+            main();
+            setTimeout(() => {
+                res.render('sudden_death', { dataGame: gameData, dataApi: apiData });
+            },500);
+            
+        }
+        else if (gameData.gameCounter != 0){
+            gameData.previousQuizAnswers = `Beide foute antwoorden. Movie was:<span id="answers-span">  ${gameData.correctMovieName}</span>. Karakter was:<span id="answers-span">  ${gameData.correctCharacterName}</span>.`;
+            res.render('highscore', { dataGame: gameData, dataApi: apiData, dataQuotes: saveGameQuotes });
+        }
+        else{
+            // Set the game round +1
+            gameData.gameCounter++;
+
+            // call main function to get new quote, characters, and movies
+            main();
+            setTimeout(() => {
+                res.render('sudden_death', { dataGame: gameData, dataApi: apiData });
+            },500);
+        }
+    });
 
     app.post("/highscore", (req, res) => {
         gameData.userMovieAnswer = req.body.checkboxMovie;
