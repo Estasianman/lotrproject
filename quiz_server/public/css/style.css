@@ -321,7 +321,7 @@ input[type="radio"] {
     }
   
     to 
-    { transform: scale(1.4);
+    { transform: scale(1.2);
     }
   }
 
@@ -339,6 +339,7 @@ input[type="radio"] {
     border-bottom: 2px solid;
     font-size: 26px;
     color: var(--light-yellow-color);
+    text-shadow: 3px 2px #02234047;
 }
 
 .character {
@@ -348,6 +349,7 @@ input[type="radio"] {
     border-bottom: 2px solid;
     font-size: 26px;
     color: var(--light-yellow-color);
+    text-shadow: 3px 2px #02234047;
 }
 
 #points {
@@ -374,7 +376,7 @@ input[type="radio"] {
 
 #character-photos #names-button {
     background-color: #000000;
-    color: rgba(232, 208, 105, 0.3);
+    color: rgba(232, 208, 105, 0.5);
     min-width: 200px;
     margin: -5px 0 8px 5.5px;
     padding: 0.25rem 0 0.25rem 0;
@@ -398,7 +400,7 @@ input[type="radio"] {
 } 
 
 #character-photos li p {
-    border: 3px solid rgba(232, 208, 105, 0.3);
+    border: 3px solid rgba(232, 208, 105, 0.5);
     border-top: none;
     color: rgba(232, 208, 105, 1);
     transition: 0.5s border, 0.5s color, 0.5s background-color;

@@ -458,18 +458,18 @@ const getApiData = async (): Promise<void> => {
         gameData.previousQuizAnswers = "";
         if (gameData.userMovieAnswer == apiData.correctMovieName && gameData.userCharacterAnswer == apiData.correctCharacterName) {
             gameData.score++;
-            gameData.previousQuizAnswers = `Beide juiste antwoorden! Movie was:<span id="answers-span">  ${gameData.correctMovieName}</span>. Karakter was:<span id="answers-span">  ${gameData.correctCharacterName}</span>.`;
+            gameData.previousQuizAnswers = `Correct! Movie was: <span id="answers-span">  ${gameData.correctMovieName}</span>. Character was: <span id="answers-span">  ${gameData.correctCharacterName}</span>.`;
         }
         else if (gameData.userMovieAnswer == apiData.correctMovieName && gameData.userCharacterAnswer != apiData.correctCharacterName) {
             gameData.score = gameData.score + 0.5;
-            gameData.previousQuizAnswers = `Alleen filmantwoord correct. Movie was:<span id="answers-span">  ${gameData.correctMovieName}</span>. Karakter was:<span id="answers-span">  ${gameData.correctCharacterName}</span>.`;
+            gameData.previousQuizAnswers = `You guessed the movie right! Movie was: <span id="answers-span">  ${gameData.correctMovieName}</span>. The correct haracter was: <span id="answers-span">  ${gameData.correctCharacterName}</span>.`;
         }
         else if(gameData.userMovieAnswer != apiData.correctMovieName && gameData.userCharacterAnswer == apiData.correctCharacterName){
             gameData.score = gameData.score + 0.5;
-            gameData.previousQuizAnswers = `Alleen karakterantwoord correct. Movie was:<span id="answers-span">  ${gameData.correctMovieName}</span>. Karakter was:<span id="answers-span">  ${gameData.correctCharacterName}</span>.`;
+            gameData.previousQuizAnswers = `You guessed the character right! The correct movie was: <span id="answers-span">  ${gameData.correctMovieName}</span>. Character was:<span id="answers-span">  ${gameData.correctCharacterName}</span>.`;
         }
         else if (gameData.gameCounter != 0){
-            gameData.previousQuizAnswers = `Beide foute antwoorden. Movie was:<span id="answers-span">  ${gameData.correctMovieName}</span>. Karakter was:<span id="answers-span">  ${gameData.correctCharacterName}</span>.`;
+            gameData.previousQuizAnswers = `Both are wrong.  The correct movie was: <span id="answers-span">  ${gameData.correctMovieName}</span>.  The correct character was: <span id="answers-span">  ${gameData.correctCharacterName}</span>.`;
         }
 
         // Set the game round +1
