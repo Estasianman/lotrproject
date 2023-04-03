@@ -3,26 +3,41 @@
 <%- include("partials/headQuiz") %>
 <section id="quote-section">
     <article id="quote-article">
-        <a href="landing.html" class="link-button">Home</a>
+        <button href="landing.html" class="link-button">Home</button>
         <h2>Quote:<br><span id="game-counter">(<%- dataGame.gameCounter %> / 10)</span></h2>
         <p id="quote">" <%- dataApi.quote.dialog %> "</p>
         <h3>Score: <span id="points"> <%- dataGame.score %></span></h3>
-        <a href="#" class="link-button">Mijn Profiel</a>
+        <button href="#" class="link-button">Mijn Profiel</button>
     </article>
 </section>
 <section id="previous-answers">
     <p><%- dataGame.previousQuizAnswers %></p>
 </section>
 <section id="photo-section">
-    <h2 class = "movie">Movie</h2>
-    <h2 class = "character">Character</h2>
+    
 
     <% if (dataGame.gameCounter == 10){ %>
         <form action="/highscore" method="post">
+            <div id="aside">
+                <h2 class = "movie">Movie</h2>
+                <div>
+                    <button id="submit-button" type='submit'>Next</button>
+                </div>
+                <h2 class = "character">Character</h2>
+            </div>
+            <div id="photos-container">
             <article id="movie-photos">
                 <ul>
     <%} else {%>
     <form action="/quiz" method="post">
+        <div id="aside">
+            <h2 class = "movie">Movie</h2>
+            <div>
+                <button id="submit-button" type='submit'>Next</button>
+            </div>
+            <h2 class = "character">Character</h2>
+        </div>
+        <div id="photos-container">
         <article id="movie-photos">
             <ul>
             <%}%>
@@ -35,7 +50,7 @@
                             <img src="<%- dataGame.moviePhotoArray[i] %>"
                                     alt="<%- dataGame.movieArray[i].name %>">
                         </figure>
-                        <p class="names-button"><%- dataGame.movieArray[i].name %><input name="checkboxMovie"
+                        <p class="names-button"><input name="checkboxMovie"
                             type="radio" value="<%- dataGame.movieArray[i].name %>"></p>
                     </li>
 
@@ -79,7 +94,7 @@
                             <img src="<%- dataGame.moviePhotoArray[1] %>"
                                     alt="<%- dataGame.movieArray[1].name %>">
                         </figure>
-                        <p class="names-button"><%- dataGame.movieArray[1].name %><input
+                        <p class="names-button"><input
                             name="checkboxMovie" type="radio" value="<%- dataGame.movieArray[1].name %>"></p>
                     </li>
                     <li>
@@ -87,7 +102,7 @@
                             <img src="<%- dataGame.moviePhotoArray[2] %>"
                                     alt="<%- dataGame.movieArray[2].name %>">
                         </figure>
-                        <p class="names-button"><%- dataGame.movieArray[2].name %><input
+                        <p class="names-button"><input
                             name="checkboxMovie" type="radio" value="<%- dataGame.movieArray[2].name %>"></p>
                     </li>
                     <li>
@@ -95,7 +110,7 @@
                             <img src="<%- dataGame.moviePhotoArray[0] %>"
                                     alt="<%- dataGame.movieArray[0].name %>">
                         </figure>
-                        <p class="names-button"><%- dataGame.movieArray[0].name %><input
+                        <p class="names-button"><input
                             name="checkboxMovie" type="radio" value="<%- dataGame.movieArray[0].name %>"></p>
                     </li>
                     </ul>
@@ -126,7 +141,7 @@
                                 <img src="<%- dataGame.moviePhotoArray[2] %>"
                                         alt="<%- dataGame.movieArray[2].name %>">
                             </figure>
-                            <p class="names-button"><%- dataGame.movieArray[2].name %><input
+                            <p class="names-button"><input
                                 name="checkboxMovie" type="radio" value="<%- dataGame.movieArray[2].name %>"></p>
                         </li>
                         <li>
@@ -134,7 +149,7 @@
                                 <img src="<%- dataGame.moviePhotoArray[0] %>"
                                         alt="<%- dataGame.movieArray[0].name %>">
                             </figure>
-                            <p class="names-button"><%- dataGame.movieArray[0].name %><input
+                            <p class="names-button"><input
                                 name="checkboxMovie" type="radio" value="<%- dataGame.movieArray[0].name %>"></p>
                         </li>
                         <li>
@@ -142,7 +157,7 @@
                                 <img src="<%- dataGame.moviePhotoArray[1] %>"
                                         alt="<%- dataGame.movieArray[1].name %>">
                             </figure>
-                            <p class="names-button"><%- dataGame.movieArray[1].name %><input
+                            <p class="names-button"><input
                                 name="checkboxMovie" type="radio" value="<%- dataGame.movieArray[1].name %>"></p>
                         </li>
                         </ul>
@@ -180,10 +195,9 @@
                                 
                             </ul>
                         </article>
+                    </div>
                         <%}%>
-                            <div>
-                                <button id="submit-button" type='submit'>Next</button>
-                            </div>
+                            
                             </form>
                             </section>
                             </main>
