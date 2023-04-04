@@ -140,7 +140,8 @@ interface GameVariables {
     userCharacterAnswer: string,
     gameCounter: number,
     score: number,
-    randomNumber: number,
+    randomNumberMovie: number,
+    randomNumberCharacter: number,
     moviePhotoArray: any[],
     characterPhotoArray: any[],
     previousQuizAnswers: string,
@@ -156,7 +157,8 @@ let gameData: GameVariables = {
     userCharacterAnswer: "",
     gameCounter: 7,
     score: 0,
-    randomNumber: 0,
+    randomNumberMovie: 0,
+    randomNumberCharacter: 0,
     moviePhotoArray: [],
     characterPhotoArray: [],
     previousQuizAnswers: "",
@@ -378,7 +380,8 @@ const getApiData = async (): Promise<void> => {
        // put correct movie and character names into gameData
         gameData.correctMovieName = apiData.correctMovieName;
         gameData.correctCharacterName = apiData.correctCharacterName;
-        gameData.randomNumber = getRandomNumber(1, 4);
+        gameData.randomNumberMovie = getRandomNumber(1, 4);
+        gameData.randomNumberCharacter = getRandomNumber(1, 3);
 
         //get wrong characters function
         const getWrongCharacters = (array: Doc): Doc => {
@@ -418,7 +421,7 @@ const getApiData = async (): Promise<void> => {
     }
     main();
 
-    let routes = ["/quiz", "/sudden_death", "/highscore"];
+    let routes = ["/quiz", "/sudden_death", "/highscore", "/profile", "/index"];
 
     app.get(routes, (req, res) => {
 
@@ -427,12 +430,19 @@ const getApiData = async (): Promise<void> => {
     
         switch (path) {
             case "/quiz":
-                gameData.gameType = "/quiz";
+                gameData.gameType = "quiz";
                 res.render('quiz', { dataGame: gameData, dataApi: apiData });
                 break;
             case "/sudden_death":
-                gameData.gameType = "/sudden_death";
+                gameData.gameType = "sudden_death";
                 res.render('sudden_death', { dataGame: gameData, dataApi: apiData });
+                break;
+            case "/highscore":
+                saveGameQuotes.characterFromQuoteArray.splice(0,saveGameQuotes.characterFromQuoteArray.length);
+                saveGameQuotes.movieFromQuoteArray.splice(0,saveGameQuotes.movieFromQuoteArray.length);
+                saveGameQuotes.gameQuotesArray.splice(0,saveGameQuotes.gameQuotesArray.length);
+                gameData.gameType = "quiz";
+                res.render('highscore', { dataGame: gameData, dataApi: apiData, dataQuotes: saveGameQuotes });
                 break;
 
             default:
@@ -462,7 +472,7 @@ const getApiData = async (): Promise<void> => {
         }
         else if (gameData.userMovieAnswer == apiData.correctMovieName && gameData.userCharacterAnswer != apiData.correctCharacterName) {
             gameData.score = gameData.score + 0.5;
-            gameData.previousQuizAnswers = `You guessed the movie right! Movie was: <span id="answers-span">  ${gameData.correctMovieName}</span>. The correct haracter was: <span id="answers-span">  ${gameData.correctCharacterName}</span>.`;
+            gameData.previousQuizAnswers = `You guessed the movie right! Movie was: <span id="answers-span">  ${gameData.correctMovieName}</span>. The correct character was: <span id="answers-span">  ${gameData.correctCharacterName}</span>.`;
         }
         else if(gameData.userMovieAnswer != apiData.correctMovieName && gameData.userCharacterAnswer == apiData.correctCharacterName){
             gameData.score = gameData.score + 0.5;
@@ -480,7 +490,7 @@ const getApiData = async (): Promise<void> => {
 
         setTimeout(() => {
             res.render('quiz', { dataGame: gameData, dataApi: apiData });
-        },500);
+        },1000);
     });
 
     app.post("/sudden_death", (req, res) => {
@@ -500,7 +510,7 @@ const getApiData = async (): Promise<void> => {
         gameData.previousQuizAnswers = "";
         if (gameData.userMovieAnswer == apiData.correctMovieName && gameData.userCharacterAnswer == apiData.correctCharacterName) {
             gameData.score++;
-            gameData.previousQuizAnswers = `Beide juiste antwoorden! Movie was:<span id="answers-span">  ${gameData.correctMovieName}</span>. Karakter was:<span id="answers-span">  ${gameData.correctCharacterName}</span>.`;
+            gameData.previousQuizAnswers = `Correct! Movie was: <span id="answers-span">  ${gameData.correctMovieName}</span>. Character was: <span id="answers-span">  ${gameData.correctCharacterName}</span>.`;
             // Set the game round +1
             gameData.gameCounter++;
 
@@ -508,11 +518,11 @@ const getApiData = async (): Promise<void> => {
             main();
             setTimeout(() => {
                 res.render('sudden_death', { dataGame: gameData, dataApi: apiData });
-            },500);
+            },1000);
             
         }
         else if (gameData.gameCounter != 0){
-            gameData.previousQuizAnswers = `Beide foute antwoorden. Movie was:<span id="answers-span">  ${gameData.correctMovieName}</span>. Karakter was:<span id="answers-span">  ${gameData.correctCharacterName}</span>.`;
+            gameData.previousQuizAnswers = `Both are wrong.  The correct movie was: <span id="answers-span">  ${gameData.correctMovieName}</span>.  The correct character was: <span id="answers-span">  ${gameData.correctCharacterName}</span>.`;
             res.render('highscore', { dataGame: gameData, dataApi: apiData, dataQuotes: saveGameQuotes });
         }
         else{
@@ -523,7 +533,7 @@ const getApiData = async (): Promise<void> => {
             main();
             setTimeout(() => {
                 res.render('sudden_death', { dataGame: gameData, dataApi: apiData });
-            },500);
+            },1000);
         }
     });
 
