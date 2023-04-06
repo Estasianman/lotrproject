@@ -92,7 +92,7 @@ interface RandomFunction {
 }
 
 interface CombineArrayElements {
-    (arrayEmpty: any[], arrayToTransfer: any[]): void | Promise<void>
+    (arrayEmpty: any[], arrayToTransfer: any[]): void
 }
 
 // interface to save data from the API
@@ -206,61 +206,7 @@ const getApiData = async (): Promise<void> => {
     //random number generator
     const getRandomNumber : RandomFunction = (min, max) => Math.floor(Math.random() * (max - min) + min);
 
-    // get character photo from wiki page
-    const getCharacterPhotos = async (name: string): Promise<string> => {
-        let badCharacter: boolean = false;
-        let startIndex: number = 0;
-        let endIndex: number = 0;
-        let htmlSubstring: string = "";
-        let photoSource: string = "";
-
-        name = name.replace(/ /g, "_");
-        
-        if (name == "Mar" || name == "Wife_of_Barach" || name == "Argeleb_I" || name == "Carc" || name == "Éomer") {
-            badCharacter = true;
-        }
-        if (!badCharacter) {
-
-            const response = await axios.get(
-                `https://lotr.fandom.com/wiki/${name}`
-            );
-            const rawHtml: string = response.data;
-
-            startIndex = rawHtml.indexOf('"https://static');
-            endIndex = rawHtml.indexOf('"', startIndex + 1);
-            htmlSubstring = rawHtml.substring(startIndex + 1, endIndex);
-            let pngIndex: number = -1;
-            if (name == "Legolas"){
-                pngIndex = htmlSubstring.indexOf('PNG');
-            }
-            else{
-                pngIndex = htmlSubstring.indexOf('png');
-            }
-            
-            let jpgIndex: number = htmlSubstring.indexOf('jpg');
-            let gifIndex: number = htmlSubstring.indexOf('gif');
-
-            if (pngIndex == -1 && gifIndex == -1) {
-                photoSource = htmlSubstring.substring(0, jpgIndex + 3);
-            }
-            else if (jpgIndex == -1 && pngIndex == -1) {
-                photoSource = htmlSubstring.substring(0, gifIndex + 3);
-            }
-            else if (jpgIndex == -1 && gifIndex == -1) {
-                photoSource = htmlSubstring.substring(0, pngIndex + 3);
-            }
-            if (photoSource == "https://static.wikia.nocookie.net/lotr/images/e/e6/Site-logo.png") {
-                photoSource = "/images/character_placeholder.jpg";
-            }
-        }
-        else {
-            photoSource = "/images/character_placeholder.jpg";
-        }
-
-        return photoSource;
-    };
-
-    // get movie url function
+    // get movie photo url function
     const getMoviePhotos = (name: string): string => {
         let photoSource: string = "";
 
@@ -287,7 +233,6 @@ const getApiData = async (): Promise<void> => {
             default:
                 break;
         }
-
         return photoSource;
     }
 
@@ -299,16 +244,30 @@ const getApiData = async (): Promise<void> => {
     };
 
     // put character photo url's into gameData array
-    const addCharacterPhotoArrayElements: CombineArrayElements = async (arrayEmpty, name) => {
+    const addCharacterPhotoArrayElements: CombineArrayElements = (arrayEmpty, characterArray) => {
         for (let i = 0; i < 3; i++) {
-            arrayEmpty[i] = await getCharacterPhotos(name[i].name);
+            let name: string = "";
+            if (characterArray[i].name == "Denethor I"){
+                arrayEmpty[i] = "/images/character_placeholder.jpg";
+            }
+            else if(characterArray[i].name == "Gothmog (Lieutenant of Morgul)"){
+              
+                arrayEmpty[i] = `/images/characters/Gothmog.jpg`;
+            }
+            else if(characterArray[i].name == "Haldir (Haladin)"){
+                arrayEmpty[i] = `/images/characters/Haldir.jpg`;
+            }
+            else{
+                name = characterArray[i].name.replace(/ /g, "_");
+                arrayEmpty[i] = `/images/characters/${name}.jpg`;
+            }
         }
     }
 
     // put movie photo url's into gameData array
-    const addMoviePhotoArrayElements: CombineArrayElements = (arrayEmpty, name) => {
+    const addMoviePhotoArrayElements: CombineArrayElements = (arrayEmpty, MovieArray) => {
         for (let i = 0; i < 3; i++) {
-            arrayEmpty[i] = getMoviePhotos(name[i].name);
+            arrayEmpty[i] = getMoviePhotos(MovieArray[i].name);
         }
     }
 
@@ -416,6 +375,7 @@ const getApiData = async (): Promise<void> => {
         // Put character and movie data into gameData arrays
         addCharacterPhotoArrayElements(gameData.characterPhotoArray, apiData.charactersArray);
         addMoviePhotoArrayElements(gameData.moviePhotoArray, apiData.moviesArray);
+
         addArrayElements(gameData.movieArray, apiData.moviesArray);
         addArrayElements(gameData.characterArray, apiData.charactersArray);
     }
@@ -488,9 +448,8 @@ const getApiData = async (): Promise<void> => {
         // call main function to get new quote, characters, and movies
         main();
 
-        setTimeout(() => {
-            res.render('quiz', { dataGame: gameData, dataApi: apiData });
-        },1000);
+        res.render('quiz', { dataGame: gameData, dataApi: apiData });
+      
     });
 
     app.post("/sudden_death", (req, res) => {
@@ -516,10 +475,8 @@ const getApiData = async (): Promise<void> => {
 
             // call main function to get new quote, characters, and movies
             main();
-            setTimeout(() => {
-                res.render('sudden_death', { dataGame: gameData, dataApi: apiData });
-            },1000);
-            
+
+            res.render('sudden_death', { dataGame: gameData, dataApi: apiData }); 
         }
         else if (gameData.gameCounter != 0){
             gameData.previousQuizAnswers = `Both are wrong.  The correct movie was: <span id="answers-span">  ${gameData.correctMovieName}</span>.  The correct character was: <span id="answers-span">  ${gameData.correctCharacterName}</span>.`;
@@ -531,9 +488,8 @@ const getApiData = async (): Promise<void> => {
 
             // call main function to get new quote, characters, and movies
             main();
-            setTimeout(() => {
-                res.render('sudden_death', { dataGame: gameData, dataApi: apiData });
-            },1000);
+
+            res.render('sudden_death', { dataGame: gameData, dataApi: apiData });
         }
     });
 
