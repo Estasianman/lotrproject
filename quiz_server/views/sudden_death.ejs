@@ -1,14 +1,30 @@
 <%- include("partials/headQuiz") %>
 
-<section id="quote-section">
-    <article id="quote-article">
-        <button href="landing.html" class="link-button">Home</button>
-        <h2>Quote:<br><span id="game-counter">(<%- dataGame.gameCounter %> / 10)</span></h2>
-        <p id="quote">" <%- dataApi.quote.dialog %> "</p>
-        <h3>Score: <span id="points"> <%- dataGame.score %></span></h3>
-        <button href="#" class="link-button">My Profile</button>
-    </article>
-</section>
+<% if (dataApi.quote.dialog.length < 73){ %>
+    <section id="quote-section" style="max-height: 10%;">
+        <article id="quote-article">
+            <button href="landing.html" class="link-button">Home</button>
+            <h2>Quote:<br><span id="game-counter">(<%- dataGame.gameCounter %> / 10)</span></h2>
+            <p id="quote">" <%- dataApi.quote.dialog %> "</p>
+            <h3>Score: <span id="points"> <%- dataGame.score %></span></h3>
+            <button href="#" class="link-button">My Profile</button>
+        </article>
+    </section>
+    
+    <%} else {%>
+    
+        <section id="quote-section">
+            <article id="quote-article">
+                <button href="landing.html" class="link-button">Home</button>
+                <h2>Quote:<br><span id="game-counter">(<%- dataGame.gameCounter %> / 10)</span></h2>
+                <p id="quote">" <%- dataApi.quote.dialog %> "</p>
+                <h3>Score: <span id="points"> <%- dataGame.score %></span></h3>
+                <button href="#" class="link-button">My Profile</button>
+            </article>
+        </section>
+    
+        <%}%>
+
 <section id="previous-answers">
     <p><%- dataGame.previousQuizAnswers %></p>
 </section>

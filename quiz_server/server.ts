@@ -191,20 +191,27 @@ const getApiData = async (): Promise<void> => {
             Authorization: `Bearer ${token}`,
         },
     }
-    //get quotes from api
-    let result = await axios.get("https://the-one-api.dev/v2/quote", auth);
-    quotes = result.data;
 
-    //get characters from api
-    result = await axios.get("https://the-one-api.dev/v2/character", auth);
-    characters = result.data;
+    try {
+        //get quotes from api
+        let result = await axios.get("https://the-one-api.dev/v2/quote", auth);
+        quotes = result.data;
 
-    //get movies from api
-    result = await axios.get("https://the-one-api.dev/v2/movie", auth);
-    movies = result.data;
+        //get characters from api
+        result = await axios.get("https://the-one-api.dev/v2/character", auth);
+        characters = result.data;
+
+        //get movies from api
+        result = await axios.get("https://the-one-api.dev/v2/movie", auth);
+        movies = result.data;
+    }
+    catch (error: any) {
+        console.log(error);
+        
+    }
 
     //random number generator
-    const getRandomNumber : RandomFunction = (min, max) => Math.floor(Math.random() * (max - min) + min);
+    const getRandomNumber: RandomFunction = (min, max) => Math.floor(Math.random() * (max - min) + min);
 
     // get movie photo url function
     const getMoviePhotos = (name: string): string => {
@@ -237,7 +244,7 @@ const getApiData = async (): Promise<void> => {
     }
 
     // put character and movie info data into gameData array
-    const addArrayElements : CombineArrayElements = (arrayEmpty, arrayToTransfer) => {
+    const addArrayElements: CombineArrayElements = (arrayEmpty, arrayToTransfer) => {
         for (let i = 0; i < 3; i++) {
             arrayEmpty[i] = arrayToTransfer[i];
         }
@@ -247,17 +254,17 @@ const getApiData = async (): Promise<void> => {
     const addCharacterPhotoArrayElements: CombineArrayElements = (arrayEmpty, characterArray) => {
         for (let i = 0; i < 3; i++) {
             let name: string = "";
-            if (characterArray[i].name == "Denethor I"){
+            if (characterArray[i].name == "Denethor I") {
                 arrayEmpty[i] = "/images/character_placeholder.jpg";
             }
-            else if(characterArray[i].name == "Gothmog (Lieutenant of Morgul)"){
-              
+            else if (characterArray[i].name == "Gothmog (Lieutenant of Morgul)") {
+
                 arrayEmpty[i] = `/images/characters/Gothmog.jpg`;
             }
-            else if(characterArray[i].name == "Haldir (Haladin)"){
+            else if (characterArray[i].name == "Haldir (Haladin)") {
                 arrayEmpty[i] = `/images/characters/Haldir.jpg`;
             }
-            else{
+            else {
                 name = characterArray[i].name.replace(/ /g, "_");
                 arrayEmpty[i] = `/images/characters/${name}.jpg`;
             }
@@ -276,7 +283,7 @@ const getApiData = async (): Promise<void> => {
         //find random quote and character from that quote
         let quoteId: number = 0;
         let characterId: string = "";
-    
+
         quoteId = getRandomNumber(0, quotes.docs.length);
         apiData.quote = quotes.docs[quoteId];
         characterId = apiData.quote.character;
@@ -316,10 +323,10 @@ const getApiData = async (): Promise<void> => {
 
         // Save Quotes, characters, and movies in saveGameQuotes array
         // If the game is restarted then first make the array empty with 'splice'
-        if (saveGameQuotes.gameQuotesArray[0] != "" && gameData.gameCounter == 1){
+        if (saveGameQuotes.gameQuotesArray[0] != "" && gameData.gameCounter == 1) {
             saveGameQuotes.gameQuotesArray.splice(0, saveGameQuotes.gameQuotesArray.length);
             saveGameQuotes.characterFromQuoteArray.splice(0, saveGameQuotes.characterFromQuoteArray.length);
-            saveGameQuotes.movieFromQuoteArray.splice(0,saveGameQuotes.movieFromQuoteArray.length);
+            saveGameQuotes.movieFromQuoteArray.splice(0, saveGameQuotes.movieFromQuoteArray.length);
         }
         saveGameQuotes.gameQuotesArray.push(apiData.quote.dialog);
         saveGameQuotes.characterFromQuoteArray.push(apiData.correctCharacterName);
@@ -330,13 +337,13 @@ const getApiData = async (): Promise<void> => {
             apiData.moviesArray[1] = movies.docs[getRandomNumber(2, movies.docs.length)];
             apiData.moviesArray[2] = movies.docs[getRandomNumber(2, movies.docs.length)];
 
-        }while(
+        } while (
             apiData.moviesArray[1] == apiData.moviesArray[0] ||
             apiData.moviesArray[2] == apiData.moviesArray[0] ||
             apiData.moviesArray[1] == apiData.moviesArray[2]
         );
 
-       // put correct movie and character names into gameData
+        // put correct movie and character names into gameData
         gameData.correctMovieName = apiData.correctMovieName;
         gameData.correctCharacterName = apiData.correctCharacterName;
         gameData.randomNumberMovie = getRandomNumber(1, 4);
@@ -358,8 +365,8 @@ const getApiData = async (): Promise<void> => {
                     }
                 }
             } while (!hasQuotes || array.name == apiData.charactersArray[0].name ||
-                    array.name == "MINOR_CHARACTER" ||
-                    array.name == "User:Technobliterator/Showcase");
+            array.name == "MINOR_CHARACTER" ||
+                array.name == "User:Technobliterator/Showcase");
 
             return array;
         }
@@ -368,7 +375,7 @@ const getApiData = async (): Promise<void> => {
         apiData.charactersArray[1] = getWrongCharacters(apiData.charactersArray[1]);
         apiData.charactersArray[2] = getWrongCharacters(apiData.charactersArray[2]);
 
-        while(apiData.charactersArray[1] == apiData.charactersArray[2]){
+        while (apiData.charactersArray[1] == apiData.charactersArray[2]) {
             apiData.charactersArray[1] = getWrongCharacters(apiData.charactersArray[1]);
         }
 
@@ -387,7 +394,7 @@ const getApiData = async (): Promise<void> => {
 
         let parsedUrl = new URL(`http://localhost:${app.get("port")}${req.url}`);
         let path = parsedUrl.pathname;
-    
+
         switch (path) {
             case "/quiz":
                 gameData.gameType = "quiz";
@@ -398,9 +405,9 @@ const getApiData = async (): Promise<void> => {
                 res.render('sudden_death', { dataGame: gameData, dataApi: apiData });
                 break;
             case "/highscore":
-                saveGameQuotes.characterFromQuoteArray.splice(0,saveGameQuotes.characterFromQuoteArray.length);
-                saveGameQuotes.movieFromQuoteArray.splice(0,saveGameQuotes.movieFromQuoteArray.length);
-                saveGameQuotes.gameQuotesArray.splice(0,saveGameQuotes.gameQuotesArray.length);
+                saveGameQuotes.characterFromQuoteArray.splice(0, saveGameQuotes.characterFromQuoteArray.length);
+                saveGameQuotes.movieFromQuoteArray.splice(0, saveGameQuotes.movieFromQuoteArray.length);
+                saveGameQuotes.gameQuotesArray.splice(0, saveGameQuotes.gameQuotesArray.length);
                 gameData.gameType = "quiz";
                 res.render('highscore', { dataGame: gameData, dataApi: apiData, dataQuotes: saveGameQuotes });
                 break;
@@ -411,11 +418,10 @@ const getApiData = async (): Promise<void> => {
     });
 
     app.post("/quiz", (req, res) => {
-
         // get user/player answers from quiz
         gameData.userMovieAnswer = req.body.checkboxMovie;
         gameData.userCharacterAnswer = req.body.checkboxCharacter;
-        
+
         // if one of the questions was not answered then change variable from undefined to an empty string
         if (gameData.userMovieAnswer == undefined) {
             gameData.userMovieAnswer = "";
@@ -428,18 +434,18 @@ const getApiData = async (): Promise<void> => {
         gameData.previousQuizAnswers = "";
         if (gameData.userMovieAnswer == apiData.correctMovieName && gameData.userCharacterAnswer == apiData.correctCharacterName) {
             gameData.score++;
-            gameData.previousQuizAnswers = `Correct! Movie was: <span id="answers-span">  ${gameData.correctMovieName}</span>. Character was: <span id="answers-span">  ${gameData.correctCharacterName}</span>.`;
+            gameData.previousQuizAnswers = `Correct! Movie was:&nbsp; <span id="answers-span">  ${gameData.correctMovieName}</span>.&nbsp; Character was:&nbsp; <span id="answers-span">  ${gameData.correctCharacterName}</span>.`;
         }
         else if (gameData.userMovieAnswer == apiData.correctMovieName && gameData.userCharacterAnswer != apiData.correctCharacterName) {
             gameData.score = gameData.score + 0.5;
-            gameData.previousQuizAnswers = `You guessed the movie right! Movie was: <span id="answers-span">  ${gameData.correctMovieName}</span>. The correct character was: <span id="answers-span">  ${gameData.correctCharacterName}</span>.`;
+            gameData.previousQuizAnswers = `You guessed the movie right!&nbsp; Movie was:&nbsp; <span id="answers-span">  ${gameData.correctMovieName}</span>.&nbsp; The correct character was:&nbsp; <span id="answers-span">  ${gameData.correctCharacterName}</span>.`;
         }
-        else if(gameData.userMovieAnswer != apiData.correctMovieName && gameData.userCharacterAnswer == apiData.correctCharacterName){
+        else if (gameData.userMovieAnswer != apiData.correctMovieName && gameData.userCharacterAnswer == apiData.correctCharacterName) {
             gameData.score = gameData.score + 0.5;
-            gameData.previousQuizAnswers = `You guessed the character right! The correct movie was: <span id="answers-span">  ${gameData.correctMovieName}</span>. Character was:<span id="answers-span">  ${gameData.correctCharacterName}</span>.`;
+            gameData.previousQuizAnswers = `You guessed the character right!&nbsp; The correct movie was:&nbsp; <span id="answers-span">  ${gameData.correctMovieName}</span>.&nbsp; Character was:&nbsp;<span id="answers-span">  ${gameData.correctCharacterName}</span>.`;
         }
-        else if (gameData.gameCounter != 0){
-            gameData.previousQuizAnswers = `Both are wrong.  The correct movie was: <span id="answers-span">  ${gameData.correctMovieName}</span>.  The correct character was: <span id="answers-span">  ${gameData.correctCharacterName}</span>.`;
+        else if (gameData.gameCounter != 0) {
+            gameData.previousQuizAnswers = `Both are wrong.&nbsp; The correct movie was:&nbsp; <span id="answers-span">  ${gameData.correctMovieName}</span>.&nbsp;  The correct character was:&nbsp; <span id="answers-span">  ${gameData.correctCharacterName}</span>.`;
         }
 
         // Set the game round +1
@@ -449,14 +455,14 @@ const getApiData = async (): Promise<void> => {
         main();
 
         res.render('quiz', { dataGame: gameData, dataApi: apiData });
-      
+
     });
 
     app.post("/sudden_death", (req, res) => {
         // get user/player answers from quiz
         gameData.userMovieAnswer = req.body.checkboxMovie;
         gameData.userCharacterAnswer = req.body.checkboxCharacter;
-        
+
         // if one of the questions was not answered then change variable from undefined to an empty string
         if (gameData.userMovieAnswer == undefined) {
             gameData.userMovieAnswer = "";
@@ -469,20 +475,20 @@ const getApiData = async (): Promise<void> => {
         gameData.previousQuizAnswers = "";
         if (gameData.userMovieAnswer == apiData.correctMovieName && gameData.userCharacterAnswer == apiData.correctCharacterName) {
             gameData.score++;
-            gameData.previousQuizAnswers = `Correct! Movie was: <span id="answers-span">  ${gameData.correctMovieName}</span>. Character was: <span id="answers-span">  ${gameData.correctCharacterName}</span>.`;
+            gameData.previousQuizAnswers = `Correct!&nbsp; Movie was:&nbsp; <span id="answers-span">  ${gameData.correctMovieName}</span>.&nbsp; Character was:&nbsp; <span id="answers-span">  ${gameData.correctCharacterName}</span>.`;
             // Set the game round +1
             gameData.gameCounter++;
 
             // call main function to get new quote, characters, and movies
             main();
 
-            res.render('sudden_death', { dataGame: gameData, dataApi: apiData }); 
+            res.render('sudden_death', { dataGame: gameData, dataApi: apiData });
         }
-        else if (gameData.gameCounter != 0){
-            gameData.previousQuizAnswers = `Both are wrong.  The correct movie was: <span id="answers-span">  ${gameData.correctMovieName}</span>.  The correct character was: <span id="answers-span">  ${gameData.correctCharacterName}</span>.`;
+        else if (gameData.gameCounter != 0) {
+            gameData.previousQuizAnswers = `Both are wrong.&nbsp;  The correct movie was:&nbsp; <span id="answers-span">  ${gameData.correctMovieName}</span>.&nbsp;  The correct character was:&nbsp; <span id="answers-span">  ${gameData.correctCharacterName}</span>.`;
             res.render('highscore', { dataGame: gameData, dataApi: apiData, dataQuotes: saveGameQuotes });
         }
-        else{
+        else {
             // Set the game round +1
             gameData.gameCounter++;
 
@@ -505,7 +511,7 @@ const getApiData = async (): Promise<void> => {
         if (gameData.userMovieAnswer == apiData.correctMovieName && gameData.userCharacterAnswer == apiData.correctCharacterName) {
             gameData.score++;
         }
-        else if(gameData.userMovieAnswer == apiData.correctMovieName || gameData.userCharacterAnswer == apiData.correctCharacterName){
+        else if (gameData.userMovieAnswer == apiData.correctMovieName || gameData.userCharacterAnswer == apiData.correctCharacterName) {
             gameData.score = gameData.score + 0.5;
 
         }
