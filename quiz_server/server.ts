@@ -132,6 +132,7 @@ let characters: Characters = {
 
 // main game variables used in the quiz
 interface GameVariables {
+    _id?: number,
     movieArray: MovieDoc[],
     correctMovieName: string,
     characterArray: Doc[],
@@ -155,7 +156,7 @@ let gameData: GameVariables = {
     correctCharacterName: "",
     userMovieAnswer: "",
     userCharacterAnswer: "",
-    gameCounter: 7,
+    gameCounter: 0,
     score: 0,
     randomNumberMovie: 0,
     randomNumberCharacter: 0,
@@ -388,7 +389,7 @@ const getApiData = async (): Promise<void> => {
     }
     main();
 
-    let routes = ["/quiz", "/sudden_death", "/highscore", "/profile", "/index"];
+    let routes = ["/quiz", "/sudden_death", "/highscore", "/index"];
 
     app.get(routes, (req, res) => {
 
@@ -519,7 +520,7 @@ const getApiData = async (): Promise<void> => {
     });
 
     app.listen(app.get("port"), () =>
-        console.log("[server] http://localhost:" + app.get("port"))
+        console.log("[server] http://localhost:" + app.get("port")+ "/quiz")
     );
 }
 getApiData();
