@@ -19,18 +19,13 @@ html {
 }
 
 body {
-    /* display: grid;
-    grid-template-areas:
-        'header'
-        'main'
-    ; */
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content:inherit;
     line-height: normal;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-    background-color: var(--red-color);
     min-height: 100vh;
+    background-image: url("../images/background2.jpg");
 }
 
 
@@ -52,10 +47,10 @@ main {
     background-color: var(--red-color);
     width: 100%;
     height: auto;
-    min-height: 95vh;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: space-around;
+    background-image: inherit;
 }
 
 h1 {
@@ -85,7 +80,7 @@ a:focus {
 
 /*#endregion*/
 
-/*#region----------------------------------HEADER PARTIAL-----------------------------------------*/
+/*#region----------------------------------HEADER PARTIAL-------------------------------*/
 
 header {
     grid-area: header;
@@ -97,12 +92,15 @@ header {
     background-image: url("/images/quotes-background.jpg");
 }
 
+header h1 {
+    text-shadow: 6px 4px 4px #000000;
+}
+
 #header-section {
     color: var(--light-yellow-color);
     width: 100%;
     height: auto;
     margin-top: 5px;
-    min-height: 5vh;
     
 }
 
@@ -133,7 +131,7 @@ header {
 }
 
 .link-button:hover {
-    color: rgba(217, 139, 43, 1);
+    color: var(--light-yellow-color);
 }
 
 /*#endregion*/
@@ -153,20 +151,27 @@ header {
     max-width: max-content;
     border-bottom: 1px var(--light-yellow-color) solid;
     color: var(--light-yellow-color);
+    margin: 0 auto;
+    text-shadow: 3px 3px 4px #000000;
+}
+
+#quote-container {
+    text-align: center;
+    margin: 0 auto;
+    width: 100%;
+    height: auto;
+    padding: 2rem 0 0 0;
 }
 
 #quote-container h2 {
     font-size: 28px;
+    color: var(--dark-yellow-color);
 }
 
 #quote-container h3 {
     font-size: 24px;
     padding-top: 1rem;
-}
-
-#quote-section h3,
-#quote-section h2 {
-    padding: 0.5rem;
+    color: var(--dark-yellow-color);
 }
 
 #points {
@@ -211,10 +216,25 @@ header {
 
 
 
+
+
+
+#form-quiz {
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+    flex-wrap: wrap;
+    margin: 0 auto;
+    width: 100%;
+    height: auto;
+    text-align: center;
+    justify-content: space-evenly;
+    padding: 2rem 0 0 0;
+}
+
 #photo-container {
     display: flex;
     flex-direction: column;
-    /* max-width: 80%; */
     flex: 1;
     width: 100%;
     height: auto;
@@ -223,33 +243,6 @@ header {
     text-align: center;
     flex-wrap: wrap;
     margin: 0 auto;
-}
-
-#photo-section {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    background-color: var(--red-color);
-    color: var(--dark-yellow-color);
-    width: 100%;
-    height: auto;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    flex-wrap: wrap;
-    margin: 0 auto;
-    background-image: url("../images/background2.jpg");
-    /* padding: 0.5rem 0 0.25rem 0; */
-}
-
-form {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    width: 100%;
-    height: auto;
-    align-items: center;
-    justify-content: space-evenly;
 }
 
 article {
@@ -259,7 +252,6 @@ article {
     height: auto;
     width: 100%;
     flex: 1;
-    /* height: min-content; */
     align-items: center;
     justify-content: space-evenly;
     text-align: center;
@@ -345,7 +337,7 @@ input[type="radio"] {
 
 #character-photos #names-button {
     background-color: #000000;
-    color: rgba(232, 208, 105, 0.5);
+    color: var(--light-yellow-color);
     min-width: 200px;
     margin: -5px 0 0 0;
     padding: 0.25rem 0 0.25rem 0;
@@ -369,22 +361,15 @@ input[type="radio"] {
 #character-photos li p {
     border: 3px solid rgba(232, 208, 105, 0.5);
     border-top: none;
-    color: rgba(232, 208, 105, 1);
-    transition: 0.5s border, 0.5s color, 0.5s background-color;
+    transition: 0.5s border, 0.5s color, 0.5s background-color, 0.2s font-weight ease;
 }
 
 #character-photos li:hover #names-button {
     border: 3px solid rgba(232, 208, 105, 1);
     border-top: none;
-    color: rgba(232, 208, 105, 1);
-}
-
-#aside-photo-container {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-evenly;
-    width: 100%;
-    height: auto;
+    color: rgb(255, 208, 0);
+    font-weight: bold;
+    
 }
 
 
@@ -409,6 +394,8 @@ input[type="radio"] {
     display: none;
     font-family: 'ringbearermedium', 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     font-size: 32px;
+    color: var(--light-yellow-color);
+    text-shadow: 2px 2px 4px #000000;
 }
 
 #submit-button {
@@ -459,6 +446,26 @@ input[type="radio"] {
     color: var(--light-yellow-color);
     text-shadow: 3px 2px #02234047;
 }
+
+.flash-green {
+    animation: flash-green 1s 3 ease-in-out alternate;
+    animation-play-state: running;
+}
+
+@keyframes flash-green {
+    0% {
+        color: var(--light-yellow-color);
+    }
+
+    50% {
+        color: green;
+    }
+
+    100% {
+        color: var(--light-yellow-color);
+    }
+}
+
 
 
 
@@ -521,7 +528,7 @@ input[type="radio"] {
     font-size: 46px;
     text-align: center;
     color: #e8d069;
-    text-shadow: 6px 4px #000000;
+    text-shadow: 6px 4px 4px #000000;
     border-bottom: 1px var(--light-yellow-color) solid;
     max-width: max-content;
     margin: 0 auto;
@@ -530,7 +537,7 @@ input[type="radio"] {
 .highscore h1,
 .highscore h2 {
     font-family: 'ringbearermedium', 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-    text-shadow: 6px 4px #000000;
+    text-shadow: 6px 4px 4px #000000;
     text-align: center;
 }
 

@@ -1,14 +1,8 @@
 <%- include("partials/headQuiz") %>
-    
-<!-- <section id="previous-answers">
-    <p><%- dataGame.previousQuizAnswers %></p>
-</section> -->
 
-<section id="photo-section">
+    <% if (dataGame.gameCounter >= 10){ %>
 
-    <% if (dataGame.gameCounter == 10){ %>
-
-        <form action="/highscore" method="post">
+        
         <div id="quote-container">
             <h2>Quote:<br><span id="game-counter">(<%- dataGame.gameCounter %> / 10)</span>
             </h2>
@@ -16,7 +10,8 @@
             <h3>Score: <span id="points"> <%- dataGame.score %></span>
             </h3>
         </div>
-            <div id="aside-photo-container">
+        <form id="form-quiz" action="/highscore" method="post">
+            
             <div id="aside">
                 <h2 class = "movie">Movie</h2>
                 <p id="movie-output"></p>
@@ -33,7 +28,7 @@
                     
     <%} else {%>
 
-    <form action="/quiz" method="post">
+  
         <div id="quote-container">
             <h2>Quote:<br><span id="game-counter">(<%- dataGame.gameCounter %> / 10)</span>
             </h2>
@@ -41,14 +36,26 @@
             <h3>Score: <span id="points"> <%- dataGame.score %></span>
             </h3>
         </div>
-        <div id="aside-photo-container">
+        <form id="form-quiz" action="/<%- dataGame.gameType %>" method="post">
+       
         <div id="aside">
-            <h2 class = "movie">Movie</h2>
+            <% if(dataGame.userCorrectFeedback.rightMovie == 1){%>
+                <h2 class = "movie flash-green">Movie</h2>
+            <%}else {%>
+
+                <h2 class = "movie">Movie</h2>
+            <%}%>
+            
             <p id="movie-output"></p>
             <div>
                 <button id="submit-button" type='submit'>Next</button>
             </div>
-            <h2 class = "character">Character</h2>
+            <% if(dataGame.userCorrectFeedback.rightCharacter == 1){%>
+                    <h2 class = "character flash-green" >Character</h2>
+            <%} else {%>
+
+                <h2 class = "character" >Character</h2>
+            <%}%>
             <p id="character-output"></p>
         </div>
         <div id="photos-container">
@@ -302,9 +309,9 @@
                     </div>
 
                         <%}%>
-                    </div>
+                    
                             </form>
-                            </section>
+                         
                             </main>
                             </body>
 
