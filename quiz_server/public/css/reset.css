@@ -89,7 +89,7 @@ video {
     border: 0;
     font-size: 100%;
     font: inherit;
-    vertical-align: baseline;
+    vertical-align: middle;
     margin-block-start: 0;
     margin-block-end: 0;
     margin-inline-start: 0px;

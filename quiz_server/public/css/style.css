@@ -19,15 +19,18 @@ html {
 }
 
 body {
-    display: grid;
+    /* display: grid;
     grid-template-areas:
+        'header'
         'main'
-    ;
+    ; */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     line-height: normal;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-    height: fit-content;
     background-color: var(--red-color);
-    height: 100vh;
+    min-height: 100vh;
 }
 
 
@@ -43,8 +46,13 @@ body {
 
 main {
     grid-area: main;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     background-color: var(--red-color);
-    width: auto;
+    width: 100%;
+    height: auto;
+    min-height: 95vh;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -77,33 +85,34 @@ a:focus {
 
 /*#endregion*/
 
-/*#region----------------------------------QUOTE SECTION--------------------------------*/
+/*#region----------------------------------HEADER PARTIAL-----------------------------------------*/
 
-
-
-
-#quote-section {
+header {
+    grid-area: header;
     display: flex;
-    flex-direction: row;
-    flex: 1;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    height: auto;
     background-image: url("/images/quotes-background.jpg");
+}
+
+#header-section {
     color: var(--light-yellow-color);
     width: 100%;
     height: auto;
-    align-items: center;
-    justify-content: flex-start;
-    text-align: center;
-    flex-wrap: wrap;
-    padding: 0.25rem 0 0.25rem 0;
+    margin-top: 5px;
+    min-height: 5vh;
+    
 }
 
-#quote {
+#header-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
     flex: 1;
-    font-family: 'ringbearermedium', 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-    padding: 0.25rem;
-    font-size: 28px;
-    max-width: max-content;
-    border-bottom: 1px var(--light-yellow-color) solid;
+    width: 100%;
+    height: auto;
 }
 
 .link-button {
@@ -112,17 +121,47 @@ a:focus {
     display: inline-block;
     text-align: center;
     padding: 6px 15px;
+    max-height: 50px;
     font-size: 14px;
     text-decoration: none;
-    color: rgba(217, 139, 43, 0.6);
+    color: var(--dark-yellow-color);
     background-color: black;
     border-radius: 8px;
     outline: none;
     transition: 0.5s color;
+    margin: 0 0.5rem 0 0.5rem;
 }
 
 .link-button:hover {
     color: rgba(217, 139, 43, 1);
+}
+
+/*#endregion*/
+
+/*#region----------------------------------QUOTE SECTION--------------------------------*/
+
+
+
+
+
+
+#quote {
+    flex: 1;
+    font-family: 'ringbearermedium', 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    padding: 0.25rem;
+    font-size: 30px;
+    max-width: max-content;
+    border-bottom: 1px var(--light-yellow-color) solid;
+    color: var(--light-yellow-color);
+}
+
+#quote-container h2 {
+    font-size: 28px;
+}
+
+#quote-container h3 {
+    font-size: 24px;
+    padding-top: 1rem;
 }
 
 #quote-section h3,
@@ -172,25 +211,10 @@ a:focus {
 
 
 
-#aside {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    height: 70%;
-    flex-shrink: 1;
-}
-
-#movie-output,
-#character-output {
-    display: none;
-    font-family: 'ringbearermedium', 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-    font-size: 20px;
-}
-
 #photo-container {
     display: flex;
     flex-direction: column;
-    max-width: 80%;
+    /* max-width: 80%; */
     flex: 1;
     width: 100%;
     height: auto;
@@ -215,12 +239,12 @@ a:focus {
     flex-wrap: wrap;
     margin: 0 auto;
     background-image: url("../images/background2.jpg");
-    padding: 0.5rem 0 0.25rem 0;
+    /* padding: 0.5rem 0 0.25rem 0; */
 }
 
 form {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     flex: 1;
     width: 100%;
     height: auto;
@@ -235,7 +259,7 @@ article {
     height: auto;
     width: 100%;
     flex: 1;
-    height: min-content;
+    /* height: min-content; */
     align-items: center;
     justify-content: space-evenly;
     text-align: center;
@@ -267,16 +291,16 @@ li {
 }
 
 figure {
-    max-height: 300px;
-    max-width: 200px;
     width: 100%;
     height: auto;
     margin: 0 auto;
 }
 
 img {
-    max-height: 280px;
+    max-height: 200px;
     max-width: 200px;
+    object-fit: cover;
+    object-position: 25% 25%; 
     border-radius: 8px;
     width: 100%;
     height: auto;
@@ -305,40 +329,6 @@ input[type="radio"] {
     display: none;
 }
 
-#submit-button {
-    font-family: 'ringbearermedium', 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-    display: inline-block;
-    padding: 5px 40px 5px 40px;
-    font-size: 18px;
-    text-decoration: none;
-    color: rgba(217, 139, 43, 0.6);
-    background-color: var(--black-color);
-    border-radius: 8px;
-    outline: none;
-    transition: 0.5s transform, 0.5s box-shadow, 0.5s color, 0.5s background-color;
-    box-shadow: 3px 3px 2px 2px #02234047;
-    cursor: pointer;
-}
-
-#submit-button.submit-pulse {
-    animation: pulse 1s infinite ease-in-out alternate;
-    animation-play-state: running;
-}
-
-@keyframes pulse {
-    from {
-        transform: scale(1);
-    }
-
-    to {
-        transform: scale(1.2);
-    }
-}
-
-#submit-button:hover {
-    color: rgba(217, 139, 43, 1);
-}
-
 #movie-photos img {
     border: 3px solid rgba(232, 208, 105, 0.3);
     transition: 0.5s border, 0.5s color, 0.5s background-color;
@@ -357,7 +347,7 @@ input[type="radio"] {
     background-color: #000000;
     color: rgba(232, 208, 105, 0.5);
     min-width: 200px;
-    margin: -5px 0 8px 5.5px;
+    margin: -5px 0 0 0;
     padding: 0.25rem 0 0.25rem 0;
     border-top-left-radius: 0;
     border-top-right-radius: 0;
@@ -389,6 +379,14 @@ input[type="radio"] {
     color: rgba(232, 208, 105, 1);
 }
 
+#aside-photo-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    width: 100%;
+    height: auto;
+}
+
 
 
 
@@ -398,17 +396,66 @@ input[type="radio"] {
 
 
 
+#aside {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    height: auto;
+    flex-shrink: 1;
+}
+
+#movie-output,
+#character-output {
+    display: none;
+    font-family: 'ringbearermedium', 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 32px;
+}
+
+#submit-button {
+    font-family: 'ringbearermedium', 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    display: inline-block;
+    padding: 12px 70px 12px 70px;
+    font-size: 40px;
+    text-decoration: none;
+    color: var(--dark-yellow-color);
+    background-color: var(--black-color);
+    border-radius: 30px;
+    outline: none;
+    transition: 0.5s transform, 0.5s box-shadow, 0.5s color, 0.5s background-color;
+    box-shadow: 3px 3px 2px 2px #02234047;
+    cursor: pointer;
+}
+
+#submit-button.submit-pulse {
+    animation: pulse 1s infinite ease-in-out alternate;
+    animation-play-state: running;
+}
+
+@keyframes pulse {
+    from {
+        transform: scale(1);
+    }
+
+    to {
+        transform: scale(1.2);
+    }
+}
+
+#submit-button:hover {
+    color: var(--light-yellow-color);
+}
+
 
 .movie {
     border-bottom: 2px solid;
-    font-size: 26px;
+    font-size: 40px;
     color: var(--light-yellow-color);
     text-shadow: 3px 2px #02234047;
 }
 
 .character {
     border-bottom: 2px solid;
-    font-size: 26px;
+    font-size: 40px;
     color: var(--light-yellow-color);
     text-shadow: 3px 2px #02234047;
 }
@@ -439,7 +486,7 @@ input[type="radio"] {
     height: auto;
 }
 
-li {
+#li-highscore {
     flex: 1;
     margin: 0 auto;
     list-style: none;
@@ -580,6 +627,10 @@ li {
 }
 
 @media all and (max-width:550px) {
+
+    #aside-photo-container {
+        flex-direction: column;
+    }
 
     form {
         flex-direction: column;

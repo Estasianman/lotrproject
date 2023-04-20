@@ -389,6 +389,7 @@ const getApiData = async (): Promise<void> => {
     }
     main();
 
+    // array for app.get routes:
     let routes = ["/quiz", "/sudden_death", "/highscore", "/index"];
 
     app.get(routes, (req, res) => {
@@ -396,6 +397,7 @@ const getApiData = async (): Promise<void> => {
         let parsedUrl = new URL(`http://localhost:${app.get("port")}${req.url}`);
         let path = parsedUrl.pathname;
 
+        // check which app.get route was requested:
         switch (path) {
             case "/quiz":
                 gameData.gameType = "quiz";

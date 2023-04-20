@@ -1,38 +1,22 @@
 <%- include("partials/headQuiz") %>
-
-<% if (dataApi.quote.dialog.length < 73){ %>
-<section id="quote-section" style="max-height: 10%;">
-    <article id="quote-article">
-        <button href="landing.html" class="link-button">Home</button>
-        <h2>Quote:<br><span id="game-counter">(<%- dataGame.gameCounter %> / 10)</span></h2>
-        <p id="quote">" <%- dataApi.quote.dialog %> "</p>
-        <h3>Score: <span id="points"> <%- dataGame.score %></span></h3>
-        <button href="#" class="link-button">My Profile</button>
-    </article>
-</section>
-
-<%} else {%>
-
-    <section id="quote-section">
-        <article id="quote-article">
-            <button href="landing.html" class="link-button">Home</button>
-            <h2>Quote:<br><span id="game-counter">(<%- dataGame.gameCounter %> / 10)</span></h2>
-            <p id="quote">" <%- dataApi.quote.dialog %> "</p>
-            <h3>Score: <span id="points"> <%- dataGame.score %></span></h3>
-            <button href="#" class="link-button">My Profile</button>
-        </article>
-    </section>
-
-    <%}%>
     
-<section id="previous-answers">
+<!-- <section id="previous-answers">
     <p><%- dataGame.previousQuizAnswers %></p>
-</section>
+</section> -->
+
 <section id="photo-section">
 
     <% if (dataGame.gameCounter == 10){ %>
 
         <form action="/highscore" method="post">
+        <div id="quote-container">
+            <h2>Quote:<br><span id="game-counter">(<%- dataGame.gameCounter %> / 10)</span>
+            </h2>
+            <p id="quote">" <%- dataApi.quote.dialog %> "</p>
+            <h3>Score: <span id="points"> <%- dataGame.score %></span>
+            </h3>
+        </div>
+            <div id="aside-photo-container">
             <div id="aside">
                 <h2 class = "movie">Movie</h2>
                 <p id="movie-output"></p>
@@ -43,12 +27,21 @@
                 <p id="character-output"></p>
             </div>
             <div id="photos-container">
+                
             <article id="movie-photos">
                 <ul>
                     
     <%} else {%>
 
     <form action="/quiz" method="post">
+        <div id="quote-container">
+            <h2>Quote:<br><span id="game-counter">(<%- dataGame.gameCounter %> / 10)</span>
+            </h2>
+            <p id="quote">" <%- dataApi.quote.dialog %> "</p>
+            <h3>Score: <span id="points"> <%- dataGame.score %></span>
+            </h3>
+        </div>
+        <div id="aside-photo-container">
         <div id="aside">
             <h2 class = "movie">Movie</h2>
             <p id="movie-output"></p>
@@ -63,7 +56,7 @@
             <ul>
 
     <%}%>
-
+    
             <% if (dataGame.randomNumberMovie == 1){ %>
 
                 <% for (let i = 0; i < dataGame.moviePhotoArray.length; i++) {%>
@@ -309,7 +302,7 @@
                     </div>
 
                         <%}%>
-                            
+                    </div>
                             </form>
                             </section>
                             </main>
