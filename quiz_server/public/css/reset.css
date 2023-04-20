@@ -90,6 +90,10 @@ video {
     font-size: 100%;
     font: inherit;
     vertical-align: baseline;
+    margin-block-start: 0;
+    margin-block-end: 0;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
 }
 
 /* HTML5 display-role reset for older browsers */

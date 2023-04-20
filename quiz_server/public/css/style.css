@@ -28,13 +28,16 @@ body {
     height: fit-content;
     background-color: var(--red-color);
     height: 100vh;
-    /* overflow: hidden; */
 }
 
 
 
 
-/*#region----------------------------------MAIN-------------------------------------------------*/
+
+
+/*#region----------------------------------MAIN-----------------------------------------*/
+
+
 
 
 
@@ -70,9 +73,11 @@ a:focus {
 }
 
 
+
+
 /*#endregion*/
 
-/*#region----------------------------------QUOTE SECTION----------------------------------------*/
+/*#region----------------------------------QUOTE SECTION--------------------------------*/
 
 
 
@@ -82,7 +87,6 @@ a:focus {
     flex-direction: row;
     flex: 1;
     background-image: url("/images/quotes-background.jpg");
-    /* background-color: var(--dark-yellow-color); */
     color: var(--light-yellow-color);
     width: 100%;
     height: auto;
@@ -121,20 +125,21 @@ a:focus {
     color: rgba(217, 139, 43, 1);
 }
 
-#quote-section h3,#quote-section h2 {
+#quote-section h3,
+#quote-section h2 {
     padding: 0.5rem;
 }
 
 #points {
     font-weight: 700;
-   
+
 }
 
 #game-counter {
     font-size: 14px;
 }
 
-#previous-answers{
+#previous-answers {
     text-align: center;
     width: 100%;
     color: var(--dark-yellow-color);
@@ -151,17 +156,23 @@ a:focus {
     border-bottom: 0.5px var(--dark-yellow-color) solid;
 }
 
+#points {
+    color: #ffffff;
+}
+
+
+
 
 
 /*#endregion*/
 
-
-/*#region----------------------------------PHOTO SECTION----------------------------------------*/
-
+/*#region----------------------------------PHOTO SECTION--------------------------------*/
 
 
 
-#aside{
+
+
+#aside {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -169,7 +180,8 @@ a:focus {
     flex-shrink: 1;
 }
 
-#movie-output, #character-output {
+#movie-output,
+#character-output {
     display: none;
     font-family: 'ringbearermedium', 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     font-size: 20px;
@@ -202,7 +214,7 @@ a:focus {
     text-align: center;
     flex-wrap: wrap;
     margin: 0 auto;
-    background-image: url("../images/background2.jpg"); 
+    background-image: url("../images/background2.jpg");
     padding: 0.5rem 0 0.25rem 0;
 }
 
@@ -268,7 +280,6 @@ img {
     border-radius: 8px;
     width: 100%;
     height: auto;
-    /* box-shadow: 3px 3px 2px 2px #02234047; */
     transition: 0.5s transform, 0.5s box-shadow;
     margin: 0 auto;
 }
@@ -298,7 +309,6 @@ input[type="radio"] {
     font-family: 'ringbearermedium', 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     display: inline-block;
     padding: 5px 40px 5px 40px;
-    /* text-align: center; */
     font-size: 18px;
     text-decoration: none;
     color: rgba(217, 139, 43, 0.6);
@@ -307,69 +317,34 @@ input[type="radio"] {
     outline: none;
     transition: 0.5s transform, 0.5s box-shadow, 0.5s color, 0.5s background-color;
     box-shadow: 3px 3px 2px 2px #02234047;
-    /* position: absolute;
-    right: 15px;
-    top: 300px; */
     cursor: pointer;
-
 }
 
 #submit-button.submit-pulse {
     animation: pulse 1s infinite ease-in-out alternate;
     animation-play-state: running;
-  }
-  
-  @keyframes pulse {
-    from 
-    { transform: scale(1); 
+}
+
+@keyframes pulse {
+    from {
+        transform: scale(1);
     }
-  
-    to 
-    { transform: scale(1.2);
+
+    to {
+        transform: scale(1.2);
     }
-  }
+}
 
 #submit-button:hover {
     color: rgba(217, 139, 43, 1);
 }
-
-/*#endregion*/
-
-/* NEW */
-.movie {
-    /* position: absolute;
-    left: 20px;
-    top: 200px; */
-    border-bottom: 2px solid;
-    font-size: 26px;
-    color: var(--light-yellow-color);
-    text-shadow: 3px 2px #02234047;
-}
-
-.character {
-    /* position:absolute;
-    left: 20px;
-    top: 450px; */
-    border-bottom: 2px solid;
-    font-size: 26px;
-    color: var(--light-yellow-color);
-    text-shadow: 3px 2px #02234047;
-}
-
-#points {
-    color: #ffffff;
-}
-
-/* #movie-photos {
-    padding-bottom: 15px;
-} */
 
 #movie-photos img {
     border: 3px solid rgba(232, 208, 105, 0.3);
     transition: 0.5s border, 0.5s color, 0.5s background-color;
 }
 
-#movie-photos img:hover{
+#movie-photos img:hover {
     border: 3px solid rgba(232, 208, 105, 1);
 }
 
@@ -386,7 +361,6 @@ input[type="radio"] {
     padding: 0.25rem 0 0.25rem 0;
     border-top-left-radius: 0;
     border-top-right-radius: 0;
-    /* box-shadow: 3px 3px 2px 2px #02234047; */
 }
 
 #character-photos li img {
@@ -395,13 +369,12 @@ input[type="radio"] {
     border: 3px solid rgba(232, 208, 105, 0.3);
     border-bottom: none;
     transition: 0.5s border, 0.5s color, 0.5s background-color;
-    /* max-height: 250px; */
 }
 
- #character-photos li:hover img {
+#character-photos li:hover img {
     border: 3px solid rgba(232, 208, 105, 1);
     border-bottom: none;
-} 
+}
 
 #character-photos li p {
     border: 3px solid rgba(232, 208, 105, 0.5);
@@ -410,21 +383,158 @@ input[type="radio"] {
     transition: 0.5s border, 0.5s color, 0.5s background-color;
 }
 
-#character-photos li:hover #names-button{
+#character-photos li:hover #names-button {
     border: 3px solid rgba(232, 208, 105, 1);
     border-top: none;
     color: rgba(232, 208, 105, 1);
 }
 
-/* END NEW */
+
+
+
+/*#endregion*/
+
+/*#region----------------------------------ASIDE----------------------------------------*/
+
+
+
+
+.movie {
+    border-bottom: 2px solid;
+    font-size: 26px;
+    color: var(--light-yellow-color);
+    text-shadow: 3px 2px #02234047;
+}
+
+.character {
+    border-bottom: 2px solid;
+    font-size: 26px;
+    color: var(--light-yellow-color);
+    text-shadow: 3px 2px #02234047;
+}
 
 
 
 
 
+/*#endregion*/
+
+/*#region----------------------------------HIGHSCORE------------------------------------*/
 
 
-/*#region----------------------------------MEDIA QUERIES----------------------------------------*/
+
+
+.highscore {
+    background-image: url("../images/background.jpg");
+    display: flex;
+    flex-direction: column;
+}
+
+.ul-highscore{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    width: 100%;
+    height: auto;
+}
+
+li {
+    flex: 1;
+    margin: 0 auto;
+    list-style: none;
+    font-size: 20px;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: auto;
+}
+
+.quotes-list {
+    padding: 2rem 1rem 1rem 1rem;
+    margin: 0 auto;
+    max-width: 750px;
+    text-align: left;
+    color: var(--light-yellow-color);
+    font-size: 30px;
+}
+
+#quotes-list-span {
+    font-family: 'ringbearermedium', 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 32px;
+}
+
+#quotes-list-character-span {
+    border-top: 1px var(--dark-yellow-color) solid;
+}
+
+.quotes-h3 {
+    padding-top: 2rem;
+    margin-bottom: 2rem;
+    font-size: 46px;
+    text-align: center;
+    color: #e8d069;
+    text-shadow: 6px 4px #000000;
+    border-bottom: 1px var(--light-yellow-color) solid;
+    max-width: max-content;
+    margin: 0 auto;
+}
+
+.highscore h1,
+.highscore h2 {
+    font-family: 'ringbearermedium', 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    text-shadow: 6px 4px #000000;
+    text-align: center;
+}
+
+.highscore h1 {
+    padding: 0;
+    padding-top: 6rem;
+    font-size: 80px;
+    color: #e8d069;
+    flex: 1;
+    width: 100%;
+    height: auto;
+    margin: 0;
+}
+
+.highscore h2 {
+    padding: 0;
+    padding-top: 2rem;
+    font-size: 72px;
+    color: white;
+    flex: 1;
+    width: 100%;
+    height: auto;
+    margin: 0;
+}
+
+.retry,
+.main-menu {
+    display: block;
+    margin: 0 auto;
+    font-family: 'ringbearermedium', 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 36px;
+    color: var(--dark-yellow-color);
+    background-color: transparent;
+    border: none;
+    transition: 0.2s;
+}
+
+.retry:hover,
+.main-menu:hover {
+    color: rgba(232, 208, 105, 1);
+    cursor: pointer;
+}
+
+
+
+
+/*#endregion*/
+
+/*#region----------------------------------MEDIA QUERIES--------------------------------*/
+
+
 
 /* 
 @media all and (max-width: 1000px){
@@ -438,7 +548,7 @@ input[type="radio"] {
     body {
         overflow: auto;
     }
-    
+
     .link-button {
         margin: 0.5rem;
     }
@@ -475,7 +585,7 @@ input[type="radio"] {
         flex-direction: column;
     }
 
-    #aside{
+    #aside {
         padding: 1rem;
     }
 

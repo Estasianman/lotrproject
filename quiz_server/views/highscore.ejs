@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/reset.css">
-    <link rel="stylesheet" href="/css/styleHighscore.css">
+    <link rel="stylesheet" href="/css/style.css">
     <title>Highscore</title>
   </head>
   <body class="highscore">
@@ -18,7 +18,7 @@
     </form>
     <button class = "main-menu">Main Menu</button>
     <h3 class="quotes-h3">Quotes from your quiz:</h3>
-    <ul>
+    <ul class="ul-highscore">
     <% for (let i = 0; i < dataQuotes.gameQuotesArray.length; i++) {%>
       <li>
           <p class="quotes-list"><span id="quotes-list-span"><%-i+1 %>.&nbsp; "  <%- dataQuotes.gameQuotesArray[i] %> "</span><br><br><span id="quotes-list-character-span">Character:&nbsp;  <%- dataQuotes.characterFromQuoteArray[i] %></span><br>Movie:&nbsp;  <%- dataQuotes.movieFromQuoteArray[i] %></p>
