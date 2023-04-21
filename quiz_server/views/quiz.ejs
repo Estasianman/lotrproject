@@ -4,21 +4,36 @@
 
         
         <div id="quote-container">
-            <h2>Quote:<br><span id="game-counter">(<%- dataGame.gameCounter %> / 10)</span>
+            <h2>Quote: <span id="game-counter">(<%- dataGame.gameCounter %> / 10)</span>
             </h2>
             <p id="quote">" <%- dataApi.quote.dialog %> "</p>
-            <h3>Score: <span id="points"> <%- dataGame.score %></span>
-            </h3>
+            <h3>Score: <span id="points"> <%- dataGame.score %></span></h3>
         </div>
         <form id="form-quiz" action="/highscore" method="post">
             
             <div id="aside">
-                <h2 class = "movie">Movie</h2>
+                <% if(dataGame.userCorrectFeedback.rightMovie == 1){%>
+                    <h2 class = "movie flash-green">Movie</h2>
+                <%}else if(dataGame.userCorrectFeedback.rightMovie == -1) {%>
+    
+                    <h2 class = "movie flash-red">Movie</h2>
+                <%} else {%>
+                    <h2 class = "movie">Movie</h2>
+    
+                <%}%>
                 <p id="movie-output"></p>
                 <div>
                     <button id="submit-button" type='submit'>Next</button>
                 </div>
+                <% if(dataGame.userCorrectFeedback.rightCharacter == 1){%>
+                    <h2 class = "character flash-green" >Character</h2>
+            <%} else if(dataGame.userCorrectFeedback.rightCharacter == -1) {%>
+
+                <h2 class = "character flash-red">Character</h2>
+            <%}else {%>
                 <h2 class = "character">Character</h2>
+                
+            <%}%>
                 <p id="character-output"></p>
             </div>
             <div id="photos-container">
@@ -30,7 +45,7 @@
 
   
         <div id="quote-container">
-            <h2>Quote:<br><span id="game-counter">(<%- dataGame.gameCounter %> / 10)</span>
+            <h2>Quote: <span id="game-counter">(<%- dataGame.gameCounter %> / 10)</span>
             </h2>
             <p id="quote">" <%- dataApi.quote.dialog %> "</p>
             <h3>Score: <span id="points"> <%- dataGame.score %></span>
@@ -41,20 +56,25 @@
         <div id="aside">
             <% if(dataGame.userCorrectFeedback.rightMovie == 1){%>
                 <h2 class = "movie flash-green">Movie</h2>
-            <%}else {%>
+            <%}else if(dataGame.userCorrectFeedback.rightMovie == -1) {%>
 
+                <h2 class = "movie flash-red">Movie</h2>
+            <%} else {%>
                 <h2 class = "movie">Movie</h2>
+
             <%}%>
-            
             <p id="movie-output"></p>
             <div>
                 <button id="submit-button" type='submit'>Next</button>
             </div>
             <% if(dataGame.userCorrectFeedback.rightCharacter == 1){%>
                     <h2 class = "character flash-green" >Character</h2>
-            <%} else {%>
+            <%} else if(dataGame.userCorrectFeedback.rightCharacter == -1) {%>
 
-                <h2 class = "character" >Character</h2>
+                <h2 class = "character flash-red">Character</h2>
+            <%}else {%>
+                <h2 class = "character">Character</h2>
+                
             <%}%>
             <p id="character-output"></p>
         </div>

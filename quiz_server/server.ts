@@ -171,8 +171,8 @@ let gameData: GameVariables = {
     gameType: "",
     headerTitle: "",
     userCorrectFeedback: {
-        rightMovie: -1,
-        rightCharacter: -1
+        rightMovie: 0,
+        rightCharacter: 0
     }
 };
 
@@ -434,6 +434,8 @@ const getApiData = async (): Promise<void> => {
     });
 
     app.post("/quiz", (req, res) => {
+        gameData.userCorrectFeedback.rightMovie = 0;
+        gameData.userCorrectFeedback.rightCharacter = 0;
         // get user/player answers from quiz
         gameData.userMovieAnswer = req.body.checkboxMovie;
         gameData.userCharacterAnswer = req.body.checkboxCharacter;
@@ -483,6 +485,8 @@ const getApiData = async (): Promise<void> => {
     });
 
     app.post("/sudden_death", (req, res) => {
+        gameData.userCorrectFeedback.rightMovie = 0;
+        gameData.userCorrectFeedback.rightCharacter = 0;
         // get user/player answers from quiz
         gameData.userMovieAnswer = req.body.checkboxMovie;
         gameData.userCharacterAnswer = req.body.checkboxCharacter;
