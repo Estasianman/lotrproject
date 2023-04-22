@@ -51,7 +51,7 @@
             <h3>Score: <span id="points"> <%- dataGame.score %></span>
             </h3>
         </div>
-        <form id="form-quiz" action="/<%- dataGame.gameType %>" method="post">
+        <form id="form-quiz" action="/<%- dataGame.gameType %>#form-quiz" method="post">
        
         <div id="aside">
             <% if(dataGame.userCorrectFeedback.rightMovie == 1){%>
