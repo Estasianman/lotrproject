@@ -84,14 +84,13 @@ a:focus {
 /*#region----------------------------------HEADER PARTIAL-------------------------------*/
 
 header {
-    grid-area: header;
     display: flex;
     flex-direction: column;
     justify-content: center;
     width: 100%;
     height: auto;
     background-image: url("/images/quotes-background.jpg");
-    border-bottom: 2px black solid;
+    border-bottom: 5px black solid;
 }
 
 header h1 {
@@ -103,7 +102,6 @@ header h1 {
     width: 100%;
     height: auto;
     margin-top: 5px;
-    
 }
 
 #header-container {
@@ -164,7 +162,7 @@ header h1 {
     height: auto;
     padding: 0.5rem 0 0.5rem 0;
     /* background-image: url("../images/background2.jpg"); */
-    background: linear-gradient(0deg, #57370e39, #57370e39), url("../images/background2.jpg");
+    background: linear-gradient(0deg, #00000039, #00000039), url("../images/background2.jpg");
     background-size:cover;
     border-bottom: 2px black solid;
 }

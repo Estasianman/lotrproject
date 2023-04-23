@@ -1,8 +1,7 @@
-<%- include("partials/headQuiz") %>
+<%- include("partials/header") %>
 
     <% if (dataGame.gameCounter >= 10){ %>
 
-        
         <div id="quote-container">
             <h2>Quote: <span id="game-counter">(<%- dataGame.gameCounter %> / 10)</span>
             </h2>
@@ -43,7 +42,6 @@
                     
     <%} else {%>
 
-  
         <div id="quote-container">
             <h2>Quote: <span id="game-counter">(<%- dataGame.gameCounter %> / 10)</span>
             </h2>
@@ -54,6 +52,7 @@
         <form id="form-quiz" action="/<%- dataGame.gameType %>#form-quiz" method="post">
        
         <div id="aside">
+
             <% if(dataGame.userCorrectFeedback.rightMovie == 1){%>
                 <h2 class = "movie flash-green">Movie</h2>
             <%}else if(dataGame.userCorrectFeedback.rightMovie == -1) {%>
@@ -63,19 +62,26 @@
                 <h2 class = "movie">Movie</h2>
 
             <%}%>
+
             <p id="movie-output"></p>
             <div>
                 <button id="submit-button" type='submit'>Next</button>
             </div>
+
             <% if(dataGame.userCorrectFeedback.rightCharacter == 1){%>
+
                     <h2 class = "character flash-green" >Character</h2>
+
             <%} else if(dataGame.userCorrectFeedback.rightCharacter == -1) {%>
 
                 <h2 class = "character flash-red">Character</h2>
+
             <%}else {%>
+
                 <h2 class = "character">Character</h2>
                 
             <%}%>
+
             <p id="character-output"></p>
         </div>
         <div id="photos-container">
@@ -87,6 +93,7 @@
             <% if (dataGame.randomNumberMovie == 1){ %>
 
                 <% for (let i = 0; i < dataGame.moviePhotoArray.length; i++) {%>
+
                     <li>
                         <figure>
                             <img src="<%- dataGame.moviePhotoArray[i] %>"
@@ -197,6 +204,7 @@
                             <% if (dataGame.randomNumberCharacter == 1){ %>
                                 
                             <% for (let i = 0; i < dataGame.characterPhotoArray.length; i++) {%>
+
                                 <li>
                                     <figure>
                                         <img src="<%- dataGame.characterPhotoArray[i] %>"
@@ -280,6 +288,7 @@
                                 <% if (dataGame.randomNumberCharacter == 1){ %>
 
                                     <% for (let i = 0; i < dataGame.characterPhotoArray.length; i++) {%>
+
                                         <li>
                                             <figure>
                                                 <img src="<%- dataGame.characterPhotoArray[i] %>"
@@ -331,8 +340,6 @@
                         <%}%>
                     
                             </form>
-                         
                             </main>
                             </body>
-
                             </html>

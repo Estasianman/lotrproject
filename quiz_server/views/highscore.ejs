@@ -19,12 +19,15 @@
     <button class = "main-menu">Main Menu</button>
     <h3 class="quotes-h3">Quotes from your quiz:</h3>
     <ul class="ul-highscore">
+
     <% for (let i = 0; i < dataQuotes.gameQuotesArray.length; i++) {%>
+
       <li id="li-highscore">
-          <p class="quotes-list"><span id="quotes-list-span"><%-i+1 %>.&nbsp; "  <%- dataQuotes.gameQuotesArray[i] %> "</span><br><br><span id="quotes-list-character-span">Character:&nbsp;  <%- dataQuotes.characterFromQuoteArray[i] %></span><br>Movie:&nbsp;  <%- dataQuotes.movieFromQuoteArray[i] %></p>
+          <p class="quotes-list"><span id="quotes-list-span"><%-i+1 %>.&nbsp; "  <%- dataQuotes.gameQuotesArray[i] %> "</span><br><span id="quotes-list-character-span">Character:&nbsp;  <%- dataQuotes.characterFromQuoteArray[i] %></span><br>Movie:&nbsp;  <%- dataQuotes.movieFromQuoteArray[i] %></p>
       </li>
 
   <% }; %> 
-</ul>
+
+    </ul>
   </body>
 </html>

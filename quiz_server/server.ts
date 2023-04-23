@@ -265,9 +265,7 @@ const getApiData = async (): Promise<void> => {
     const addCharacterPhotoArrayElements: CombineArrayElements = (arrayEmpty, characterArray) => {
         for (let i = 0; i < 3; i++) {
             let name: string = "";
-            // if (characterArray[i].name == "Denethor I") {
-            //     arrayEmpty[i] = "/images/character_placeholder.jpg";
-            // }
+            
             if (characterArray[i].name == "Gothmog (Lieutenant of Morgul)") {
 
                 arrayEmpty[i] = `/images/characters/Gothmog.jpg`;
