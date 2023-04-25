@@ -132,7 +132,7 @@ let characters: Characters = {
 
 // main game variables used in the quiz
 interface GameVariables {
-    _id?: number,
+    _id?: any,
     movieArray: MovieDoc[],
     correctMovieName: string,
     characterArray: Doc[],
