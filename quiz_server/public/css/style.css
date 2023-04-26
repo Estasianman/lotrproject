@@ -172,7 +172,6 @@ header h1 {
     display: block;
     width: 300px;
     height: 300px;
-    border: 20px solid rgba(0, 0, 0);
     box-shadow: 10px 5px 5px rgba(0, 0, 0, 0.6);
     border-radius: 5px;
     transition: transform .5s;
@@ -181,16 +180,6 @@ header h1 {
   .landing-lotr-choice img:hover {
     transform: scale(1.03);
   }
-  
-  .landing-lotr-choice figcaption {
-    position: absolute;
-    left: 50%;
-    transform: translate(-50%, -100%);
-    font-size: 1em;
-    color: #ffffff;
-    padding: 25px 0px;
-  }
-  
   
 
 
@@ -349,7 +338,8 @@ figure {
     flex: 1;
 }
 
-img {
+#movie-photos img,
+#character-photos img {
     flex: 1;
     max-height: 250px;
     max-width: 225px;

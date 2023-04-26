@@ -426,6 +426,20 @@ const getApiData = async (): Promise<void> => {
   };
   main();
 
+  app.get("/index", (req, res) => {
+    let gameData = {
+      headerTitle: "LOTR Quiz",
+      gameType: "",
+    };
+    let apiData = null;
+  
+    res.render("index", {
+      dataGame: gameData,
+      dataApi: apiData,
+    });
+  });
+  
+
   // array for app.get routes:
   let routes = ["/quiz", "/sudden_death", "/highscore", "/index"];
 
