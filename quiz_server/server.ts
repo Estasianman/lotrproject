@@ -432,13 +432,12 @@ const getApiData = async (): Promise<void> => {
       gameType: "",
     };
     let apiData = null;
-  
+
     res.render("index", {
       dataGame: gameData,
       dataApi: apiData,
     });
   });
-  
 
   // array for app.get routes:
   let routes = ["/quiz", "/sudden_death", "/highscore", "/index"];
@@ -590,24 +589,23 @@ const getApiData = async (): Promise<void> => {
             playerInfo = player;
           }
         }
-        let player: player;
         if (existingPlayer) {
           if (playerInfo!.score >= gameData.gameCounter) {
-            player: player = {
+            let currentPlayer: player = {
               name: userName,
               score: gameData.gameCounter,
             };
             client
               .db("LOTR")
               .collection("scores")
-              .findOneAndReplace({ name: userName }, player);
+              .findOneAndReplace({ name: userName }, currentPlayer);
           }
         } else {
-          player: player = {
+          let currentPlayer: player = {
             name: userName,
             score: gameData.gameCounter,
           };
-          client.db("LOTR").collection("scores").insertOne(player);
+          client.db("LOTR").collection("scores").insertOne(currentPlayer);
         }
         res.render("highscore", {
           dataGame: gameData,
