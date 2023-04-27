@@ -25,7 +25,7 @@ body {
     line-height: normal;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     min-height: 100vh;
-    background-image: url("../images/background2.jpg");
+    
 }
 
 
@@ -33,7 +33,7 @@ body {
 
 
 
-/*#region----------------------------------MAIN-----------------------------------------*/
+/*#region------------------------------MAIN-------------------------------------*/
 
 
 
@@ -59,7 +59,7 @@ h1 {
     text-transform: uppercase;
     padding: 0.25rem;
     font-size: 32px;
-    margin: 0 auto;
+    /* margin: 0 auto; */
 }
 
 h2 {
@@ -81,7 +81,7 @@ a:focus {
 
 /*#endregion*/
 
-/*#region----------------------------------HEADER PARTIAL-------------------------------*/
+/*#region------------------------------HEADER PARTIAL---------------------------*/
 
 header {
     background-image: url("/images/quotes-background.jpg");
@@ -104,10 +104,9 @@ header h1 {
 
 #header-container {
     width: 100%;
-    max-width: 50%;
     display: flex;
     height: auto;
-
+    justify-content: space-around;
 }
 
 #home-button,
@@ -174,7 +173,7 @@ header h1 {
 
 /*#endregion*/
 
-/*#region----------------------------------INDEX PAGE--------------------------------*/
+/*#region------------------------------INDEX PAGE-------------------------------*/
 
 
 
@@ -223,20 +222,20 @@ header h1 {
 
 
 /*#endregion*/
-/*#region----------------------------------LANDING PAGE--------------------------------*/
+
+/*#region------------------------------LANDING PAGE-----------------------------*/
 
 
 
 
 /*#endregion*/
 
-
-/*#region----------------------------------ACCOUNT--------------------------------*/
+/*#region------------------------------ACCOUNT----------------------------------*/
 
 
 /*#endregion*/
 
-/*#region----------------------------------QUOTE SECTION--------------------------------*/
+/*#region------------------------------QUOTE SECTION----------------------------*/
 
 
 #quote {
@@ -312,11 +311,7 @@ header h1 {
 
 /*#endregion*/
 
-/*#region----------------------------------PHOTO SECTION--------------------------------*/
-
-
-
-
+/*#region------------------------------PHOTO SECTION----------------------------*/
 
 
 
@@ -332,6 +327,10 @@ header h1 {
     text-align: center;
     justify-content: space-evenly;
     padding: 2rem 0 1rem 0;
+    background-image: url("../images/background2.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
 }
 
 #photos-container {
@@ -480,7 +479,7 @@ input[type="radio"] {
 
 /*#endregion*/
 
-/*#region----------------------------------ASIDE----------------------------------------*/
+/*#region------------------------------ASIDE------------------------------------*/
 
 
 
@@ -601,7 +600,7 @@ input[type="radio"] {
 
 /*#endregion*/
 
-/*#region----------------------------------HIGHSCORE------------------------------------*/
+/*#region------------------------------HIGHSCORE--------------------------------*/
 
 
 

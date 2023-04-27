@@ -703,7 +703,7 @@ const getApiData = async (): Promise<void> => {
   });
 
   app.listen(app.get("port"), () =>
-    console.log("[server] http://localhost:" + app.get("port") + "/quiz")
+    console.log("[server] http://localhost:" + app.get("port") + "/index")
   );
 };
 getApiData();
