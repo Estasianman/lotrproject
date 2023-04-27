@@ -16,7 +16,10 @@ app.set("port", 3000);
 //player interface
 interface player {
   name: string;
-  score: number;
+  ww?: string;
+  qscore?: number;
+  sdscore?: number;
+  blacklisted?: qDoc[];
 }
 
 //API character interface
@@ -489,7 +492,7 @@ const getApiData = async (): Promise<void> => {
     }
   });
 
-  app.post("/quiz", (req, res) => {
+  app.post("/quiz", async (req, res) => {
     gameData.userCorrectFeedback.rightMovie = 0;
     gameData.userCorrectFeedback.rightCharacter = 0;
     // get user/player answers from quiz
@@ -542,7 +545,41 @@ const getApiData = async (): Promise<void> => {
     // call main function to get new quote, characters, and movies
     main();
 
-    res.render("quiz", { dataGame: gameData, dataApi: apiData });
+    try {
+      await client.connect();
+      let cursor = client.db("LOTR").collection("users").find<player>({});
+      let result = await cursor.toArray();
+      let userName = "Test";
+      let playerInfo = null;
+      let existingPlayer: boolean = false;
+      result = result.sort(({ sdscore: a }, { sdscore: b }) => b! - a!);
+      for (const player of result) {
+        if (player.name == userName) {
+          existingPlayer = true;
+          playerInfo = player;
+        }
+      }
+      if (existingPlayer) {
+        if (playerInfo!.sdscore! < gameData.gameCounter) {
+          playerInfo!.qscore = gameData.score;
+          client
+            .db("LOTR")
+            .collection("users")
+            .findOneAndReplace({ name: userName }, playerInfo!);
+        }
+      } else {
+        let currentPlayer: player = {
+          name: "test",
+          qscore: gameData.score,
+        };
+        client.db("LOTR").collection("users").insertOne(currentPlayer);
+      }
+      res.render("quiz", { dataGame: gameData, dataApi: apiData });
+    } catch (exc) {
+      console.log(exc);
+    } finally {
+      await client.close;
+    }
   });
 
   app.post("/sudden_death", async (req, res) => {
@@ -581,12 +618,12 @@ const getApiData = async (): Promise<void> => {
       // gameData.previousQuizAnswers = `Both are wrong.&nbsp;  The correct movie was:&nbsp; <span id="answers-span">  ${gameData.correctMovieName}</span>.&nbsp;  The correct character was:&nbsp; <span id="answers-span">  ${gameData.correctCharacterName}</span>.`;
       try {
         await client.connect();
-        let cursor = client.db("LOTR").collection("scores").find<player>({});
+        let cursor = client.db("LOTR").collection("users").find<player>({});
         let result = await cursor.toArray();
         let userName = "Test";
         let playerInfo = null;
         let existingPlayer: boolean = false;
-        result = result.sort(({ score: a }, { score: b }) => b - a);
+        result = result.sort(({ sdscore: a }, { sdscore: b }) => b! - a!);
         for (const player of result) {
           if (player.name == userName) {
             existingPlayer = true;
@@ -594,22 +631,19 @@ const getApiData = async (): Promise<void> => {
           }
         }
         if (existingPlayer) {
-          if (playerInfo!.score >= gameData.gameCounter) {
-            let currentPlayer: player = {
-              name: userName,
-              score: gameData.gameCounter,
-            };
+          if (playerInfo!.sdscore! < gameData.gameCounter) {
+            playerInfo!.sdscore = gameData.score;
             client
               .db("LOTR")
-              .collection("scores")
-              .findOneAndReplace({ name: userName }, currentPlayer);
+              .collection("users")
+              .findOneAndReplace({ name: userName }, playerInfo!);
           }
         } else {
           let currentPlayer: player = {
-            name: userName,
-            score: gameData.gameCounter,
+            name: "test",
+            sdscore: gameData.score,
           };
-          client.db("LOTR").collection("scores").insertOne(currentPlayer);
+          client.db("LOTR").collection("users").insertOne(currentPlayer);
         }
         res.render("highscore", {
           dataGame: gameData,
