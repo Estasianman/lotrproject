@@ -118,7 +118,7 @@ header h1 {
     text-align: center;
     padding: 6px 15px;
     max-height: 50px;
-    font-size: 14px;
+    font-size: 20px;
     text-decoration: none;
     color: var(--dark-yellow-color);
     background-color: black;
@@ -130,7 +130,6 @@ header h1 {
 }
 
 #home-button a {
-    font-size: 14px;
     text-decoration: none;
     color: var(--dark-yellow-color);
 
@@ -154,7 +153,6 @@ header h1 {
     background-color: black;
     display: none;
     position: absolute;
-    font-size: 14px;
     min-width: 16px;
     border-radius: 8px;
 }
@@ -164,13 +162,13 @@ header h1 {
     font-weight: bold;
     text-align: center;
     padding: 6px 30px;
-    font-size: 14px;
+    font-size: 20px;
     text-decoration: none;
     display: block;
     transition: 0.5s color;
 }
 
-#profile-button:hover .dropdown-content {
+.show {
     display: block;
 }
 
