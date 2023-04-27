@@ -497,7 +497,7 @@ const getApiData = async (): Promise<void> => {
         break;
       case "/landing":
         gameData.gameType = "";
-        res.render("landing", { dataGame: gameData, dataApi: apiData });
+        res.render("landing");
         break;
       case "/account":
         gameData.headerTitle = "Account";

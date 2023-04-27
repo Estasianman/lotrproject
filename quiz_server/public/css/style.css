@@ -225,7 +225,75 @@ header h1 {
 /*#region------------------------------LANDING PAGE-----------------------------*/
 
 
-
+.landing-page {
+    position: relative;
+    margin-left: 0;
+  }
+  
+  .landing-page header {
+    background-image: url("/images/landing/wallhaven-pkogk3.png");
+    padding: 90px 0 100px 80px;
+    font-size: 48px;
+    /* border-bottom: 2px solid black; */
+  }
+  
+  .landing-page header h1 {
+    color: white;
+    font-family: system-ui, sans-serif;
+    text-shadow: 3px 5px black;
+    
+  
+  }
+  
+  
+  .landing-page .buttons {
+    position: absolute;
+    right: 100px;
+    top: 50px;
+  }
+  
+  .landing-page .buttons button {
+    width: 110px;
+    height: 40px;
+    border-radius: 15%;
+    border: none;
+    font-size: 16px;
+    transition-duration: 0.2s;
+  }
+  
+  .landing-page .buttons button:hover {
+    transform: scale(1.1);
+    cursor: pointer;
+  }
+  
+  .landing-page main figure img {
+    width: 200px;
+    height: 150px;
+    margin: 30px 30px 20px 30px;
+  }
+  
+  .landing-page figure {
+    margin: 10px 25px 10px 25px;
+    border-radius: 10%;
+    transition-duration: 0.5s;
+    background-color: #ececec;
+    box-shadow: 2px 2px grey;
+  }
+  
+  .landing-page figure:hover {
+    transform: scale(1.1);
+    box-shadow: none;
+  }
+  
+  
+  .landing-page .projects {
+    padding-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    background: rgb(255,255,255);
+    background: linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 42%, rgba(223,220,220,1) 100%);
+  }
 
 /*#endregion*/
 
