@@ -15,9 +15,17 @@
     <header>
         <section id="header-section">
             <container id="header-container">
-                <button href="#" class="link-button">Home</button>
+                <button href="#" id="home-button">Home</button>
                 <h1><%- dataGame.headerTitle %></h1>
-                <button href="#" class="link-button">My Profile</button>
+                <button href="#" id="profile-button">My Profile
+                    <div class="dropdown-content">
+                        <a href="landing.html">Project Menu</a>
+                        <a href="blacklist.html">Blacklist</a>
+                        <a href="#">Sudden Death</a>
+                        <a href="#">10-rounds</a>
+                        <a href="highscore.html">Highscores</a>
+                    </div>
+                </button>
             </container>
         </section>
     </header>

@@ -21,7 +21,7 @@ html {
 body {
     display: flex;
     flex-direction: column;
-    justify-content:inherit;
+    justify-content: inherit;
     line-height: normal;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     min-height: 100vh;
@@ -84,11 +84,6 @@ a:focus {
 /*#region----------------------------------HEADER PARTIAL-------------------------------*/
 
 header {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    width: 100%;
-    height: auto;
     background-image: url("/images/quotes-background.jpg");
     border-bottom: 5px black solid;
 }
@@ -102,18 +97,21 @@ header h1 {
     width: 100%;
     height: auto;
     margin-top: 5px;
+    display: flex;
+    justify-content: center;
+
 }
 
 #header-container {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    flex: 1;
     width: 100%;
+    max-width: 50%;
+    display: flex;
     height: auto;
+
 }
 
-.link-button {
+#home-button,
+#profile-button {
     cursor: pointer;
     font-weight: bold;
     display: inline-block;
@@ -128,16 +126,53 @@ header h1 {
     outline: none;
     transition: 0.5s color;
     margin: 0 0.5rem 0 0.5rem;
+
 }
 
-.link-button:hover {
+#profile-button {
+    position: relative;
+    display: inline-block;
+}
+
+#profile-button:hover,
+.dropdown-content a:hover {
     color: var(--light-yellow-color);
+}
+
+
+
+.dropdown-content {
+    font-weight: bold;
+    color: rgba(217, 139, 43, 0.6);
+    background-color: black;
+    display: none;
+    position: absolute;
+    font-size: 14px;
+    min-width: 16px;
+    border-radius: 8px;
+}
+
+.dropdown-content a {
+    color: rgba(217, 139, 43, 0.6);
+    font-weight: bold;
+    text-align: center;
+    padding: 6px 30px;
+    font-size: 14px;
+    text-decoration: none;
+    display: block;
+    transition: 0.5s color;
+}
+
+#profile-button:hover .dropdown-content {
+    display: block;
 }
 
 /*#endregion*/
 
 /*#region----------------------------------INDEX PAGE--------------------------------*/
 
+
+/*#region----------------------------------LANDING-------------------------------*/
 
 #landing-lotr {
     min-height: 100%;
@@ -152,42 +187,40 @@ header h1 {
     align-items: center;
     margin: 0;
     padding: 0;
-  }
+}
 
-  #landing-lotr-container {
+#landing-lotr-container {
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
     margin-top: 50px;
-  }
-  
-  .landing-lotr-choice {
+}
+
+.landing-lotr-choice {
     position: relative;
     margin: 0 60px;
     text-align: center;
-  }
-  
-  .landing-lotr-choice img {
+}
+
+.landing-lotr-choice img {
     display: block;
     width: 300px;
     height: 300px;
     box-shadow: 10px 5px 5px rgba(0, 0, 0, 0.6);
     border-radius: 5px;
     transition: transform .5s;
-  }
-  
-  .landing-lotr-choice img:hover {
+}
+
+.landing-lotr-choice img:hover {
     transform: scale(1.03);
-  }
-  
+}
+
+
+/*#endregion*/
 
 
 /*#region----------------------------------QUOTE SECTION--------------------------------*/
-
-
-
-
 
 
 #quote {
@@ -210,7 +243,7 @@ header h1 {
     padding: 0.5rem 0 0.5rem 0;
     /* background-image: url("../images/background2.jpg"); */
     background: linear-gradient(0deg, #00000039, #00000039), url("../images/background2.jpg");
-    background-size:cover;
+    background-size: cover;
     border-bottom: 2px black solid;
 }
 
@@ -344,7 +377,7 @@ figure {
     max-height: 250px;
     max-width: 225px;
     object-fit: cover;
-    object-position: 25% 25%; 
+    object-position: 25% 25%;
     border-radius: 8px;
     width: 100%;
     height: auto;
@@ -423,7 +456,7 @@ input[type="radio"] {
     border-top: none;
     color: rgb(255, 208, 0);
     font-weight: bold;
-    
+
 }
 
 
@@ -515,7 +548,7 @@ input[type="radio"] {
         color: green;
         text-shadow: 2px 2px #000000;
         transform: scale(1.01);
-        
+
     }
 
     100% {
@@ -531,7 +564,7 @@ input[type="radio"] {
 @keyframes flash-red {
     0% {
         color: var(--light-yellow-color);
-        
+
     }
 
     50% {
@@ -563,7 +596,7 @@ input[type="radio"] {
     flex-direction: column;
 }
 
-.ul-highscore{
+.ul-highscore {
     flex: 1;
     display: flex;
     flex-direction: column;
