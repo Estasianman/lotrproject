@@ -125,13 +125,11 @@ header h1 {
     outline: none;
     transition: 0.5s color;
     margin: 0 0.5rem 0 0.5rem;
-
 }
 
 #home-button a {
     text-decoration: none;
     color: var(--dark-yellow-color);
-
 }
 
 #profile-button {
@@ -144,20 +142,21 @@ header h1 {
     color: var(--light-yellow-color);
 }
 
-
-
 .dropdown-content {
     font-weight: bold;
     color: rgba(217, 139, 43, 0.6);
+    border: 2px solid var(--light-yellow-color);
     background-color: black;
     display: none;
     position: absolute;
+    top: 50px;
+    left: -45px;
     min-width: 16px;
     border-radius: 8px;
 }
 
 .dropdown-content a {
-    color: rgba(217, 139, 43, 0.6);
+    color: var(--dark-yellow-color);
     font-weight: bold;
     text-align: center;
     padding: 6px 30px;
@@ -340,6 +339,10 @@ header h1 {
     justify-content: space-around;
     flex-wrap: wrap;
     max-width: 60%;
+}
+
+#photos-container img {
+    cursor: pointer;
 }
 
 article {
@@ -714,7 +717,7 @@ input[type="radio"] {
 
 /*#endregion*/
 
-/*#region----------------------------------MEDIA QUERIES--------------------------------*/
+/*#region------------------------------MEDIA QUERIES----------------------------*/
 
 
 
@@ -758,6 +761,18 @@ input[type="radio"] {
 
     #quote {
         padding: 0;
+    }
+}
+
+@media all and (max-width: 700px){
+
+    .dropdown-content {
+        
+        position: absolute;
+        top: 50px;
+        left: -100px;
+        min-width: 16px;
+        border-radius: 8px;
     }
 }
 
