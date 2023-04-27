@@ -432,7 +432,7 @@ const getApiData = async (): Promise<void> => {
 
 
   // array for app.get routes:
-  let routes = ["/quiz", "/sudden_death", "/highscore", "/index"];
+  let routes = ["/quiz", "/sudden_death", "/highscore", "/index", "/favorites", "/blacklist", "/landing", "/account"];
 
   app.get(routes, (req, res) => {
     let parsedUrl = new URL(`http://localhost:${app.get("port")}${req.url}`);
@@ -481,11 +481,19 @@ const getApiData = async (): Promise<void> => {
         gameData.gameType = "";
         res.render("favorites", { dataGame: gameData, dataApi: apiData });
         break;
-        case "/blacklist":
-          gameData.headerTitle = "Blacklist";
-          gameData.gameType = "";
-          res.render("blacklist", { dataGame: gameData, dataApi: apiData });
-          break;
+      case "/blacklist":
+        gameData.headerTitle = "Blacklist";
+        gameData.gameType = "";
+        res.render("blacklist", { dataGame: gameData, dataApi: apiData });
+        break;
+      case "/landing":
+        gameData.gameType = "";
+        res.render("landing", { dataGame: gameData, dataApi: apiData });
+        break;
+      case "/account":
+        gameData.gameType = "";
+        res.render("account", { dataGame: gameData, dataApi: apiData });
+        break;
 
       default:
         break;
