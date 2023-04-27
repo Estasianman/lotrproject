@@ -129,6 +129,13 @@ header h1 {
 
 }
 
+#home-button a {
+    font-size: 14px;
+    text-decoration: none;
+    color: var(--dark-yellow-color);
+
+}
+
 #profile-button {
     position: relative;
     display: inline-block;
@@ -694,6 +701,7 @@ input[type="radio"] {
     font-size: 36px;
     color: var(--dark-yellow-color);
     background-color: transparent;
+    text-decoration: none;
     border: none;
     transition: 0.2s;
 }

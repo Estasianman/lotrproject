@@ -1,33 +1,39 @@
 <!DOCTYPE html>
 <html lang="nl-BE">
-  <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/reset.css">
-    <link rel="stylesheet" href="/css/style.css">
-    <title>Highscore</title>
-  </head>
-  <body class="highscore">
-    <h1>Your Highscore</h1>
-    <h2><%- dataGame.score %></h2>
-    <form action="/<%- dataGame.gameType %>" method="post">
-        <% dataGame.score = 0 %>
-        <% dataGame.gameCounter = 0 %>
-    <button class = "retry">Retry</button> 
-    </form>
-    <button class = "main-menu">Main Menu</button>
-    <h3 class="quotes-h3">Quotes from your quiz:</h3>
-    <ul class="ul-highscore">
 
-    <% for (let i = 0; i < dataQuotes.gameQuotesArray.length; i++) {%>
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/reset.css">
+  <link rel="stylesheet" href="/css/style.css">
+  <title>Highscore</title>
+</head>
+
+<body class="highscore">
+  <h1>Your Highscore</h1>
+  <h2><%- dataGame.score %></h2>
+  <form action="/<%- dataGame.gameType %>" method="post">
+    <% dataGame.score=0 %>
+      <% dataGame.gameCounter=0 %>
+        <button class="retry">Retry</button>
+  </form>
+  <a href="/index" class="main-menu">Main Menu</a>
+  <h3 class="quotes-h3">Quotes from your quiz:</h3>
+  <ul class="ul-highscore">
+
+    <% for (let i=0; i < dataQuotes.gameQuotesArray.length; i++) {%>
 
       <li id="li-highscore">
-          <p class="quotes-list"><span id="quotes-list-span"><%-i+1 %>.&nbsp; "  <%- dataQuotes.gameQuotesArray[i] %> "</span><br><span id="quotes-list-character-span">Character:&nbsp;  <%- dataQuotes.characterFromQuoteArray[i] %></span><br>Movie:&nbsp;  <%- dataQuotes.movieFromQuoteArray[i] %></p>
+        <p class="quotes-list"><span id="quotes-list-span"><%-i+1 %>.&nbsp; " <%- dataQuotes.gameQuotesArray[i] %>
+                "</span><br><span id="quotes-list-character-span">Character:&nbsp; <%-
+              dataQuotes.characterFromQuoteArray[i] %></span><br>Movie:&nbsp; <%- dataQuotes.movieFromQuoteArray[i] %>
+        </p>
       </li>
 
-  <% }; %> 
+      <% }; %>
 
-    </ul>
-  </body>
+  </ul>
+</body>
+
 </html>
