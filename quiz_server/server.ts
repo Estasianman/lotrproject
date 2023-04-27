@@ -19,7 +19,13 @@ interface player {
   ww?: string;
   qscore?: number;
   sdscore?: number;
-  blacklisted?: qDoc[];
+  favorites?: Doc[];
+  blacklisted?: blacklisted[];
+}
+
+interface blacklisted {
+  reden: string;
+  quote: qDoc;
 }
 
 //API character interface
@@ -435,13 +441,12 @@ const getApiData = async (): Promise<void> => {
       gameType: "",
     };
     let apiData = null;
-  
+
     res.render("index", {
       dataGame: gameData,
       dataApi: apiData,
     });
   });
-  
 
   // array for app.get routes:
   let routes = ["/quiz", "/sudden_death", "/highscore", "/index"];
@@ -700,4 +705,4 @@ const getApiData = async (): Promise<void> => {
   );
 };
 getApiData();
-export { };
+export {};
