@@ -435,12 +435,13 @@ const getApiData = async (): Promise<void> => {
       gameType: "",
     };
     let apiData = null;
-
+  
     res.render("index", {
       dataGame: gameData,
       dataApi: apiData,
     });
   });
+  
 
   // array for app.get routes:
   let routes = ["/quiz", "/sudden_death", "/highscore", "/index"];
@@ -481,6 +482,11 @@ const getApiData = async (): Promise<void> => {
           dataApi: apiData,
           dataQuotes: saveGameQuotes,
         });
+        break;
+      case "/index":
+        gameData.headerTitle = "LOTR Quiz";
+        gameData.gameType = "";
+        res.render("index", { dataGame: gameData, dataApi: apiData });
         break;
 
       default:
@@ -694,4 +700,4 @@ const getApiData = async (): Promise<void> => {
   );
 };
 getApiData();
-export {};
+export { };
