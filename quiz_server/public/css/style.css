@@ -52,6 +52,10 @@ main {
     justify-content: space-between;
     background-image: inherit;
     flex: 1;
+    background-image: url("../images/background2.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
 }
 
 h1 {
@@ -130,6 +134,7 @@ header h1 {
 #home-button a {
     text-decoration: none;
     color: var(--dark-yellow-color);
+    transition: 0.5s;
 }
 
 #profile-button {
@@ -137,7 +142,7 @@ header h1 {
     display: inline-block;
 }
 
-#profile-button:hover,
+#profile-button:hover, #home-button:hover a,
 .dropdown-content a:hover {
     color: var(--light-yellow-color);
 }
