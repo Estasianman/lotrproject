@@ -569,7 +569,26 @@ const getApiData = async (): Promise<void> => {
 
     try {
       await client.connect();
-      client.db("LOTR").collection("users").insertOne(NewUser);
+      const result = await client
+        .db("LOTR")
+        .collection("users")
+        .insertOne(NewUser);
+    } catch (exc) {
+      console.log(exc);
+    } finally {
+      await client.close();
+    }
+    res.render("create");
+  });
+
+  //login
+  app.post("/login", async (req, res) => {
+    try {
+      await client.connect();
+      const result = await client
+        .db("LOTR")
+        .collection("users")
+        .findOne<player>({ name: req.body.name, ww: req.body.ww });
     } catch (exc) {
       console.log(exc);
     } finally {
