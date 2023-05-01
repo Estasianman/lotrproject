@@ -24,7 +24,7 @@ interface player {
 }
 
 interface blacklisted {
-  reden: string;
+  reason: string;
   quote: qDoc;
 }
 
@@ -445,12 +445,14 @@ const getApiData = async (): Promise<void> => {
     "/blacklist",
     "/landing",
     "/account",
+    "/login",
+    "/create",
   ];
 
   app.get(routes, (req, res) => {
     let parsedUrl = new URL(`http://localhost:${app.get("port")}${req.url}`);
     let path = parsedUrl.pathname;
-
+    console.log(path);
     // check which app.get route was requested:
     switch (path) {
       case "/quiz":
@@ -539,6 +541,14 @@ const getApiData = async (): Promise<void> => {
         gameData.gameType = "";
         res.render("landing");
         break;
+      case "/login":
+        gameData.gameType = "";
+        res.render("login");
+        break;
+      case "/create":
+        gameData.gameType = "";
+        res.render("create");
+        break;
       case "/account":
         gameData.headerTitle = "Account";
         gameData.gameType = "";
@@ -548,6 +558,24 @@ const getApiData = async (): Promise<void> => {
       default:
         break;
     }
+  });
+
+  //create new User
+  app.post("/create", async (req, res) => {
+    let NewUser: player = {
+      name: req.body.name,
+      ww: req.body.ww,
+    };
+
+    try {
+      await client.connect();
+      client.db("LOTR").collection("users").insertOne(NewUser);
+    } catch (exc) {
+      console.log(exc);
+    } finally {
+      await client.close();
+    }
+    res.render("create");
   });
 
   app.post("/quiz", async (req, res) => {
