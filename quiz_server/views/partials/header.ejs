@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="/css/reset.css">
     <link rel="stylesheet" href="/css/style.css">
     <script defer src="/js/script.js"></script>
+    <script defer src="/js/button.js"></script>
     <title><%- dataGame.headerTitle %></title>
 </head>
 
@@ -15,15 +16,17 @@
     <header>
         <section id="header-section">
             <container id="header-container">
-                <button href="#" id="home-button">Home</button>
+                <button id="home-button">
+                    <a href="/index">Home</a>
+                </button>
                 <h1><%- dataGame.headerTitle %></h1>
-                <button href="#" id="profile-button">My Profile
-                    <div class="dropdown-content">
-                        <a href="landing.html">Project Menu</a>
-                        <a href="blacklist.html">Blacklist</a>
-                        <a href="#">Sudden Death</a>
-                        <a href="#">10-rounds</a>
-                        <a href="highscore.html">Highscores</a>
+                <button onclick="myFunction()" id="profile-button">Menu
+                    <div id="myDropdown" class="dropdown-content">
+                        <a href="/landing">All games</a>
+                        <a href="/account">Account</a>
+                        <a href="/blacklist">Blacklist</a>
+                        <a href="/favorites">Favorites</a>
+                        <a href="/highscore">Highscores</a>
                     </div>
                 </button>
             </container>

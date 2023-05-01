@@ -151,7 +151,6 @@ let characters: Characters = {
 
 // main game variables used in the quiz
 interface GameVariables {
-  _id?: any;
   movieArray: MovieDoc[];
   correctMovieName: string;
   characterArray: Doc[];
@@ -232,7 +231,8 @@ const getApiData = async (): Promise<void> => {
     result = await axios.get("https://the-one-api.dev/v2/movie", auth);
     movies = result.data;
   } catch (error: any) {
-    console.log(error);
+    console.log(`${error.message}: ${error.response.data}`);
+    return;
   }
 
   //random number generator
@@ -436,7 +436,16 @@ const getApiData = async (): Promise<void> => {
   main();
 
   // array for app.get routes:
-  let routes = ["/quiz", "/sudden_death", "/highscore", "/index"];
+  let routes = [
+    "/quiz",
+    "/sudden_death",
+    "/highscore",
+    "/index",
+    "/favorites",
+    "/blacklist",
+    "/landing",
+    "/account",
+  ];
 
   app.get(routes, (req, res) => {
     let parsedUrl = new URL(`http://localhost:${app.get("port")}${req.url}`);
@@ -445,11 +454,47 @@ const getApiData = async (): Promise<void> => {
     // check which app.get route was requested:
     switch (path) {
       case "/quiz":
+        // reset game variables when user starts a new game:
+        gameData.score = 0;
+        gameData.gameCounter = 1;
+        gameData.userCorrectFeedback.rightMovie = 0;
+        gameData.userCorrectFeedback.rightCharacter = 0;
+        saveGameQuotes.characterFromQuoteArray.splice(
+          0,
+          saveGameQuotes.characterFromQuoteArray.length
+        );
+        saveGameQuotes.movieFromQuoteArray.splice(
+          0,
+          saveGameQuotes.movieFromQuoteArray.length
+        );
+        saveGameQuotes.gameQuotesArray.splice(
+          0,
+          saveGameQuotes.gameQuotesArray.length
+        );
+        main();
         gameData.headerTitle = "10 Rounds";
         gameData.gameType = "quiz";
         res.render("quiz", { dataGame: gameData, dataApi: apiData });
         break;
       case "/sudden_death":
+        // reset game variables when user starts a new game:
+        gameData.score = 0;
+        gameData.gameCounter = 1;
+        gameData.userCorrectFeedback.rightMovie = 0;
+        gameData.userCorrectFeedback.rightCharacter = 0;
+        saveGameQuotes.characterFromQuoteArray.splice(
+          0,
+          saveGameQuotes.characterFromQuoteArray.length
+        );
+        saveGameQuotes.movieFromQuoteArray.splice(
+          0,
+          saveGameQuotes.movieFromQuoteArray.length
+        );
+        saveGameQuotes.gameQuotesArray.splice(
+          0,
+          saveGameQuotes.gameQuotesArray.length
+        );
+        main();
         gameData.headerTitle = "Sudden Death";
         gameData.gameType = "sudden_death";
         res.render("quiz", { dataGame: gameData, dataApi: apiData });
@@ -489,6 +534,15 @@ const getApiData = async (): Promise<void> => {
         gameData.headerTitle = "Blacklist";
         gameData.gameType = "";
         res.render("blacklist", { dataGame: gameData, dataApi: apiData });
+        break;
+      case "/landing":
+        gameData.gameType = "";
+        res.render("landing");
+        break;
+      case "/account":
+        gameData.headerTitle = "Account";
+        gameData.gameType = "";
+        res.render("account", { dataGame: gameData, dataApi: apiData });
         break;
 
       default:
@@ -698,7 +752,7 @@ const getApiData = async (): Promise<void> => {
   });
 
   app.listen(app.get("port"), () =>
-    console.log("[server] http://localhost:" + app.get("port") + "/quiz")
+    console.log("[server] http://localhost:" + app.get("port") + "/index")
   );
 };
 getApiData();
