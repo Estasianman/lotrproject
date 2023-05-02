@@ -1,33 +1,46 @@
 <%- include("partials/header") %>
 
     <section id="favorites-list">
+        <div class="accordion">
         <ul>
+            
         <% for (let i = 0; i < 10; i++) {%>
 
             <li>
-                <article class="quote">
-                    <p>"All we have to decide is what to do with the time that is given us"</p>
-                </article>
                 <article class="name">
-                    <button type="button" class="collapsible" id="name">
-                        Gandalf<span> (<%-i+1%>)</span>
-                        <div class="content">
-                            <p>Gandalf has 100 quotes in our system.</p>
-                            <p>Race:&nbsp; Ainur (Maiar)</p>
-                            <p>Height:&nbsp; 5"6 (168cm)</p>
-                            <p>Hair:&nbsp; Gray</p>
-                            <p>Eyes:&nbsp; Blue</p>
-                            <p>Culture:&nbsp; Wizards</p>
-                            <p><a href="https://lotr.fandom.com/wiki/Gandalf" target="_blank">Link to wiki</a></p>
+                        <div class="accordion-panel">
+                          <h2 id="panel<%-i+1%>-title">
+                            <button class="accordion-trigger" aria-expanded="false" aria-controls="accordion<%-i+1%>-content">
+                                Gandalf
+                            </button>
+                          </h2>
+                          <div class="accordion-content" role="region" aria-labelledby="panel<%-i+1%>-title" aria-hidden="true" id="panel<%-i+1%>-content">
+                            <div>
+                                <article class="quote">
+                                    <p>" All we have to decide is what to do with the time that is given us "</p>
+                                    <p id="movie">The Lord of the Rings: The Two Towers</p>
+                                </article>
+                              
+                                <article class="quote">
+                                    <p>" This is no place for a Hobbit! "</p>
+                                    <p id="movie">The Lord of the Rings: The Fellowship of the Ring</p>
+                                </article>
+                                <!-- <p>Gandalf has 100 quotes in our system.</p>
+                                <p>Race:&nbsp; Ainur (Maiar)</p>
+                                <p>Height:&nbsp; 5"6 (168cm)</p>
+                                <p>Hair:&nbsp; Gray</p>
+                                <p>Eyes:&nbsp; Blue</p>
+                                <p>Culture:&nbsp; Wizards</p>
+                                <p><a href="https://lotr.fandom.com/wiki/Gandalf" target="_blank">Link to wiki</a></p> -->
+                            </div>
                           </div>
-                    </button>
-                    <p id="movie">The Lord of the Rings: The Two Towers</p>
                 </article>
             </li>
 
         <% }; %> 
+        
     </ul>
-            
+</div>
     </section>
     </main>
     </body>
