@@ -4,7 +4,15 @@ import { MongoClient } from "mongodb";
 const uri =
   "mongodb+srv://server:server123@rikcluster.mh2n1dx.mongodb.net/?retryWrites=true&w=majority";
 const app = express();
+import session from "express-session";
+import { UserInfo } from "os";
 let client = new MongoClient(uri);
+
+declare module "express-session" {
+  export interface SessionData {
+    user: { [key: string]: any };
+  }
+}
 
 app.use(express.json({ limit: "1mb" }));
 app.use(express.urlencoded({ extended: true }));
@@ -12,6 +20,19 @@ app.use(express.static("public"));
 
 app.set("view engine", "ejs");
 app.set("port", 3000);
+
+app.use(
+  session({
+    name: "login",
+    secret: "argew",
+    resave: false,
+    saveUninitialized: true,
+
+    cookie: {
+      maxAge: 6000000,
+    },
+  })
+);
 
 //player interface
 interface player {
@@ -585,10 +606,19 @@ const getApiData = async (): Promise<void> => {
   app.post("/login", async (req, res) => {
     try {
       await client.connect();
-      const result = await client
+      let profile: player = {
+        name: req.body.name,
+        ww: req.body.ww,
+      };
+      let cursor = await client
         .db("LOTR")
         .collection("users")
-        .findOne<player>({ name: req.body.name, ww: req.body.ww });
+        .find<player>(profile);
+
+      if (cursor) {
+        req.session.user = req.body.user;
+        req.session.save();
+      }
     } catch (exc) {
       console.log(exc);
     } finally {
