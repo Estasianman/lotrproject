@@ -850,10 +850,10 @@ input[type="radio"] {
 
 /*#endregion*/
 
-/*#region------------------------------FAVORITES PAGE--------------------------------*/
+/*#region------------------------------FAVORITES PAGE---------------------------*/
 
 #favorites-list {
-    width: min(100ch, 100% - 4rem);
+    width: min(125ch, 100% - 4rem);
     margin-inline: auto;
 }
 
@@ -885,6 +885,7 @@ input[type="radio"] {
     text-shadow: 2px 2px 3px #000000;
     border-bottom: 1px var(--dark-yellow-color) solid;
     padding: 0.5rem 0 0.5rem 0;
+    margin: 0.5rem 0 0.5rem 0;
 }
 
 #favorites-list .name button  {
@@ -894,6 +895,7 @@ input[type="radio"] {
     cursor: pointer;
     border: none;
     background-color: inherit;
+    transition: 0.5s;
 }
 
 #favorites-list .name #movie {
@@ -910,15 +912,6 @@ input[type="radio"] {
     padding: 0.5rem;
 }
 
-#favorites-list .name .content p a {
-    color: inherit;
-}
-
-#favorites-list .name .content p a:hover {
-    text-decoration: none;
-    color: var(--light-yellow-color);
-}
-
 .accordion .active {
     color: var(--light-yellow-color) !important;
 }
@@ -929,33 +922,59 @@ input[type="radio"] {
     transition: grid-template-rows 1s;
   }
   
-  .accordion-content[aria-hidden="false"] {
+.accordion-content[aria-hidden="false"] {
     grid-template-rows: 1fr;
-  }
+}
   
-  .accordion-content > div {
+.accordion-content > div {
     overflow: hidden;
-  }
+}
+
+.accordion-content > div:first-child {
+    font-size: 20px;
+}
   
-  .accordion-panel {
+.accordion-panel {
     padding: 2rem;
     border: 1px solid;
     margin: 0 1rem 0 1rem;
-  }
+}
   
-  .accordion h2 {
+.accordion h2 {
     position: relative;
-  }
+}
+
+.more-content{
+    margin-top: 1rem;
+    padding: 1rem;
+}
+
+#more-info {
+    font-size: 20px;
+}
+
+#more-info a, #print-quotes {
+    color: var(--dark-yellow-color);
+    transition: 0.5s;
+}
   
-  .accordion-trigger {
+#more-info a:hover, #print-quotes:hover {
+    color: var(--light-yellow-color);
+}
+  
+.accordion-trigger {
     background: transparent;
     border: 0;
     font: inherit;
     color: inherit;
-  }
-  
-  .accordion-trigger::before,
-  .accordion-trigger::after {
+}
+
+.accordion-trigger.more-info {
+    font-size: 26px !important;
+}
+
+.accordion-trigger::before,
+.accordion-trigger::after {
     position: absolute;
     right: 1rem;
     content: "";
@@ -964,18 +983,23 @@ input[type="radio"] {
     height: 5px;
     background: currentcolor;
     transition: transform 1s;
-  }
+    border-radius: 2px;
+}
   
-  .accordion-trigger::after {
+.accordion-trigger::after {
     rotate: 90deg;
     translate: 0 -1.5em;
-  }
+}
   
-  .accordion-trigger[aria-expanded="true"]::before,
-  .accordion-trigger[aria-expanded="true"]::after {
+.accordion-trigger[aria-expanded="true"]::before,
+.accordion-trigger[aria-expanded="true"]::after {
     transform: rotate(45deg);
-  }
+}
 
+.accordion-trigger.more-info[aria-expanded="true"]::before,
+.accordion-trigger.more-info[aria-expanded="true"]::after {
+    transform: rotate(405deg);
+}
 
 
   
