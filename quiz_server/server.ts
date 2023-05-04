@@ -228,6 +228,14 @@ let saveGameQuotes: SaveQuotes = {
   movieFromQuoteArray: [],
 };
 
+let checkSession = (req: any, res: any, next: any) => {
+  if (req.session.user) {
+    next();
+  } else {
+    res.redirect("/login");
+  }
+};
+
 //main function
 const getApiData = async (): Promise<void> => {
   //authorization token
@@ -464,13 +472,10 @@ const getApiData = async (): Promise<void> => {
     "/index",
     "/favorites",
     "/blacklist",
-    "/landing",
     "/account",
-    "/login",
-    "/create",
   ];
 
-  app.get(routes, (req, res) => {
+  app.get(routes, checkSession, (req, res) => {
     let parsedUrl = new URL(`http://localhost:${app.get("port")}${req.url}`);
     let path = parsedUrl.pathname;
     console.log(path);
@@ -558,18 +563,6 @@ const getApiData = async (): Promise<void> => {
         gameData.gameType = "";
         res.render("blacklist", { dataGame: gameData, dataApi: apiData });
         break;
-      case "/landing":
-        gameData.gameType = "";
-        res.render("landing");
-        break;
-      case "/login":
-        gameData.gameType = "";
-        res.render("login");
-        break;
-      case "/create":
-        gameData.gameType = "";
-        res.render("create");
-        break;
       case "/account":
         gameData.headerTitle = "Account";
         gameData.gameType = "";
@@ -579,6 +572,21 @@ const getApiData = async (): Promise<void> => {
       default:
         break;
     }
+  });
+
+  app.get("/landing", (req, res) => {
+    gameData.gameType = "";
+    res.render("landing");
+  });
+
+  app.get("/login", (req, res) => {
+    gameData.gameType = "";
+    res.render("login");
+  });
+
+  app.get("/create", (req, res) => {
+    gameData.gameType = "";
+    res.render("create");
   });
 
   //create new User
