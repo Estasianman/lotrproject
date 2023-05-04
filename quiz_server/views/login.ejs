@@ -6,6 +6,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="stylesheet" href="./css/reset.css" />
         <link rel="stylesheet" href="./css/style.css" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jsSHA/2.0.2/sha.js"></script>
+        <script src="js/hashpassword.js"></script>
         <title>Home</title>
       </head>
 <body>
@@ -13,8 +15,8 @@
         <label for="name">Naam</label><br />
         <input name="name"><br ?>
         <label for="ww">Wachtwoord</label><br>
-        <input type="password" name="ww"><br>
-        <input type="submit" name="submit" value="Inloggen">
+        <input id="pwd" type="password" name="ww"><br>
+        <input onclick="mySubmit(this)" type="submit" name="submit" value="Inloggen">
     </form><br>
     <a href='/create';">Account aanmaken</a>
 
