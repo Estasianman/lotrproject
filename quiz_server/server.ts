@@ -36,7 +36,7 @@ app.use(
 //player interface
 interface player {
   name: string;
-  ww?: string;
+  ww: string;
   qscore?: number;
   sdscore?: number;
   favorites?: favorites[];
