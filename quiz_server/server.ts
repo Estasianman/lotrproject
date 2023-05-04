@@ -223,6 +223,35 @@ let gameData: GameVariables = {
   },
 };
 
+ // find Doc (character info) to put in favorite list data
+ const findCharacterInfoForFavoriteList = (nameToFind: string): Doc => {
+
+  let foundCharacterInfo: Doc = {
+            _id: "",
+            height: "",
+            race: "",
+            gender: Gender.Empty,
+            birth: "",
+            spouse: "",
+            death: "",
+            realm: "",
+            hair: "",
+            name: "",
+            wikiUrl: "",
+  };
+
+  let found: boolean = false;
+
+  for (let i = 0; i < characters.docs.length && !found; i++) {
+    
+      if (characters.docs[i].name == nameToFind){
+        foundCharacterInfo = characters.docs[i];
+        found = true;
+      }
+  }
+  return foundCharacterInfo;
+}
+
 //add to blacklist
 let addtoBlacklist = async (req: any,res: any,name: string, quote: string, reason: string) => {
   try {
@@ -232,7 +261,7 @@ let addtoBlacklist = async (req: any,res: any,name: string, quote: string, reaso
     // check if character already has quotes in the blacklist:
     let characterIndex: number = -1;
     for (let i = 0; i < req.session.user.blacklisted.length && characterIndex == -1; i++) {
-      if (req.session.user.blacklisted.list[i].characterName == name){
+      if (req.session.user.blacklisted[i].characterName == name){
         characterIndex = i;
       }
     }
@@ -243,7 +272,7 @@ let addtoBlacklist = async (req: any,res: any,name: string, quote: string, reaso
       req.session.user.blacklisted[characterIndex].reason.push(reason);
 
     }
-    // if character is not in the blacklist yet then add a new blacklist object to the blacklist array:
+    // if character is not in the blacklist yet then add a new blacklist object to the users blacklist array:
     else{
       let newBlacklistData: Blacklist = {
         characterName: name,
@@ -253,7 +282,6 @@ let addtoBlacklist = async (req: any,res: any,name: string, quote: string, reaso
 
       newBlacklistData.blacklistQuotes.push(quote);
       newBlacklistData.reason.push(reason);
-      req.session.user.blacklisted.list.push();
       req.session.user.blacklisted.push(newBlacklistData);
     }
 
@@ -268,12 +296,48 @@ let addtoBlacklist = async (req: any,res: any,name: string, quote: string, reaso
 };
 
 //add to favorites
-let addtoFavorites = async (req: any, quote: qDoc, character: Doc) => {
+let addtoFavorites = async (req: any, name: string, quote: string, characterinfo: Doc) => {
   try {
     //connect
     await client.connect();
 
-    //check if character exists in array
+    // check if character already has quotes in the favorite list:
+    let characterIndex: number = -1;
+    for (let i = 0; i < req.session.user.favorites.length && characterIndex == -1; i++) {
+      if (req.session.user.favorites[i].characterName == name){
+        characterIndex = i;
+      }
+    }
+
+    // if character already has quotes in the favorite list, then add the new quote to the characters list of favorite list quotes:
+    if (characterIndex != -1){
+      req.session.user.favorites[characterIndex].favoriteQuotes.push(quote);
+
+    }
+    // if character is not in the favorite list yet then add a new favorite list object to the users favorite list array:
+    else{
+      let newFavoriteListData: FavoriteList = {
+        characterName: name,
+        favoriteQuotes: [],
+        characterInfo: {
+              _id: "",
+              height: "",
+              race: "",
+              gender: Gender.Empty,
+              birth: "",
+              spouse: "",
+              death: "",
+              realm: "",
+              hair: "",
+              name: "",
+              wikiUrl: "",
+        }
+      }
+
+      newFavoriteListData.favoriteQuotes.push(quote);
+      newFavoriteListData.characterInfo = findCharacterInfoForFavoriteList(name);
+      req.session.user.favorites.push(newFavoriteListData);
+    }
 
     //add to database
     await client
@@ -400,35 +464,6 @@ const getApiData = async (): Promise<void> => {
       arrayEmpty[i] = getMoviePhotos(MovieArray[i].name);
     }
   };
-
-  // find Doc (character info) to put in favorite list data
-  const findCharacterInfoForFavoriteList = (nameToFind: string): Doc => {
-
-    let foundCharacterInfo: Doc = {
-              _id: "",
-              height: "",
-              race: "",
-              gender: Gender.Empty,
-              birth: "",
-              spouse: "",
-              death: "",
-              realm: "",
-              hair: "",
-              name: "",
-              wikiUrl: "",
-    };
-
-    let found: boolean = false;
-
-    for (let i = 0; i < characters.docs.length && !found; i++) {
-      
-        if (characters.docs[i].name == nameToFind){
-          foundCharacterInfo = characters.docs[i];
-          found = true;
-        }
-    }
-    return foundCharacterInfo;
-  }
 
   const main = async (): Promise<void> => {
     //find random quote and character from that quote
