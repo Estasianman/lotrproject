@@ -749,6 +749,8 @@ const getApiData = async (): Promise<void> => {
 
     // call main function to get new quote, characters, and movies
     main();
+
+    res.render("quiz", { dataGame: gameData, dataApi: apiData });
   });
 
   app.post("/sudden_death", async (req, res) => {

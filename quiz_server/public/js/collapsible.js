@@ -2,8 +2,7 @@ const accordion = document.querySelector(".accordion");
 
 accordion.addEventListener("click", (e) => {
   const activePanel = e.target.closest(".accordion-panel");
-  if (!activePanel) return;
-  else if(e.target.matches(".a")) return;
+  if (!activePanel || e.target.matches(".a")) return;
   toggleAccordion(activePanel);
 });
 
