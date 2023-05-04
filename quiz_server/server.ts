@@ -749,29 +749,6 @@ const getApiData = async (): Promise<void> => {
 
     // call main function to get new quote, characters, and movies
     main();
-    if (
-      req.session.user!.qscore! >= gameData.score ||
-      req.session.user!.qscore == null
-    ) {
-      try {
-        await client.connect();
-        req.session.user!.qscore = gameData.score;
-
-        let result = await client
-          .db("LOTR")
-          .collection("users")
-          .updateOne(
-            { name: req.session.user?.name },
-            { $set: { qscore: req.session.user?.qscore } }
-          );
-
-        res.render("quiz", { dataGame: gameData, dataApi: apiData });
-      } catch (exc) {
-        console.log(exc);
-      } finally {
-        await client.close;
-      }
-    }
   });
 
   app.post("/sudden_death", async (req, res) => {
@@ -808,7 +785,7 @@ const getApiData = async (): Promise<void> => {
       res.render("quiz", { dataGame: gameData, dataApi: apiData });
     } else if (gameData.gameCounter != 0) {
       // gameData.previousQuizAnswers = `Both are wrong.&nbsp;  The correct movie was:&nbsp; <span id="answers-span">  ${gameData.correctMovieName}</span>.&nbsp;  The correct character was:&nbsp; <span id="answers-span">  ${gameData.correctCharacterName}</span>.`;
-      if (req.session.user!.qscore)
+      if (req.session.user!.sdscore! >= gameData.score)
         try {
           await client.connect();
           req.session.user!.sdscore = gameData.score;
