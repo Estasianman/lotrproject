@@ -749,24 +749,28 @@ const getApiData = async (): Promise<void> => {
 
     // call main function to get new quote, characters, and movies
     main();
+    if (
+      req.session.user!.qscore! >= gameData.score ||
+      req.session.user!.qscore == null
+    ) {
+      try {
+        await client.connect();
+        req.session.user!.qscore = gameData.score;
 
-    try {
-      await client.connect();
-      req.session.user!.qscore = gameData.score;
+        let result = await client
+          .db("LOTR")
+          .collection("users")
+          .updateOne(
+            { name: req.session.user?.name },
+            { $set: { qscore: req.session.user?.qscore } }
+          );
 
-      let result = await client
-        .db("LOTR")
-        .collection("users")
-        .updateOne(
-          { name: req.session.user?.name },
-          { qscore: req.session.user?.qscore }
-        );
-
-      res.render("quiz", { dataGame: gameData, dataApi: apiData });
-    } catch (exc) {
-      console.log(exc);
-    } finally {
-      await client.close;
+        res.render("quiz", { dataGame: gameData, dataApi: apiData });
+      } catch (exc) {
+        console.log(exc);
+      } finally {
+        await client.close;
+      }
     }
   });
 
@@ -804,45 +808,28 @@ const getApiData = async (): Promise<void> => {
       res.render("quiz", { dataGame: gameData, dataApi: apiData });
     } else if (gameData.gameCounter != 0) {
       // gameData.previousQuizAnswers = `Both are wrong.&nbsp;  The correct movie was:&nbsp; <span id="answers-span">  ${gameData.correctMovieName}</span>.&nbsp;  The correct character was:&nbsp; <span id="answers-span">  ${gameData.correctCharacterName}</span>.`;
-      try {
-        await client.connect();
-        let cursor = client.db("LOTR").collection("users").find<player>({});
-        let result = await cursor.toArray();
-        let userName = "Test";
-        let playerInfo = null;
-        let existingPlayer: boolean = false;
-        result = result.sort(({ sdscore: a }, { sdscore: b }) => b! - a!);
-        for (const player of result) {
-          if (player.name == userName) {
-            existingPlayer = true;
-            playerInfo = player;
-          }
+      if (req.session.user!.qscore)
+        try {
+          await client.connect();
+          req.session.user!.sdscore = gameData.score;
+
+          let result = await client
+            .db("LOTR")
+            .collection("users")
+            .updateOne(
+              { name: req.session.user?.name },
+              { $set: { qscore: req.session.user?.sdscore } }
+            );
+          res.render("highscore", {
+            dataGame: gameData,
+            dataApi: apiData,
+            dataQuotes: saveGameQuotes,
+          });
+        } catch (exc) {
+          console.log(exc);
+        } finally {
+          await client.close;
         }
-        if (existingPlayer) {
-          if (playerInfo!.sdscore! < gameData.gameCounter) {
-            playerInfo!.sdscore = gameData.score;
-            client
-              .db("LOTR")
-              .collection("users")
-              .findOneAndReplace({ name: userName }, playerInfo!);
-          }
-        } else {
-          let currentPlayer: player = {
-            name: "test",
-            sdscore: gameData.score,
-          };
-          client.db("LOTR").collection("users").insertOne(currentPlayer);
-        }
-        res.render("highscore", {
-          dataGame: gameData,
-          dataApi: apiData,
-          dataQuotes: saveGameQuotes,
-        });
-      } catch (exc) {
-        console.log(exc);
-      } finally {
-        await client.close;
-      }
     } else {
       // Set the game round +1
       gameData.gameCounter++;
