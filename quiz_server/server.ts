@@ -5,12 +5,11 @@ const uri =
   "mongodb+srv://server:server123@rikcluster.mh2n1dx.mongodb.net/?retryWrites=true&w=majority";
 const app = express();
 import session from "express-session";
-import { UserInfo } from "os";
 let client = new MongoClient(uri);
 
 declare module "express-session" {
   export interface SessionData {
-    user: { [key: string]: any };
+    user: player;
   }
 }
 
@@ -233,7 +232,11 @@ let saveGameQuotes: SaveQuotes = {
   movieFromQuoteArray: [],
 };
 
+//add to blacklist
+let addtoBlacklist = (req: any, res: any, next: any) => {};
+
 let checkSession = (req: any, res: any, next: any) => {
+  console.log(req.session.user);
   if (req.session.user) {
     next();
   } else {
@@ -623,13 +626,12 @@ const getApiData = async (): Promise<void> => {
         name: req.body.name,
         ww: req.body.ww,
       };
-      let cursor = await client
+      let result: player | null = await client
         .db("LOTR")
         .collection("users")
-        .find<player>(profile);
-
-      if (cursor) {
-        req.session.user = req.body.user;
+        .findOne<player>({ name: profile.name, ww: profile.ww });
+      if (result) {
+        req.session.user = result;
         req.session.save();
       }
     } catch (exc) {
