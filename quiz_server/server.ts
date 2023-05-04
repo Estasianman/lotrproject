@@ -233,8 +233,69 @@ let saveGameQuotes: SaveQuotes = {
 };
 
 //add to blacklist
-let addtoBlacklist = (req: any, res: any, next: any) => {};
+let addtoBlacklist = async (
+  req: any,
+  res: any,
+  reason: string,
+  quote: qDoc
+) => {
+  try {
+    //connect
+    await client.connect();
 
+    //quote to add
+    let newBlquote: blacklisted = {
+      reason: reason,
+      quote: quote,
+    };
+    //add to current session
+    req.session.user.blacklisted.push(newBlquote);
+
+    //add to database
+    await client
+      .db("LOTR")
+      .collection("users")
+      .updateOne(
+        { name: req.session.user.name },
+        { blacklisted: req.session.user.blacklisted }
+      );
+  } catch (exc) {
+    console.log(exc);
+  } finally {
+    await client.close();
+  }
+};
+
+//add to blacklist
+let addtoFavorites = async (
+  req: any,
+  res: any,
+  quote: qDoc,
+  character: Doc
+) => {
+  try {
+    //connect
+    await client.connect();
+
+    //add to current session
+    req.session.user.favorites.push(null);
+
+    //add to database
+    await client
+      .db("LOTR")
+      .collection("users")
+      .updateOne(
+        { name: req.session.user.name },
+        { favorites: req.session.user.favorites }
+      );
+  } catch (exc) {
+    console.log(exc);
+  } finally {
+    await client.close();
+  }
+};
+
+//check if user is logged in
 let checkSession = (req: any, res: any, next: any) => {
   console.log(req.session.user);
   if (req.session.user) {
