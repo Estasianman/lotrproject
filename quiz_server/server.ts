@@ -40,13 +40,18 @@ interface player {
   ww?: string;
   qscore?: number;
   sdscore?: number;
-  favorites?: Doc[];
+  favorites?: favorites[];
   blacklisted?: blacklisted[];
 }
 
 interface blacklisted {
   reason: string;
   quote: qDoc;
+}
+
+interface favorites {
+  character: Doc;
+  quote: qDoc[];
 }
 
 //API character interface
