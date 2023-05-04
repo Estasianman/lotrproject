@@ -267,18 +267,12 @@ let addtoBlacklist = async (
 };
 
 //add to blacklist
-let addtoFavorites = async (
-  req: any,
-  res: any,
-  quote: qDoc,
-  character: Doc
-) => {
+let addtoFavorites = async (req: any, quote: qDoc, character: Doc) => {
   try {
     //connect
     await client.connect();
 
-    //add to current session
-    req.session.user.favorites.push(null);
+    //check if character exists in array
 
     //add to database
     await client
@@ -676,7 +670,7 @@ const getApiData = async (): Promise<void> => {
     } finally {
       await client.close();
     }
-    res.render("create");
+    res.redirect("/login");
   });
 
   //login
@@ -700,7 +694,7 @@ const getApiData = async (): Promise<void> => {
     } finally {
       await client.close();
     }
-    res.render("create");
+    res.redirect("/index");
   });
 
   app.post("/quiz", async (req, res) => {
@@ -758,33 +752,16 @@ const getApiData = async (): Promise<void> => {
 
     try {
       await client.connect();
-      let cursor = client.db("LOTR").collection("users").find<player>({});
-      let result = await cursor.toArray();
-      let userName = "Test";
-      let playerInfo = null;
-      let existingPlayer: boolean = false;
-      result = result.sort(({ sdscore: a }, { sdscore: b }) => b! - a!);
-      for (const player of result) {
-        if (player.name == userName) {
-          existingPlayer = true;
-          playerInfo = player;
-        }
-      }
-      if (existingPlayer) {
-        if (playerInfo!.sdscore! < gameData.gameCounter) {
-          playerInfo!.qscore = gameData.score;
-          client
-            .db("LOTR")
-            .collection("users")
-            .findOneAndReplace({ name: userName }, playerInfo!);
-        }
-      } else {
-        let currentPlayer: player = {
-          name: "test",
-          qscore: gameData.score,
-        };
-        client.db("LOTR").collection("users").insertOne(currentPlayer);
-      }
+      req.session.user!.qscore = gameData.score;
+
+      let result = await client
+        .db("LOTR")
+        .collection("users")
+        .updateOne(
+          { name: req.session.user?.name },
+          { qscore: req.session.user?.qscore }
+        );
+
       res.render("quiz", { dataGame: gameData, dataApi: apiData });
     } catch (exc) {
       console.log(exc);
