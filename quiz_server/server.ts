@@ -9,7 +9,7 @@ let client = new MongoClient(uri);
 
 declare module "express-session" {
   export interface SessionData {
-    user: player;
+    user: Player;
   }
 }
 
@@ -34,23 +34,27 @@ app.use(
 );
 
 //player interface
-interface player {
+interface Player {
   name: string;
   ww: string;
   qscore?: number;
   sdscore?: number;
-  favorites?: favorites[];
-  blacklisted?: blacklisted[];
+  favorites?: FavoriteList[];
+  blacklisted?: Blacklist[];
 }
 
-interface blacklisted {
-  reason: string;
-  quote: qDoc;
+// Blacklist interface
+interface Blacklist {
+  characterName: string,
+  blacklistQuotes: string[],
+  reason: string[]
 }
 
-interface favorites {
-  character: Doc;
-  quote: qDoc[];
+// FavoriteList interface
+interface FavoriteList {
+  characterName: string,
+  favoriteQuotes: string[],
+  characterInfo: Doc
 }
 
 //API character interface
@@ -219,54 +223,51 @@ let gameData: GameVariables = {
   },
 };
 
-// interface to save every quote and character used during quiz
-interface SaveQuotes {
-  gameQuotesArray: string[];
-  characterFromQuoteArray: string[];
-  movieFromQuoteArray: string[];
-}
-
-let saveGameQuotes: SaveQuotes = {
-  gameQuotesArray: [],
-  characterFromQuoteArray: [],
-  movieFromQuoteArray: [],
-};
-
 //add to blacklist
-let addtoBlacklist = async (
-  req: any,
-  res: any,
-  reason: string,
-  quote: qDoc
-) => {
+let addtoBlacklist = async (req: any,res: any,name: string, quote: string, reason: string) => {
   try {
     //connect
     await client.connect();
 
-    //quote to add
-    let newBlquote: blacklisted = {
-      reason: reason,
-      quote: quote,
-    };
-    //add to current session
-    req.session.user.blacklisted.push(newBlquote);
+    // check if character already has quotes in the blacklist:
+    let characterIndex: number = -1;
+    for (let i = 0; i < req.session.user.blacklisted.length && characterIndex == -1; i++) {
+      if (req.session.user.blacklisted.list[i].characterName == name){
+        characterIndex = i;
+      }
+    }
+
+    // if character already has quotes in the blacklist, then add the new quote to the characters list of blacklist quotes:
+    if (characterIndex != -1){
+      req.session.user.blacklisted[characterIndex].blacklistQuotes.push(quote);
+      req.session.user.blacklisted[characterIndex].reason.push(reason);
+
+    }
+    // if character is not in the blacklist yet then add a new blacklist object to the blacklist array:
+    else{
+      let newBlacklistData: Blacklist = {
+        characterName: name,
+        blacklistQuotes: [],
+        reason: []
+      }
+
+      newBlacklistData.blacklistQuotes.push(quote);
+      newBlacklistData.reason.push(reason);
+      req.session.user.blacklisted.list.push();
+      req.session.user.blacklisted.push(newBlacklistData);
+    }
 
     //add to database
     await client
-      .db("LOTR")
-      .collection("users")
-      .updateOne(
-        { name: req.session.user.name },
-        { blacklisted: req.session.user.blacklisted }
-      );
-  } catch (exc) {
-    console.log(exc);
+      .db("LOTR").collection("users").updateOne({ name: req.session.user.name },{ blacklisted: req.session.user.blacklisted });
+  } catch (exc:any) {
+    console.log(exc.message);
   } finally {
     await client.close();
   }
 };
 
-//add to blacklist
+//add to favorites
 let addtoFavorites = async (req: any, quote: qDoc, character: Doc) => {
   try {
     //connect
@@ -302,7 +303,7 @@ let checkSession = (req: any, res: any, next: any) => {
 //main function
 const getApiData = async (): Promise<void> => {
   //authorization token
-  let token: string = "UOzmNvWKAN3QRiFrHRIh";
+  let token: string = "XfiSnDQochu1YXhRpuz5";
   //authorization header
   const auth = {
     headers: {
@@ -400,6 +401,35 @@ const getApiData = async (): Promise<void> => {
     }
   };
 
+  // find Doc (character info) to put in favorite list data
+  const findCharacterInfoForFavoriteList = (nameToFind: string): Doc => {
+
+    let foundCharacterInfo: Doc = {
+              _id: "",
+              height: "",
+              race: "",
+              gender: Gender.Empty,
+              birth: "",
+              spouse: "",
+              death: "",
+              realm: "",
+              hair: "",
+              name: "",
+              wikiUrl: "",
+    };
+
+    let found: boolean = false;
+
+    for (let i = 0; i < characters.docs.length && !found; i++) {
+      
+        if (characters.docs[i].name == nameToFind){
+          foundCharacterInfo = characters.docs[i];
+          found = true;
+        }
+    }
+    return foundCharacterInfo;
+  }
+
   const main = async (): Promise<void> => {
     //find random quote and character from that quote
     let quoteId: number = 0;
@@ -441,26 +471,6 @@ const getApiData = async (): Promise<void> => {
         break;
       }
     }
-
-    // Save Quotes, characters, and movies in saveGameQuotes array
-    // If the game is restarted then first make the array empty with 'splice'
-    if (saveGameQuotes.gameQuotesArray[0] != "" && gameData.gameCounter == 1) {
-      saveGameQuotes.gameQuotesArray.splice(
-        0,
-        saveGameQuotes.gameQuotesArray.length
-      );
-      saveGameQuotes.characterFromQuoteArray.splice(
-        0,
-        saveGameQuotes.characterFromQuoteArray.length
-      );
-      saveGameQuotes.movieFromQuoteArray.splice(
-        0,
-        saveGameQuotes.movieFromQuoteArray.length
-      );
-    }
-    saveGameQuotes.gameQuotesArray.push(apiData.quote.dialog);
-    saveGameQuotes.characterFromQuoteArray.push(apiData.correctCharacterName);
-    saveGameQuotes.movieFromQuoteArray.push(apiData.moviesArray[0].name);
 
     //getting wrong movies
     do {
@@ -550,18 +560,7 @@ const getApiData = async (): Promise<void> => {
         gameData.gameCounter = 1;
         gameData.userCorrectFeedback.rightMovie = 0;
         gameData.userCorrectFeedback.rightCharacter = 0;
-        saveGameQuotes.characterFromQuoteArray.splice(
-          0,
-          saveGameQuotes.characterFromQuoteArray.length
-        );
-        saveGameQuotes.movieFromQuoteArray.splice(
-          0,
-          saveGameQuotes.movieFromQuoteArray.length
-        );
-        saveGameQuotes.gameQuotesArray.splice(
-          0,
-          saveGameQuotes.gameQuotesArray.length
-        );
+
         main();
         gameData.headerTitle = "10 Rounds";
         gameData.gameType = "quiz";
@@ -573,18 +572,7 @@ const getApiData = async (): Promise<void> => {
         gameData.gameCounter = 1;
         gameData.userCorrectFeedback.rightMovie = 0;
         gameData.userCorrectFeedback.rightCharacter = 0;
-        saveGameQuotes.characterFromQuoteArray.splice(
-          0,
-          saveGameQuotes.characterFromQuoteArray.length
-        );
-        saveGameQuotes.movieFromQuoteArray.splice(
-          0,
-          saveGameQuotes.movieFromQuoteArray.length
-        );
-        saveGameQuotes.gameQuotesArray.splice(
-          0,
-          saveGameQuotes.gameQuotesArray.length
-        );
+
         main();
         gameData.headerTitle = "Sudden Death";
         gameData.gameType = "sudden_death";
@@ -592,23 +580,10 @@ const getApiData = async (): Promise<void> => {
         break;
       case "/highscore":
         gameData.headerTitle = "Highscore";
-        saveGameQuotes.characterFromQuoteArray.splice(
-          0,
-          saveGameQuotes.characterFromQuoteArray.length
-        );
-        saveGameQuotes.movieFromQuoteArray.splice(
-          0,
-          saveGameQuotes.movieFromQuoteArray.length
-        );
-        saveGameQuotes.gameQuotesArray.splice(
-          0,
-          saveGameQuotes.gameQuotesArray.length
-        );
         gameData.gameType = "quiz";
         res.render("highscore", {
           dataGame: gameData,
-          dataApi: apiData,
-          dataQuotes: saveGameQuotes,
+          dataApi: apiData
         });
         break;
       case "/index":
@@ -617,9 +592,53 @@ const getApiData = async (): Promise<void> => {
         res.render("index", { dataGame: gameData, dataApi: apiData });
         break;
       case "/favorites":
+
+        // variable here under is to test the favorites page, the data is meant to mimic the data which would come out of the databank
+
+        let fakeUserData: FavoriteList[] = 
+          [{
+            characterName: "Gandalf",
+            favoriteQuotes: ["All we have to decide is what to do with the time that is given us", "This is no place for a Hobbit!"],
+            characterInfo: {
+              _id: "",
+              height: "",
+              race: "",
+              gender: Gender.Empty,
+              birth: "",
+              spouse: "",
+              death: "",
+              realm: "",
+              hair: "",
+              name: "",
+              wikiUrl: "",
+            }
+          },
+          {
+            characterName: "Samwise Gamgee",
+            favoriteQuotes: ["You don't mean that. You can't leave.", "He took it. He must have."],
+            characterInfo: {
+              _id: "",
+              height: "",
+              race: "",
+              gender: Gender.Empty,
+              birth: "",
+              spouse: "",
+              death: "",
+              realm: "",
+              hair: "",
+              name: "",
+              wikiUrl: "",
+            }
+          }];
+
+        for (let i = 0; i < fakeUserData.length; i++) {
+
+          fakeUserData[i].characterInfo = findCharacterInfoForFavoriteList(fakeUserData[i].characterName);
+        }
+
         gameData.headerTitle = "Favorites";
         gameData.gameType = "";
-        res.render("favorites", { dataGame: gameData, dataApi: apiData });
+        res.render("favorites", { dataGame: gameData, dataApi: apiData, favoriteData: fakeUserData });
         break;
       case "/blacklist":
         gameData.headerTitle = "Blacklist";
@@ -654,7 +673,7 @@ const getApiData = async (): Promise<void> => {
 
   //create new User
   app.post("/create", async (req, res) => {
-    let NewUser: player = {
+    let NewUser: Player = {
       name: req.body.name,
       ww: req.body.ww,
     };
@@ -677,14 +696,14 @@ const getApiData = async (): Promise<void> => {
   app.post("/login", async (req, res) => {
     try {
       await client.connect();
-      let profile: player = {
+      let profile: Player = {
         name: req.body.name,
         ww: req.body.ww,
       };
-      let result: player | null = await client
+      let result: Player | null = await client
         .db("LOTR")
         .collection("users")
-        .findOne<player>({ name: profile.name, ww: profile.ww });
+        .findOne<Player>({ name: profile.name, ww: profile.ww });
       if (result) {
         req.session.user = result;
         req.session.save();
@@ -801,8 +820,7 @@ const getApiData = async (): Promise<void> => {
             );
           res.render("highscore", {
             dataGame: gameData,
-            dataApi: apiData,
-            dataQuotes: saveGameQuotes,
+            dataApi: apiData
           });
         } catch (exc) {
           console.log(exc);
@@ -842,8 +860,7 @@ const getApiData = async (): Promise<void> => {
     }
     res.render("highscore", {
       dataGame: gameData,
-      dataApi: apiData,
-      dataQuotes: saveGameQuotes,
+      dataApi: apiData
     });
   });
 
@@ -851,5 +868,6 @@ const getApiData = async (): Promise<void> => {
     console.log("[server] http://localhost:" + app.get("port") + "/index")
   );
 };
+
 getApiData();
-export {};
+export { };
