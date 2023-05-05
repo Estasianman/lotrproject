@@ -839,24 +839,26 @@ const getApiData = async (): Promise<void> => {
 
     // check if user/player has answered questions correctly
     gameData.previousQuizAnswers = "";
-    if (
-      gameData.userMovieAnswer == apiData.correctMovieName &&
-      gameData.userCharacterAnswer == apiData.correctCharacterName
-    ) {
+    if (gameData.userMovieAnswer == apiData.correctMovieName && gameData.userCharacterAnswer == apiData.correctCharacterName) {
       gameData.score++;
       gameData.userCorrectFeedback.rightMovie = 1;
       gameData.userCorrectFeedback.rightCharacter = 1;
-      // gameData.previousQuizAnswers = `Correct!&nbsp; Movie was:&nbsp; <span id="answers-span">  ${gameData.correctMovieName}</span>.&nbsp; Character was:&nbsp; <span id="answers-span">  ${gameData.correctCharacterName}</span>.`;
+      // Both are correct
+
       // Set the game round +1
       gameData.gameCounter++;
 
-      // call main function to get new quote, characters, and movies
+      // call main function to get new quote, characters, and movies:
       main();
 
       res.render("quiz", { dataGame: gameData, dataApi: apiData });
-    } else if (gameData.gameCounter != 0) {
-      // gameData.previousQuizAnswers = `Both are wrong.&nbsp;  The correct movie was:&nbsp; <span id="answers-span">  ${gameData.correctMovieName}</span>.&nbsp;  The correct character was:&nbsp; <span id="answers-span">  ${gameData.correctCharacterName}</span>.`;
-      if (req.session.user!.sdscore! >= gameData.score)
+
+    } 
+    else if (gameData.gameCounter != 0) {
+      // Both are wrong.
+
+      // if game score is higher than the users highest score, or if it is the users first time playing then save the score in the databank:
+      if (req.session.user!.sdscore! < gameData.score || req.session.user!.sdscore! == undefined || req.session.user!.sdscore! == null)
         try {
           await client.connect();
           req.session.user!.sdscore = gameData.score;
@@ -866,18 +868,25 @@ const getApiData = async (): Promise<void> => {
             .collection("users")
             .updateOne(
               { name: req.session.user?.name },
-              { $set: { qscore: req.session.user?.sdscore } }
+              { $set: { sdscore: gameData.score } }
             );
-          res.render("highscore", {
-            dataGame: gameData,
-            dataApi: apiData
-          });
-        } catch (exc) {
-          console.log(exc);
-        } finally {
-          await client.close;
+          res.render("highscore", {dataGame: gameData, dataApi: apiData});
+        } 
+        catch (exc:any) {
+          console.log(exc.message);
+        } 
+        finally {
+          await client.close();
         }
-    } else {
+
+        // if the score is less than the users highest score, go directly to highscore page:
+        else{
+          res.render("highscore", {dataGame: gameData, dataApi: apiData});
+        }
+
+    } 
+    // this is where a new sudden_death quiz starts if retrying from highscore page:
+    else {
       // Set the game round +1
       gameData.gameCounter++;
 
@@ -888,7 +897,7 @@ const getApiData = async (): Promise<void> => {
     }
   });
 
-  app.post("/highscore", (req, res) => {
+  app.post("/highscore", async (req, res)  => {
     gameData.userMovieAnswer = req.body.checkboxMovie;
     gameData.userCharacterAnswer = req.body.checkboxCharacter;
     if (gameData.userMovieAnswer == undefined) {
@@ -908,10 +917,36 @@ const getApiData = async (): Promise<void> => {
     ) {
       gameData.score = gameData.score + 0.5;
     }
-    res.render("highscore", {
-      dataGame: gameData,
-      dataApi: apiData
-    });
+
+    // after the 10 rounds are played, if the score is higher than the users highest score, or if it is the users first time playing then save the score in the databank:
+    if (req.session.user!.qscore! < gameData.score || req.session.user!.qscore! == undefined || req.session.user!.qscore! == null) {
+
+      try {
+        await client.connect();
+        req.session.user!.qscore = gameData.score;
+
+        let result = await client
+          .db("LOTR")
+          .collection("users")
+          .updateOne(
+            { name: req.session.user?.name },
+            { $set: { qscore: gameData.score } }
+          );
+
+        res.render("highscore", { dataGame: gameData, dataApi: apiData });
+      }
+      catch (exc: any) {
+        console.log(exc.message);
+      }
+      finally {
+        await client.close();
+      }
+    }
+    // if the score is less than the users highest score, go directly to highscore page
+    else{
+      res.render("highscore", { dataGame: gameData, dataApi: apiData });
+    }
+
   });
 
   app.listen(app.get("port"), () =>
