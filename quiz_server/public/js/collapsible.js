@@ -1,4 +1,21 @@
 const accordion = document.querySelector(".accordion");
+const editReasonInput = document.querySelectorAll('#edit-reason-input-container');
+let editReasonButton = document.querySelectorAll('#edit-reason').forEach((element) => {
+  element.addEventListener("click",(eClicked)=>{
+    
+    let textBox = element.nextElementSibling;
+    let textBoxIsOpened = element.getAttribute("aria-expanded");
+    
+    if (textBoxIsOpened == "true"){
+      textBox.setAttribute("aria-hidden", true);
+      element.setAttribute("aria-expanded", false);
+    }
+    else{
+      textBox.setAttribute("aria-hidden", false);
+      element.setAttribute("aria-expanded", true);
+    }
+  });
+});
 
 accordion.addEventListener("click", (e) => {
   const activePanel = e.target.closest(".accordion-panel");

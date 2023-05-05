@@ -1,40 +1,54 @@
 <%- include("partials/header") %>
 
-    <section id="quotes-section">
-        <article id="movie-quotes">
-            <article class="quote">
-                <p>"All we have to decide is what to do <br> with the time that is given us"</p>
-            </article>
-            <article class="quote">
-                <p>"All we have to decide is what to do <br> with the time that is given us"</p>
-            </article>
-            <article class="quote">
-                <p>"All we have to decide is what to do <br> with the time that is given us"</p>
-            </article>
-            <article class="quote">
-                <p>"All we have to decide is what to do <br> with the time that is given us"</p>
-            </article>
-            <article class="quote">
-                <p>"All we have to decide is what to do <br> with the time that is given us"</p>
-            </article>
-        </article>
-        <article id="character">
-            <article class="name">
-                <p>Gandalf<span> (0)</span></p>
-            </article>
-            <article class="name">
-                <p>Gandalf<span> (0)</span></p>
-            </article>
-            <article class="name">
-                <p>Gandalf<span> (0)</span></p>
-            </article>
-            <article class="name">
-                <p>Gandalf<span> (0)</span></p>
-            </article>
-            <article class="name">
-                <p>Gandalf<span> (0)</span></p>
-            </article>
-        </article>
+    <section id="blacklist">
+        <div class="accordion">
+        <ul>
+            
+        <% for (let i = 0; i < blacklistData.length; i++) {%>
+
+            <li>
+                <article class="name">
+                        <div class="accordion-panel">
+                          <h2 id="panel<%-i+1%>-title">
+                            <button class="accordion-trigger" aria-expanded="false" aria-controls="accordion<%-i+1%>-content">
+                                <%- blacklistData[i].characterName %> (<%- blacklistData[i].blacklistQuotes.length %>)
+                            </button>
+                          </h2>
+                          <div class="accordion-content" role="region" aria-labelledby="panel<%-i+1%>-title" aria-hidden="true" id="panel<%-i+1%>-content">
+                            <div>
+                                <p>Blacklisted Quotes:</p>
+
+                                <% for (let j = 0; j < blacklistData[i].blacklistQuotes.length; j++) {%>
+
+                                    <container id="blacklist-quote-container">
+                                    <article class="quote">
+                                        <p><%- j+1 %>.&nbsp; " <%- blacklistData[i].blacklistQuotes[j] %> "</p>
+                                        <p id="blacklist-reason">Reason: &nbsp; <%- blacklistData[i].reason[j] %> 
+                                            <img class="a edit-reason" id="edit-reason" src="../images/edit.png" alt="edit-reason" aria-expanded="false">
+                                            <container id="edit-reason-input-container" role="region" aria-hidden="true">
+                                                <container>
+                                                    Edit Reason:&nbsp;
+                                                <textarea type="text" name="edit-reason" id="edit-reason-text-input" class="a"></textarea>
+                                                <a href="/editReason/<%- i %>/<%- j %>">Submit</a>
+                                            </container>
+                                            </container>
+                                            
+                                        </p>
+                                        
+                                        
+                                    </article>
+                                    <article id="delete-quote-article"><a class="a" id="delete-quote" href="/deleteBlacklistQuote/<%- i %>/<%- j %>"><img src="../images/delete.png" alt="delete-quote"></a></article>
+                                </container>
+
+                                <%}%>
+                          </div>
+                </article>
+            </li>
+
+        <% }; %> 
+        
+    </ul>
+</div>
     </section>
     </main>
     </body>

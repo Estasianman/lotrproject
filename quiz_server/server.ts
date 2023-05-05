@@ -676,9 +676,24 @@ const getApiData = async (): Promise<void> => {
         res.render("favorites", { dataGame: gameData, dataApi: apiData, favoriteData: fakeUserData });
         break;
       case "/blacklist":
+
+      // variable here under is to test the favorites page, the data is meant to mimic the data which would come out of the databank
+
+      let fakeUserBlacklistData: Blacklist[] = 
+      [{
+        characterName: "Gandalf",
+        blacklistQuotes: ["All we have to decide is what to do with the time that is given us", "This is no place for a Hobbit!"],
+        reason: ["Didn't list this quote", "Bad quote"]
+      },
+      {
+        characterName: "Samwise Gamgee",
+        blacklistQuotes: ["You don't mean that. You can't leave.", "He took it. He must have.", "You can't save him, Mr. Frodo."],
+        reason: ["Bad quote", "I don't like this quote", "I don't like this character"]
+      }];
+
         gameData.headerTitle = "Blacklist";
         gameData.gameType = "";
-        res.render("blacklist", { dataGame: gameData, dataApi: apiData });
+        res.render("blacklist", { dataGame: gameData, dataApi: apiData, blacklistData: fakeUserBlacklistData });
         break;
       case "/account":
         gameData.headerTitle = "Account";
