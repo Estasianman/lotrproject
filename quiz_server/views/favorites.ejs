@@ -20,9 +20,13 @@
 
                                 <% for (let j = 0; j < favoriteData[i].favoriteQuotes.length; j++) {%>
 
+                                    <container id="favorite-quote-container">
                                     <article class="quote">
-                                        <p>" <%- favoriteData[i].favoriteQuotes[j] %> "</p>
+                                        <p><%- j+1 %>.&nbsp; " <%- favoriteData[i].favoriteQuotes[j] %> "</p>
+                                        
                                     </article>
+                                    <article id="delete-quote-article"><a class="a" id="delete-quote" href="/deleteFavoriteQuote/<%- i %>/<%- j %>"><img src="../images/delete.png" alt=""></a></article>
+                                </container>
 
                                 <%}%>
   

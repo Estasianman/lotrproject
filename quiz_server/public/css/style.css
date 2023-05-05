@@ -835,6 +835,8 @@ input[type="radio"] {
     border-bottom: 1px var(--dark-yellow-color) solid;
     padding: 0.5rem 0 0.5rem 0;
     margin: 0.5rem 0 0.5rem 0;
+    display: flex;
+    flex-direction: column;
 }
 
 #favorites-list .name button {
@@ -887,6 +889,8 @@ input[type="radio"] {
     padding: 2rem;
     border: 1px solid;
     margin: 0 1rem 0 1rem;
+    width: 100%;
+    height: auto;
 }
 
 .accordion h2 {
@@ -896,6 +900,7 @@ input[type="radio"] {
 .more-content {
     margin-top: 1rem;
     padding: 1rem;
+    width: auto;
 }
 
 #more-info {
@@ -951,6 +956,44 @@ input[type="radio"] {
 .accordion-trigger.more-info[aria-expanded="true"]::after {
     transform: rotate(405deg);
 }
+
+#favorite-quote-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding: 0;
+    margin: 0;
+}
+
+#delete-quote-article{
+   max-width: 35px;
+   max-height: 35px;
+   align-self: center;
+}
+
+#delete-quote > img{
+    width: 25px;
+    height: 25px;
+}
+
+#delete-quote > img {
+    transition: 500ms;
+}
+
+#delete-quote > img:hover {
+    transform: scale(1.1);
+}
+
+.quote:has(+ #delete-quote-article){
+    transition: 100ms;
+}
+
+.quote:has(+ #delete-quote-article:hover){
+    text-decoration: red line-through;
+    opacity: 0.85;
+
+}
+
 
 
 

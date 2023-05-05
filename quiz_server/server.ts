@@ -367,7 +367,7 @@ let checkSession = (req: any, res: any, next: any) => {
 //main function
 const getApiData = async (): Promise<void> => {
   //authorization token
-  let token: string = "XfiSnDQochu1YXhRpuz5";
+  let token: string = "UOzmNvWKAN3QRiFrHRIh";
   //authorization header
   const auth = {
     headers: {
@@ -650,7 +650,7 @@ const getApiData = async (): Promise<void> => {
           },
           {
             characterName: "Samwise Gamgee",
-            favoriteQuotes: ["You don't mean that. You can't leave.", "He took it. He must have."],
+            favoriteQuotes: ["You don't mean that. You can't leave.", "He took it. He must have.", "You can't save him, Mr. Frodo."],
             characterInfo: {
               _id: "",
               height: "",
