@@ -677,7 +677,7 @@ const getApiData = async (): Promise<void> => {
         break;
       case "/blacklist":
 
-      // variable here under is to test the favorites page, the data is meant to mimic the data which would come out of the databank
+      // variable here under is to test the blacklist page, the data is meant to mimic the data which would come out of the databank
 
       let fakeUserBlacklistData: Blacklist[] = 
       [{
