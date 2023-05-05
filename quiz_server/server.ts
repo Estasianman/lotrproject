@@ -192,7 +192,6 @@ interface GameVariables {
   randomNumberCharacter: number;
   moviePhotoArray: any[];
   characterPhotoArray: any[];
-  previousQuizAnswers: string;
   gameType: string;
   headerTitle: string;
   userCorrectFeedback: {
@@ -214,7 +213,6 @@ let gameData: GameVariables = {
   randomNumberCharacter: 0,
   moviePhotoArray: [],
   characterPhotoArray: [],
-  previousQuizAnswers: "",
   gameType: "",
   headerTitle: "",
   userCorrectFeedback: {
@@ -287,10 +285,14 @@ let addtoBlacklist = async (req: any,res: any,name: string, quote: string, reaso
 
     //add to database
     await client
-      .db("LOTR").collection("users").updateOne({ name: req.session.user.name },{ blacklisted: req.session.user.blacklisted });
-  } catch (exc:any) {
+      .db("LOTR")
+      .collection("users")
+      .updateOne({ name: req.session.user.name }, { $set: { blacklisted: req.session.user.blacklisted } });
+  }
+  catch (exc: any) {
     console.log(exc.message);
-  } finally {
+  }
+  finally {
     await client.close();
   }
 };
@@ -343,13 +345,12 @@ let addtoFavorites = async (req: any, name: string, quote: string, characterinfo
     await client
       .db("LOTR")
       .collection("users")
-      .updateOne(
-        { name: req.session.user.name },
-        { favorites: req.session.user.favorites }
-      );
-  } catch (exc) {
-    console.log(exc);
-  } finally {
+      .updateOne({ name: req.session.user.name }, { $set: { favorites: req.session.user.favorites } });
+  }
+  catch (exc: any) {
+    console.log(exc.message);
+  }
+  finally {
     await client.close();
   }
 };
@@ -624,7 +625,7 @@ const getApiData = async (): Promise<void> => {
       case "/index":
         gameData.headerTitle = "LOTR Quiz";
         gameData.gameType = "";
-        res.render("index", { dataGame: gameData, dataApi: apiData });
+        res.render("index", { dataGame: gameData, dataApi: apiData, userData: req.session.user });
         break;
       case "/favorites":
 
@@ -725,7 +726,7 @@ const getApiData = async (): Promise<void> => {
   app.post("/create", async (req, res) => {
     let NewUser: Player = {
       name: req.body.name,
-      ww: req.body.ww,
+      ww: req.body.ww
     };
 
     try {
@@ -734,9 +735,11 @@ const getApiData = async (): Promise<void> => {
         .db("LOTR")
         .collection("users")
         .insertOne(NewUser);
-    } catch (exc) {
-      console.log(exc);
-    } finally {
+    } 
+    catch (exc:any) {
+      console.log(exc.message);
+    } 
+    finally {
       await client.close();
     }
     res.redirect("/login");
@@ -748,7 +751,7 @@ const getApiData = async (): Promise<void> => {
       await client.connect();
       let profile: Player = {
         name: req.body.name,
-        ww: req.body.ww,
+        ww: req.body.ww
       };
       let result: Player | null = await client
         .db("LOTR")
@@ -758,9 +761,11 @@ const getApiData = async (): Promise<void> => {
         req.session.user = result;
         req.session.save();
       }
-    } catch (exc) {
-      console.log(exc);
-    } finally {
+    } 
+    catch (exc:any) {
+      console.log(exc.message);
+    } 
+    finally {
       await client.close();
     }
     res.redirect("/index");
@@ -782,35 +787,35 @@ const getApiData = async (): Promise<void> => {
     }
 
     // check if user/player has answered questions correctly
-    gameData.previousQuizAnswers = "";
-    if (
-      gameData.userMovieAnswer == apiData.correctMovieName &&
-      gameData.userCharacterAnswer == apiData.correctCharacterName
-    ) {
+   
+    if (gameData.userMovieAnswer == apiData.correctMovieName &&
+      gameData.userCharacterAnswer == apiData.correctCharacterName) {
+
       gameData.score++;
       gameData.userCorrectFeedback.rightMovie = 1;
       gameData.userCorrectFeedback.rightCharacter = 1;
-      // gameData.previousQuizAnswers = `Correct! Movie was:&nbsp; <span id="answers-span">  ${gameData.correctMovieName}</span>.&nbsp; Character was:&nbsp; <span id="answers-span">  ${gameData.correctCharacterName}</span>.`;
-    } else if (
-      gameData.userMovieAnswer == apiData.correctMovieName &&
-      gameData.userCharacterAnswer != apiData.correctCharacterName
-    ) {
+      // Both correct
+
+    } else if (gameData.userMovieAnswer == apiData.correctMovieName &&
+      gameData.userCharacterAnswer != apiData.correctCharacterName) {
+        
       gameData.score = gameData.score + 0.5;
       gameData.userCorrectFeedback.rightMovie = 1;
       gameData.userCorrectFeedback.rightCharacter = -1;
-      // gameData.previousQuizAnswers = `You guessed the movie right!&nbsp; Movie was:&nbsp; <span id="answers-span">  ${gameData.correctMovieName}</span>.&nbsp; The correct character was:&nbsp; <span id="answers-span">  ${gameData.correctCharacterName}</span>.`;
-    } else if (
-      gameData.userMovieAnswer != apiData.correctMovieName &&
-      gameData.userCharacterAnswer == apiData.correctCharacterName
-    ) {
+      // Only Movie correct
+
+    } else if (gameData.userMovieAnswer != apiData.correctMovieName &&
+      gameData.userCharacterAnswer == apiData.correctCharacterName) {
+
       gameData.score = gameData.score + 0.5;
       gameData.userCorrectFeedback.rightMovie = -1;
       gameData.userCorrectFeedback.rightCharacter = 1;
-      // gameData.previousQuizAnswers = `You guessed the character right!&nbsp; The correct movie was:&nbsp; <span id="answers-span">  ${gameData.correctMovieName}</span>.&nbsp; Character was:&nbsp;<span id="answers-span">  ${gameData.correctCharacterName}</span>.`;
+      // Only character correct
+
     } else if (gameData.gameCounter != 0) {
       gameData.userCorrectFeedback.rightMovie = -1;
       gameData.userCorrectFeedback.rightCharacter = -1;
-      // gameData.previousQuizAnswers = `Both are wrong.&nbsp; The correct movie was:&nbsp; <span id="answers-span">  ${gameData.correctMovieName}</span>.&nbsp;  The correct character was:&nbsp; <span id="answers-span">  ${gameData.correctCharacterName}</span>.`;
+      // Both wrong
     }
 
     // Set the game round +1
@@ -838,7 +843,6 @@ const getApiData = async (): Promise<void> => {
     }
 
     // check if user/player has answered questions correctly
-    gameData.previousQuizAnswers = "";
     if (gameData.userMovieAnswer == apiData.correctMovieName && gameData.userCharacterAnswer == apiData.correctCharacterName) {
       gameData.score++;
       gameData.userCorrectFeedback.rightMovie = 1;
@@ -866,9 +870,7 @@ const getApiData = async (): Promise<void> => {
           let result = await client
             .db("LOTR")
             .collection("users")
-            .updateOne(
-              { name: req.session.user?.name },
-              { $set: { sdscore: gameData.score } }
+            .updateOne({ name: req.session.user?.name },{ $set: { sdscore: gameData.score } }
             );
           res.render("highscore", {dataGame: gameData, dataApi: apiData});
         } 
