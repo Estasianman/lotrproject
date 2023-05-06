@@ -33,7 +33,7 @@ app.use(
   })
 );
 
-//player interface
+// Player interface which is saved in databank
 interface Player {
   name: string;
   ww: string;
@@ -135,6 +135,7 @@ export interface MovieDoc {
   rottenTomatoesScore: number;
 }
 
+// Random generator interface
 interface RandomFunction {
   (min: number, max: number): number;
 }
@@ -166,9 +167,9 @@ let apiData: ApiData = {
   correctMovieName: "",
 };
 
+// These three variables below are used to save all quotes, movies, and characters from API while server is running so that we only have to do an API call once when server is started
 let quotes: Quotes;
 let movies: Movies;
-
 let characters: Characters = {
   docs: [],
   total: 0,
@@ -251,7 +252,7 @@ let gameData: GameVariables = {
 }
 
 //add to blacklist
-let addtoBlacklist = async (req: any,res: any,name: string, quote: string, reason: string) => {
+const addtoBlacklist = async (req: any, name: string, quote: string, reason: string): Promise<void> => {
   try {
     //connect
     await client.connect();
@@ -298,7 +299,7 @@ let addtoBlacklist = async (req: any,res: any,name: string, quote: string, reaso
 };
 
 //add to favorites
-let addtoFavorites = async (req: any, name: string, quote: string, characterinfo: Doc) => {
+const addtoFavorites = async (req: any, name: string, quote: string): Promise<void> => {
   try {
     //connect
     await client.connect();
@@ -356,7 +357,7 @@ let addtoFavorites = async (req: any, name: string, quote: string, characterinfo
 };
 
 //check if user is logged in
-let checkSession = (req: any, res: any, next: any) => {
+const checkSession = (req: any, res: any, next: any): void => {
   console.log(req.session.user);
   if (req.session.user) {
     next();
@@ -445,11 +446,15 @@ const getApiData = async (): Promise<void> => {
     for (let i = 0; i < 3; i++) {
       let name: string = "";
 
+      // if the character is Gothmog or Haldir, then use a specific string
       if (characterArray[i].name == "Gothmog (Lieutenant of Morgul)") {
         arrayEmpty[i] = `/images/characters/Gothmog.jpg`;
-      } else if (characterArray[i].name == "Haldir (Haladin)") {
+      } 
+      else if (characterArray[i].name == "Haldir (Haladin)") {
         arrayEmpty[i] = `/images/characters/Haldir.jpg`;
-      } else {
+      } 
+      // Else just put the character name after this string
+      else {
         name = characterArray[i].name.replace(/ /g, "_");
         arrayEmpty[i] = `/images/characters/${name}.jpg`;
       }
@@ -498,7 +503,7 @@ const getApiData = async (): Promise<void> => {
       }
     }
 
-    //find correct movie
+    //find correct movie from where that quote came from
     let movieId: string = apiData.quote.movie;
     for (let i = 0; i < movies.docs.length; i++) {
       if (movieId == movies.docs[i]._id) {
@@ -508,7 +513,7 @@ const getApiData = async (): Promise<void> => {
       }
     }
 
-    //getting wrong movies
+    //getting random wrong movies
     do {
       apiData.moviesArray[1] =
         movies.docs[getRandomNumber(2, movies.docs.length)];
@@ -523,10 +528,11 @@ const getApiData = async (): Promise<void> => {
     // put correct movie and character names into gameData
     gameData.correctMovieName = apiData.correctMovieName;
     gameData.correctCharacterName = apiData.correctCharacterName;
+    //get random number to be used on quiz.ejs for displaying selections
     gameData.randomNumberMovie = getRandomNumber(1, 4);
     gameData.randomNumberCharacter = getRandomNumber(1, 3);
 
-    //get wrong characters function
+    //get random wrong characters function
     const getWrongCharacters = (array: Doc): Doc => {
       let hasQuotes: boolean = false;
       let allQuotes: qDoc[] = quotes.docs;
@@ -555,6 +561,7 @@ const getApiData = async (): Promise<void> => {
     apiData.charactersArray[1] = getWrongCharacters(apiData.charactersArray[1]);
     apiData.charactersArray[2] = getWrongCharacters(apiData.charactersArray[2]);
 
+    // make sure the two random wrong characters are not the same
     while (apiData.charactersArray[1] == apiData.charactersArray[2]) {
       apiData.charactersArray[1] = getWrongCharacters(
         apiData.charactersArray[1]
@@ -562,10 +569,7 @@ const getApiData = async (): Promise<void> => {
     }
 
     // Put character and movie data into gameData arrays
-    addCharacterPhotoArrayElements(
-      gameData.characterPhotoArray,
-      apiData.charactersArray
-    );
+    addCharacterPhotoArrayElements(gameData.characterPhotoArray,apiData.charactersArray);
     addMoviePhotoArrayElements(gameData.moviePhotoArray, apiData.moviesArray);
 
     addArrayElements(gameData.movieArray, apiData.moviesArray);
@@ -771,6 +775,7 @@ const getApiData = async (): Promise<void> => {
     res.redirect("/index");
   });
 
+  // NOTE: quiz scores are saved into the databank from the app.post highscore
   app.post("/quiz", async (req, res) => {
     gameData.userCorrectFeedback.rightMovie = 0;
     gameData.userCorrectFeedback.rightCharacter = 0;
@@ -952,7 +957,7 @@ const getApiData = async (): Promise<void> => {
   });
 
   app.listen(app.get("port"), () =>
-    console.log("[server] http://localhost:" + app.get("port") + "/index")
+    console.log("[server] http://localhost:" + app.get("port") + "/landing")
   );
 };
 

@@ -1,3 +1,4 @@
+// Code below is for blacklist page reason accordion
 const accordion = document.querySelector(".accordion");
 const editReasonInput = document.querySelectorAll('#edit-reason-input-container');
 let editReasonButton = document.querySelectorAll('#edit-reason').forEach((element) => {
@@ -17,6 +18,7 @@ let editReasonButton = document.querySelectorAll('#edit-reason').forEach((elemen
   });
 });
 
+// Code below is for favorites and blacklist main accordion
 accordion.addEventListener("click", (e) => {
   const activePanel = e.target.closest(".accordion-panel");
   if (!activePanel || e.target.matches(".a")) return;

@@ -9,10 +9,10 @@
     <link rel="stylesheet" href="/css/style.css">
     
     <% if (dataGame.gameType == "quiz" || dataGame.gameType == "sudden_death") {%>
-        <script defer src="/js/script.js"></script>
+        <script defer src="/js/quizSelector.js"></script>
     <%}%>
     
-    <script defer src="/js/button.js"></script>
+    <script defer src="/js/dropdownMenu.js"></script>
     <script defer src="/js/collapsible.js"></script>
     <title><%- dataGame.headerTitle %></title>
 </head>
@@ -25,7 +25,7 @@
                     <a href="/index">Home</a>
                 </button>
                 <h1><%- dataGame.headerTitle %></h1>
-                <button onclick="myFunction()" id="profile-button">Menu
+                <button onclick="toggleDropDownMenu()" id="profile-button">Menu
                     <div id="myDropdown" class="dropdown-content">
                         <a href="/landing">All games</a>
                         <a href="/account">Account</a>
