@@ -45,16 +45,16 @@ interface Player {
 
 // Blacklist interface
 interface Blacklist {
-  characterName: string,
-  blacklistQuotes: string[],
-  reason: string[]
+  characterName: string;
+  blacklistQuotes: string[];
+  reason: string[];
 }
 
 // FavoriteList interface
 interface FavoriteList {
-  characterName: string,
-  favoriteQuotes: string[],
-  characterInfo: Doc
+  characterName: string;
+  favoriteQuotes: string[];
+  characterInfo: Doc;
 }
 
 //API character interface
@@ -222,62 +222,68 @@ let gameData: GameVariables = {
   },
 };
 
- // find Doc (character info) to put in favorite list data
- const findCharacterInfoForFavoriteList = (nameToFind: string): Doc => {
-
+// find Doc (character info) to put in favorite list data
+const findCharacterInfoForFavoriteList = (nameToFind: string): Doc => {
   let foundCharacterInfo: Doc = {
-            _id: "",
-            height: "",
-            race: "",
-            gender: Gender.Empty,
-            birth: "",
-            spouse: "",
-            death: "",
-            realm: "",
-            hair: "",
-            name: "",
-            wikiUrl: "",
+    _id: "",
+    height: "",
+    race: "",
+    gender: Gender.Empty,
+    birth: "",
+    spouse: "",
+    death: "",
+    realm: "",
+    hair: "",
+    name: "",
+    wikiUrl: "",
   };
 
   let found: boolean = false;
 
   for (let i = 0; i < characters.docs.length && !found; i++) {
-    
-      if (characters.docs[i].name == nameToFind){
-        foundCharacterInfo = characters.docs[i];
-        found = true;
-      }
+    if (characters.docs[i].name == nameToFind) {
+      foundCharacterInfo = characters.docs[i];
+      found = true;
+    }
   }
   return foundCharacterInfo;
-}
+};
 
 //add to blacklist
-const addtoBlacklist = async (req: any, name: string, quote: string, reason: string): Promise<void> => {
+const addtoBlacklist = async (
+  req: any,
+  name: string,
+  quote: string,
+  reason: string
+): Promise<void> => {
   try {
     //connect
     await client.connect();
 
     // check if character already has quotes in the blacklist:
     let characterIndex: number = -1;
-    for (let i = 0; i < req.session.user.blacklisted.length && characterIndex == -1; i++) {
-      if (req.session.user.blacklisted[i].characterName == name){
+    for (
+      let i = 0;
+      i < req.session.user.blacklisted.length && characterIndex == -1;
+      i++
+    ) {
+      if (req.session.user.blacklisted[i].characterName == name) {
         characterIndex = i;
       }
     }
 
     // if character already has quotes in the blacklist, then add the new quote to the characters list of blacklist quotes:
-    if (characterIndex != -1){
+    if (characterIndex != -1) {
       req.session.user.blacklisted[characterIndex].blacklistQuotes.push(quote);
       req.session.user.blacklisted[characterIndex].reason.push(reason);
-
     }
     // if character is not in the blacklist yet then add a new blacklist object to the users blacklist array:
-    else{
+    else {
       let newBlacklistData: Blacklist = {
         characterName: name,
         blacklistQuotes: [],
-        reason: []
-      }
+        reason: [],
+      };
 
       newBlacklistData.blacklistQuotes.push(quote);
       newBlacklistData.reason.push(reason);
@@ -288,57 +294,66 @@ const addtoBlacklist = async (req: any, name: string, quote: string, reason: str
     await client
       .db("LOTR")
       .collection("users")
-      .updateOne({ name: req.session.user.name }, { $set: { blacklisted: req.session.user.blacklisted } });
-  }
-  catch (exc: any) {
+      .updateOne(
+        { name: req.session.user.name },
+        { $set: { blacklisted: req.session.user.blacklisted } }
+      );
+  } catch (exc: any) {
     console.log(exc.message);
-  }
-  finally {
+  } finally {
     await client.close();
   }
 };
 
 //add to favorites
-const addtoFavorites = async (req: any, name: string, quote: string): Promise<void> => {
+const addtoFavorites = async (
+  req: any,
+  name: string,
+  quote: string
+): Promise<void> => {
   try {
     //connect
     await client.connect();
 
     // check if character already has quotes in the favorite list:
     let characterIndex: number = -1;
-    for (let i = 0; i < req.session.user.favorites.length && characterIndex == -1; i++) {
-      if (req.session.user.favorites[i].characterName == name){
+    for (
+      let i = 0;
+      i < req.session.user.favorites.length && characterIndex == -1;
+      i++
+    ) {
+      if (req.session.user.favorites[i].characterName == name) {
         characterIndex = i;
       }
     }
 
     // if character already has quotes in the favorite list, then add the new quote to the characters list of favorite list quotes:
-    if (characterIndex != -1){
+    if (characterIndex != -1) {
       req.session.user.favorites[characterIndex].favoriteQuotes.push(quote);
-
     }
     // if character is not in the favorite list yet then add a new favorite list object to the users favorite list array:
-    else{
+    else {
       let newFavoriteListData: FavoriteList = {
         characterName: name,
         favoriteQuotes: [],
         characterInfo: {
-              _id: "",
-              height: "",
-              race: "",
-              gender: Gender.Empty,
-              birth: "",
-              spouse: "",
-              death: "",
-              realm: "",
-              hair: "",
-              name: "",
-              wikiUrl: "",
-        }
-      }
+          _id: "",
+          height: "",
+          race: "",
+          gender: Gender.Empty,
+          birth: "",
+          spouse: "",
+          death: "",
+          realm: "",
+          hair: "",
+          name: "",
+          wikiUrl: "",
+        },
+      };
 
       newFavoriteListData.favoriteQuotes.push(quote);
-      newFavoriteListData.characterInfo = findCharacterInfoForFavoriteList(name);
+      newFavoriteListData.characterInfo =
+        findCharacterInfoForFavoriteList(name);
       req.session.user.favorites.push(newFavoriteListData);
     }
 
@@ -346,12 +361,13 @@ const addtoFavorites = async (req: any, name: string, quote: string): Promise<vo
     await client
       .db("LOTR")
       .collection("users")
-      .updateOne({ name: req.session.user.name }, { $set: { favorites: req.session.user.favorites } });
-  }
-  catch (exc: any) {
+      .updateOne(
+        { name: req.session.user.name },
+        { $set: { favorites: req.session.user.favorites } }
+      );
+  } catch (exc: any) {
     console.log(exc.message);
-  }
-  finally {
+  } finally {
     await client.close();
   }
 };
@@ -449,10 +465,9 @@ const getApiData = async (): Promise<void> => {
       // if the character is Gothmog or Haldir, then use a specific string
       if (characterArray[i].name == "Gothmog (Lieutenant of Morgul)") {
         arrayEmpty[i] = `/images/characters/Gothmog.jpg`;
-      } 
-      else if (characterArray[i].name == "Haldir (Haladin)") {
+      } else if (characterArray[i].name == "Haldir (Haladin)") {
         arrayEmpty[i] = `/images/characters/Haldir.jpg`;
-      } 
+      }
       // Else just put the character name after this string
       else {
         name = characterArray[i].name.replace(/ /g, "_");
@@ -471,14 +486,41 @@ const getApiData = async (): Promise<void> => {
     }
   };
 
-  const main = async (): Promise<void> => {
-    //find random quote and character from that quote
+  const main = async (req: any): Promise<void> => {
+    //get blacklisted quotes
+    let blacklistedQuotes: string[] = [];
     let quoteId: number = 0;
     let characterId: string = "";
 
-    quoteId = getRandomNumber(0, quotes.docs.length);
-    apiData.quote = quotes.docs[quoteId];
-    characterId = apiData.quote.character;
+    if (
+      req.session.user.blacklisted != null &&
+      req.session.user.blacklisted != undefined
+    ) {
+      for (const character of req.session.user.blacklisted) {
+        for (let i = 0; i < character.blacklistQuotes.length; i++) {
+          blacklistedQuotes.push(character.blacklistQuotes[i]);
+        }
+      }
+
+      console.log(blacklistedQuotes);
+      //find random quote and character from that quote
+      let notInBlacklist: boolean = false;
+
+      while (!notInBlacklist) {
+        quoteId = getRandomNumber(0, quotes.docs.length);
+        apiData.quote = quotes.docs[quoteId];
+        console.log(apiData.quote.dialog);
+        if (blacklistedQuotes.indexOf(apiData.quote.dialog) == -1) {
+          notInBlacklist = true;
+        }
+      }
+      characterId = apiData.quote.character;
+    } else {
+      quoteId = getRandomNumber(0, quotes.docs.length);
+      apiData.quote = quotes.docs[quoteId];
+      console.log(apiData.quote.dialog);
+      characterId = apiData.quote.character;
+    }
 
     for (let i = 0; i < characters.docs.length; i++) {
       if (characterId == characters.docs[i]._id) {
@@ -569,13 +611,15 @@ const getApiData = async (): Promise<void> => {
     }
 
     // Put character and movie data into gameData arrays
-    addCharacterPhotoArrayElements(gameData.characterPhotoArray,apiData.charactersArray);
+    addCharacterPhotoArrayElements(
+      gameData.characterPhotoArray,
+      apiData.charactersArray
+    );
     addMoviePhotoArrayElements(gameData.moviePhotoArray, apiData.moviesArray);
 
     addArrayElements(gameData.movieArray, apiData.moviesArray);
     addArrayElements(gameData.characterArray, apiData.charactersArray);
   };
-  main();
 
   // array for app.get routes:
   let routes = [
@@ -601,7 +645,7 @@ const getApiData = async (): Promise<void> => {
         gameData.userCorrectFeedback.rightMovie = 0;
         gameData.userCorrectFeedback.rightCharacter = 0;
 
-        main();
+        main(req);
         gameData.headerTitle = "10 Rounds";
         gameData.gameType = "quiz";
         res.render("quiz", { dataGame: gameData, dataApi: apiData });
@@ -613,7 +657,7 @@ const getApiData = async (): Promise<void> => {
         gameData.userCorrectFeedback.rightMovie = 0;
         gameData.userCorrectFeedback.rightCharacter = 0;
 
-        main();
+        main(req);
         gameData.headerTitle = "Sudden Death";
         gameData.gameType = "sudden_death";
         res.render("quiz", { dataGame: gameData, dataApi: apiData });
@@ -623,22 +667,28 @@ const getApiData = async (): Promise<void> => {
         gameData.gameType = "quiz";
         res.render("highscore", {
           dataGame: gameData,
-          dataApi: apiData
+          dataApi: apiData,
         });
         break;
       case "/index":
         gameData.headerTitle = "LOTR Quiz";
         gameData.gameType = "";
-        res.render("index", { dataGame: gameData, dataApi: apiData, userData: req.session.user });
+        res.render("index", {
+          dataGame: gameData,
+          dataApi: apiData,
+          userData: req.session.user,
+        });
         break;
       case "/favorites":
-
         // variable here under is to test the favorites page, the data is meant to mimic the data which would come out of the databank
 
-        let fakeUserData: FavoriteList[] = 
-          [{
+        let fakeUserData: FavoriteList[] = [
+          {
             characterName: "Gandalf",
-            favoriteQuotes: ["All we have to decide is what to do with the time that is given us", "This is no place for a Hobbit!"],
+            favoriteQuotes: [
+              "All we have to decide is what to do with the time that is given us",
+              "This is no place for a Hobbit!",
+            ],
             characterInfo: {
               _id: "",
               height: "",
@@ -651,11 +701,15 @@ const getApiData = async (): Promise<void> => {
               hair: "",
               name: "",
               wikiUrl: "",
-            }
+            },
           },
           {
             characterName: "Samwise Gamgee",
-            favoriteQuotes: ["You don't mean that. You can't leave.", "He took it. He must have.", "You can't save him, Mr. Frodo."],
+            favoriteQuotes: [
+              "You don't mean that. You can't leave.",
+              "He took it. He must have.",
+              "You can't save him, Mr. Frodo.",
+            ],
             characterInfo: {
               _id: "",
               height: "",
@@ -668,37 +722,58 @@ const getApiData = async (): Promise<void> => {
               hair: "",
               name: "",
               wikiUrl: "",
-            }
-          }];
+            },
+          },
+        ];
 
         for (let i = 0; i < fakeUserData.length; i++) {
-
-          fakeUserData[i].characterInfo = findCharacterInfoForFavoriteList(fakeUserData[i].characterName);
+          fakeUserData[i].characterInfo = findCharacterInfoForFavoriteList(
+            fakeUserData[i].characterName
+          );
         }
 
         gameData.headerTitle = "Favorites";
         gameData.gameType = "";
-        res.render("favorites", { dataGame: gameData, dataApi: apiData, favoriteData: fakeUserData });
+        res.render("favorites", {
+          dataGame: gameData,
+          dataApi: apiData,
+          favoriteData: fakeUserData,
+        });
         break;
       case "/blacklist":
+        // variable here under is to test the blacklist page, the data is meant to mimic the data which would come out of the databank
 
-      // variable here under is to test the blacklist page, the data is meant to mimic the data which would come out of the databank
-
-      let fakeUserBlacklistData: Blacklist[] = 
-      [{
-        characterName: "Gandalf",
-        blacklistQuotes: ["All we have to decide is what to do with the time that is given us", "This is no place for a Hobbit!"],
-        reason: ["Didn't list this quote", "Bad quote"]
-      },
-      {
-        characterName: "Samwise Gamgee",
-        blacklistQuotes: ["You don't mean that. You can't leave.", "He took it. He must have.", "You can't save him, Mr. Frodo."],
-        reason: ["Bad quote", "I don't like this quote", "I don't like this character"]
-      }];
+        let fakeUserBlacklistData: Blacklist[] = [
+          {
+            characterName: "Gandalf",
+            blacklistQuotes: [
+              "All we have to decide is what to do with the time that is given us",
+              "This is no place for a Hobbit!",
+            ],
+            reason: ["Didn't list this quote", "Bad quote"],
+          },
+          {
+            characterName: "Samwise Gamgee",
+            blacklistQuotes: [
+              "You don't mean that. You can't leave.",
+              "He took it. He must have.",
+              "You can't save him, Mr. Frodo.",
+            ],
+            reason: [
+              "Bad quote",
+              "I don't like this quote",
+              "I don't like this character",
+            ],
+          },
+        ];
 
         gameData.headerTitle = "Blacklist";
         gameData.gameType = "";
-        res.render("blacklist", { dataGame: gameData, dataApi: apiData, blacklistData: fakeUserBlacklistData });
+        res.render("blacklist", {
+          dataGame: gameData,
+          dataApi: apiData,
+          blacklistData: fakeUserBlacklistData,
+        });
         break;
       case "/account":
         gameData.headerTitle = "Account";
@@ -730,7 +805,7 @@ const getApiData = async (): Promise<void> => {
   app.post("/create", async (req, res) => {
     let NewUser: Player = {
       name: req.body.name,
-      ww: req.body.ww
+      ww: req.body.ww,
     };
 
     try {
@@ -739,11 +814,9 @@ const getApiData = async (): Promise<void> => {
         .db("LOTR")
         .collection("users")
         .insertOne(NewUser);
-    } 
-    catch (exc:any) {
+    } catch (exc: any) {
       console.log(exc.message);
-    } 
-    finally {
+    } finally {
       await client.close();
     }
     res.redirect("/login");
@@ -755,7 +828,7 @@ const getApiData = async (): Promise<void> => {
       await client.connect();
       let profile: Player = {
         name: req.body.name,
-        ww: req.body.ww
+        ww: req.body.ww,
       };
       let result: Player | null = await client
         .db("LOTR")
@@ -765,11 +838,9 @@ const getApiData = async (): Promise<void> => {
         req.session.user = result;
         req.session.save();
       }
-    } 
-    catch (exc:any) {
+    } catch (exc: any) {
       console.log(exc.message);
-    } 
-    finally {
+    } finally {
       await client.close();
     }
     res.redirect("/index");
@@ -792,31 +863,31 @@ const getApiData = async (): Promise<void> => {
     }
 
     // check if user/player has answered questions correctly
-   
-    if (gameData.userMovieAnswer == apiData.correctMovieName &&
-      gameData.userCharacterAnswer == apiData.correctCharacterName) {
 
+    if (
+      gameData.userMovieAnswer == apiData.correctMovieName &&
+      gameData.userCharacterAnswer == apiData.correctCharacterName
+    ) {
       gameData.score++;
       gameData.userCorrectFeedback.rightMovie = 1;
       gameData.userCorrectFeedback.rightCharacter = 1;
       // Both correct
-
-    } else if (gameData.userMovieAnswer == apiData.correctMovieName &&
-      gameData.userCharacterAnswer != apiData.correctCharacterName) {
-        
+    } else if (
+      gameData.userMovieAnswer == apiData.correctMovieName &&
+      gameData.userCharacterAnswer != apiData.correctCharacterName
+    ) {
       gameData.score = gameData.score + 0.5;
       gameData.userCorrectFeedback.rightMovie = 1;
       gameData.userCorrectFeedback.rightCharacter = -1;
       // Only Movie correct
-
-    } else if (gameData.userMovieAnswer != apiData.correctMovieName &&
-      gameData.userCharacterAnswer == apiData.correctCharacterName) {
-
+    } else if (
+      gameData.userMovieAnswer != apiData.correctMovieName &&
+      gameData.userCharacterAnswer == apiData.correctCharacterName
+    ) {
       gameData.score = gameData.score + 0.5;
       gameData.userCorrectFeedback.rightMovie = -1;
       gameData.userCorrectFeedback.rightCharacter = 1;
       // Only character correct
-
     } else if (gameData.gameCounter != 0) {
       gameData.userCorrectFeedback.rightMovie = -1;
       gameData.userCorrectFeedback.rightCharacter = -1;
@@ -827,7 +898,7 @@ const getApiData = async (): Promise<void> => {
     gameData.gameCounter++;
 
     // call main function to get new quote, characters, and movies
-    main();
+    main(req);
 
     res.render("quiz", { dataGame: gameData, dataApi: apiData });
   });
@@ -848,7 +919,10 @@ const getApiData = async (): Promise<void> => {
     }
 
     // check if user/player has answered questions correctly
-    if (gameData.userMovieAnswer == apiData.correctMovieName && gameData.userCharacterAnswer == apiData.correctCharacterName) {
+    if (
+      gameData.userMovieAnswer == apiData.correctMovieName &&
+      gameData.userCharacterAnswer == apiData.correctCharacterName
+    ) {
       gameData.score++;
       gameData.userCorrectFeedback.rightMovie = 1;
       gameData.userCorrectFeedback.rightCharacter = 1;
@@ -858,16 +932,18 @@ const getApiData = async (): Promise<void> => {
       gameData.gameCounter++;
 
       // call main function to get new quote, characters, and movies:
-      main();
+      main(req);
 
       res.render("quiz", { dataGame: gameData, dataApi: apiData });
-
-    } 
-    else if (gameData.gameCounter != 0) {
+    } else if (gameData.gameCounter != 0) {
       // Both are wrong.
 
       // if game score is higher than the users highest score, or if it is the users first time playing then save the score in the databank:
-      if (req.session.user!.sdscore! < gameData.score || req.session.user!.sdscore! == undefined || req.session.user!.sdscore! == null)
+      if (
+        req.session.user!.sdscore! < gameData.score ||
+        req.session.user!.sdscore! == undefined ||
+        req.session.user!.sdscore! == null
+      )
         try {
           await client.connect();
           req.session.user!.sdscore = gameData.score;
@@ -875,36 +951,34 @@ const getApiData = async (): Promise<void> => {
           let result = await client
             .db("LOTR")
             .collection("users")
-            .updateOne({ name: req.session.user?.name },{ $set: { sdscore: gameData.score } }
+            .updateOne(
+              { name: req.session.user?.name },
+              { $set: { sdscore: gameData.score } }
             );
-          res.render("highscore", {dataGame: gameData, dataApi: apiData});
-        } 
-        catch (exc:any) {
+          res.render("highscore", { dataGame: gameData, dataApi: apiData });
+        } catch (exc: any) {
           console.log(exc.message);
-        } 
-        finally {
+        } finally {
           await client.close();
         }
-
-        // if the score is less than the users highest score, go directly to highscore page:
-        else{
-          res.render("highscore", {dataGame: gameData, dataApi: apiData});
-        }
-
-    } 
+      // if the score is less than the users highest score, go directly to highscore page:
+      else {
+        res.render("highscore", { dataGame: gameData, dataApi: apiData });
+      }
+    }
     // this is where a new sudden_death quiz starts if retrying from highscore page:
     else {
       // Set the game round +1
       gameData.gameCounter++;
 
       // call main function to get new quote, characters, and movies
-      main();
+      main(req);
 
       res.render("quiz", { dataGame: gameData, dataApi: apiData });
     }
   });
 
-  app.post("/highscore", async (req, res)  => {
+  app.post("/highscore", async (req, res) => {
     gameData.userMovieAnswer = req.body.checkboxMovie;
     gameData.userCharacterAnswer = req.body.checkboxCharacter;
     if (gameData.userMovieAnswer == undefined) {
@@ -926,8 +1000,11 @@ const getApiData = async (): Promise<void> => {
     }
 
     // after the 10 rounds are played, if the score is higher than the users highest score, or if it is the users first time playing then save the score in the databank:
-    if (req.session.user!.qscore! < gameData.score || req.session.user!.qscore! == undefined || req.session.user!.qscore! == null) {
-
+    if (
+      req.session.user!.qscore! < gameData.score ||
+      req.session.user!.qscore! == undefined ||
+      req.session.user!.qscore! == null
+    ) {
       try {
         await client.connect();
         req.session.user!.qscore = gameData.score;
@@ -941,19 +1018,16 @@ const getApiData = async (): Promise<void> => {
           );
 
         res.render("highscore", { dataGame: gameData, dataApi: apiData });
-      }
-      catch (exc: any) {
+      } catch (exc: any) {
         console.log(exc.message);
-      }
-      finally {
+      } finally {
         await client.close();
       }
     }
     // if the score is less than the users highest score, go directly to highscore page
-    else{
+    else {
       res.render("highscore", { dataGame: gameData, dataApi: apiData });
     }
-
   });
 
   app.listen(app.get("port"), () =>
@@ -962,4 +1036,4 @@ const getApiData = async (): Promise<void> => {
 };
 
 getApiData();
-export { };
+export {};
