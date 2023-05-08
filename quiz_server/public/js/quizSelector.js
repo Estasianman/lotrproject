@@ -5,10 +5,7 @@ let submitButton = document.getElementById('submit-button');
 // when user clicks on a photo, find the first child element (hidden radio button) and active it
 document.querySelectorAll('li').forEach((element) => {
     element.addEventListener('click', function(){
-        let namesButtons = element.lastElementChild;
-        let radioButtons = namesButtons.firstElementChild;
-        let figure = element.firstElementChild;
-        let image = figure.firstElementChild;
+        let radioButtons = element.lastElementChild;
         radioButtons.checked = true;
 
         // if the selection is a Movie, then display the selection name to the movieOutput textContent

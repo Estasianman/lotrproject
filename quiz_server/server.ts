@@ -465,6 +465,7 @@ const getApiData = async (): Promise<void> => {
       // if the character is Gothmog or Haldir, then use a specific string
       if (characterArray[i].name == "Gothmog (Lieutenant of Morgul)") {
         arrayEmpty[i] = `/images/characters/Gothmog.jpg`;
+        characterArray[i].name = "Gothmog";
       } else if (characterArray[i].name == "Haldir (Haladin)") {
         arrayEmpty[i] = `/images/characters/Haldir.jpg`;
       }
@@ -487,11 +488,12 @@ const getApiData = async (): Promise<void> => {
   };
 
   const main = async (req: any): Promise<void> => {
-    //get blacklisted quotes
+    // get users blacklisted quotes
     let blacklistedQuotes: string[] = [];
     let quoteId: number = 0;
     let characterId: string = "";
 
+    // if user has no blacklist quotes we can skip this step
     if (
       req.session.user.blacklisted != null &&
       req.session.user.blacklisted != undefined
@@ -502,14 +504,13 @@ const getApiData = async (): Promise<void> => {
         }
       }
 
-      console.log(blacklistedQuotes);
-      //find random quote and character from that quote
+      //find random quote
+      // check if random quote is not in the users blacklist
       let notInBlacklist: boolean = false;
 
       while (!notInBlacklist) {
         quoteId = getRandomNumber(0, quotes.docs.length);
         apiData.quote = quotes.docs[quoteId];
-        console.log(apiData.quote.dialog);
         if (blacklistedQuotes.indexOf(apiData.quote.dialog) == -1) {
           notInBlacklist = true;
         }
@@ -518,10 +519,10 @@ const getApiData = async (): Promise<void> => {
     } else {
       quoteId = getRandomNumber(0, quotes.docs.length);
       apiData.quote = quotes.docs[quoteId];
-      console.log(apiData.quote.dialog);
       characterId = apiData.quote.character;
     }
 
+    // find the character that matches the random quote
     for (let i = 0; i < characters.docs.length; i++) {
       if (characterId == characters.docs[i]._id) {
         apiData.charactersArray[0] = characters.docs[i];
