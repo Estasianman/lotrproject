@@ -910,7 +910,8 @@ const getApiData = async (): Promise<void> => {
 
     if (
       gameData.userMovieAnswer == apiData.correctMovieName &&
-      gameData.userCharacterAnswer == apiData.correctCharacterName
+      gameData.userCharacterAnswer == apiData.correctCharacterName && 
+      gameData.gameCounter != 0
     ) {
       gameData.score++;
       gameData.userCorrectFeedback.rightMovie = 1;
