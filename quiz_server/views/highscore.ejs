@@ -11,14 +11,44 @@
 </head>
 
 <body class="highscore">
-  <h1>Your Highscore</h1>
-  <h2><%- dataGame.score %></h2>
+  <h1>Highscores</h1>
+  
+  <h2><span>Score from your game: &nbsp; </span><%- dataGame.score %></h2>
   <form action="/<%- dataGame.gameType %>" method="post">
     <% dataGame.score=0 %>
       <% dataGame.gameCounter=0 %>
         <button class="retry">Retry</button>
   </form>
   <a href="/index" class="main-menu">Main Menu</a>
+
+  <container id="highscore-container">
+  <table id="highscore-table">
+    <tr>
+      <th colspan="3">Top 10 Highscores: <br>10 Rounds</th>
+    </tr>
+    <% for (let i = 0; i < dataGame.qHighscores.length; i++) {%>
+      <tr>
+        <td><%- i+1 %></td>
+        <td><%- dataGame.qHighscores[i].name %></td>
+        <td><%- dataGame.qHighscores[i].score %>&nbsp;pts</td>
+      </tr>
+
+      <%}%>
+  </table>
+  <table id="highscore-table">
+    <tr>
+      <th colspan="3">Top 10 Highscores: <br>Sudden Death</th>
+    </tr>
+    <% for (let i = 0; i < dataGame.sHighscores.length; i++) {%>
+      <tr>
+        <td><%- i+1 %></td>
+        <td><%- dataGame.sHighscores[i].name %></td>
+        <td><%- dataGame.sHighscores[i].score %>&nbsp;pts</td>
+      </tr>
+
+      <%}%>
+  </table>
+</container>
 
 </body>
 

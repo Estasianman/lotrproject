@@ -567,7 +567,7 @@ figure {
     position: absolute;
     top: 70%;
     left: 0;
-    transform: translateY(25px);
+    transform: translateY(45px);
 }
 
 #names-button span {
@@ -595,7 +595,7 @@ input[type="radio"] {
 }
 
 #character-photos li {
-    padding-bottom: 2rem;
+    padding-bottom: 3.5rem;
 }
 
 #character-photos #names-button {
@@ -787,7 +787,6 @@ input[type="radio"] {
     padding-top: 6rem;
     font-size: 80px;
     color: #e8d069;
-    flex: 1;
     width: 100%;
     height: auto;
     margin: 0;
@@ -795,10 +794,19 @@ input[type="radio"] {
 
 .highscore h2 {
     padding: 0;
-    padding-top: 2rem;
+    /* padding-top: 2rem; */
     font-size: 72px;
     color: white;
-    flex: 1;
+    width: 100%;
+    height: auto;
+    margin: 0;
+}
+
+.highscore h2 span {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    padding: 0;
+    font-size: 24px;
+    color: white;
     width: 100%;
     height: auto;
     margin: 0;
@@ -815,12 +823,52 @@ input[type="radio"] {
     text-decoration: none;
     border: none;
     transition: 0.2s;
+    text-shadow: 3px 3px 4px #000000;
 }
 
 .retry:hover,
 .main-menu:hover {
     color: rgba(232, 208, 105, 1);
     cursor: pointer;
+    text-shadow: 6px 6px 7px #000000;
+}
+
+#highscore-container{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding-top: 2rem;
+}
+
+#highscore-table{
+    color: #fff;
+    text-align: center;
+    max-width: 400px;
+    border: 2px #fff solid;
+    margin: 1rem;
+    background-color: #000000;
+    border-collapse: separate;
+    border-radius: 8px;
+}
+
+#highscore-table tr{
+    padding: 1rem;
+}
+
+#highscore-table th{
+    font-family: 'ringbearermedium', 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 38px;
+    color: var(--light-yellow-color);
+    text-shadow: 3px 3px 4px #000000;
+    border-bottom: 4px #FFF solid;
+    padding: 1.25rem;
+}
+
+#highscore-table td{
+    font-size: 28px;
+    border: 2px #FFF solid;
+    padding: 1rem;
 }
 
 

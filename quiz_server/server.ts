@@ -180,6 +180,11 @@ let characters: Characters = {
 };
 
 // main game variables used in the quiz
+interface Highscores{
+  name:string,
+  score:number
+}
+
 interface GameVariables {
   movieArray: MovieDoc[];
   correctMovieName: string;
@@ -199,6 +204,8 @@ interface GameVariables {
     rightMovie: number;
     rightCharacter: number;
   };
+  qHighscores: Highscores[],
+  sHighscores: Highscores[]
 }
 
 let gameData: GameVariables = {
@@ -220,6 +227,8 @@ let gameData: GameVariables = {
     rightMovie: 0,
     rightCharacter: 0,
   },
+  qHighscores: [],
+  sHighscores: []
 };
 
 // find Doc (character info) to put in favorite list data
@@ -622,6 +631,39 @@ const getApiData = async (): Promise<void> => {
     addArrayElements(gameData.characterArray, apiData.charactersArray);
   };
 
+  const getHighScores = async () => {
+    try {
+      await client.connect();
+
+      const data = await client.db("LOTR").collection("users").find({}).sort({ qscore: -1 }).limit(10);
+      let qScores = await data.toArray();
+      qScores.forEach((element, index) => {
+        if (element.qscore != undefined){
+          gameData.qHighscores[index] = {name: "", score: 0};
+          gameData.qHighscores[index].name = element.name;
+          gameData.qHighscores[index].score = element.qscore;
+        }
+        
+      });
+      const data2 = await client.db("LOTR").collection("users").find({}).sort({ sdscore: -1 }).limit(10);
+      let sScores = await data2.toArray();
+      sScores.forEach((element, index) => {
+        if (element.sdscore != undefined){
+          gameData.sHighscores[index] = {name: "", score: 0};
+          gameData.sHighscores[index].name = element.name;
+          gameData.sHighscores[index].score = element.sdscore;
+        }
+        
+      });
+    }
+    catch (error: any) {
+      console.log(error.message);
+    }
+    finally {
+      await client.close();
+    }
+  }
+
   // array for app.get routes:
   let routes = [
     "/quiz",
@@ -633,7 +675,7 @@ const getApiData = async (): Promise<void> => {
     "/account",
   ];
 
-  app.get(routes, checkSession, (req, res) => {
+  app.get(routes, checkSession, async (req, res) => {
     let parsedUrl = new URL(`http://localhost:${app.get("port")}${req.url}`);
     let path = parsedUrl.pathname;
     console.log(path);
@@ -664,6 +706,7 @@ const getApiData = async (): Promise<void> => {
         res.render("quiz", { dataGame: gameData, dataApi: apiData });
         break;
       case "/highscore":
+        await getHighScores();
         gameData.headerTitle = "Highscore";
         gameData.gameType = "quiz";
         res.render("highscore", {
@@ -1017,7 +1060,7 @@ const getApiData = async (): Promise<void> => {
             { name: req.session.user?.name },
             { $set: { qscore: gameData.score } }
           );
-
+        await getHighScores();
         res.render("highscore", { dataGame: gameData, dataApi: apiData });
       } catch (exc: any) {
         console.log(exc.message);
@@ -1027,6 +1070,7 @@ const getApiData = async (): Promise<void> => {
     }
     // if the score is less than the users highest score, go directly to highscore page
     else {
+      await getHighScores();
       res.render("highscore", { dataGame: gameData, dataApi: apiData });
     }
   });
