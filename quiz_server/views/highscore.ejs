@@ -1,17 +1,7 @@
-<!DOCTYPE html>
-<html lang="nl-BE">
+<%- include("partials/header") %>
 
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="/css/reset.css">
-  <link rel="stylesheet" href="/css/style.css">
-  <title>Highscore</title>
-</head>
-
-<body class="highscore">
-  <h1>Highscores</h1>
+<section class="highscore">
+  <!-- <h1>Highscores</h1> -->
   
   <h2><span>Score from your game: &nbsp; </span><%- dataGame.score %></h2>
   <form action="/<%- dataGame.gameType %>" method="post">
@@ -48,7 +38,8 @@
 
       <%}%>
   </table>
-</container>
+  </container>
+</section>
 
 </body>
 

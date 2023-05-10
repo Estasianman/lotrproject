@@ -14,7 +14,7 @@
     
     <script defer src="/js/dropdownMenu.js"></script>
 
-    <% if (dataGame.gameType != "quiz" && dataGame.gameType != "sudden_death" && dataGame.gameType != "") {%>
+    <% if (dataGame.headerTitle == "Favorites" || dataGame.headerTitle == "Blacklist") {%>
         <script defer src="/js/collapsible.js"></script>
     <%}%>
     

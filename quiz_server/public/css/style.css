@@ -44,7 +44,6 @@ body {
 
 
 main {
-    grid-area: main;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -107,7 +106,6 @@ header h1 {
     margin-top: 5px;
     display: flex;
     justify-content: center;
-
 }
 
 #header-container {
@@ -115,6 +113,7 @@ header h1 {
     display: flex;
     height: auto;
     justify-content: space-around;
+    flex-wrap: wrap;
 }
 
 #home-button,
@@ -773,28 +772,36 @@ input[type="radio"] {
     background-image: url("../images/background.jpg");
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
+    height: auto;
+    width: 100%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    flex: 1;
 }
 
 .highscore h1,
 .highscore h2 {
     font-family: 'ringbearermedium', 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-    text-shadow: 6px 4px 4px #000000;
+    text-shadow: 4px 2px 2px #000000;
     text-align: center;
 }
 
 .highscore h1 {
     padding: 0;
+    margin: 0;
     padding-top: 6rem;
     font-size: 80px;
     color: #e8d069;
     width: 100%;
     height: auto;
-    margin: 0;
+    
 }
 
 .highscore h2 {
     padding: 0;
-    /* padding-top: 2rem; */
+    padding-top: 6rem;
     font-size: 72px;
     color: white;
     width: 100%;
@@ -805,17 +812,18 @@ input[type="radio"] {
 .highscore h2 span {
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     padding: 0;
-    font-size: 24px;
-    color: white;
-    width: 100%;
-    height: auto;
+    font-size: 36px;
+    color: var(--light-yellow-color);
     margin: 0;
+}
+
+.highscore form {
+    align-self: center;
 }
 
 .retry,
 .main-menu {
-    display: block;
-    margin: 0 auto;
+    align-self: center;
     font-family: 'ringbearermedium', 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     font-size: 36px;
     color: var(--dark-yellow-color);
@@ -838,7 +846,7 @@ input[type="radio"] {
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
-    padding-top: 2rem;
+    padding: 2rem 0 2rem 0;
 }
 
 #highscore-table{
