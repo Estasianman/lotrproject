@@ -9,12 +9,25 @@
     <title>Document</title>
 </head>
 <body>
-    <form action="/create" method="POST">
+    <!-- <form action="/create" method="POST">
         <label for="name">Naam</label><br />
         <input required name="name"><br ?>
         <label for="ww">Wachtwoord</label><br>
         <input required id="pwd" type="password" name="ww"><br>
         <input onclick="mySubmit(this)" type="submit" name="submit" value="Account aanmaken">
-    </form><br>
+    </form><br> -->
+
+    <div>
+        <div class ="login-page">
+           <div class ="form">
+            <form action="/create" method="POST" class = "register-form">
+                <input type = "text" name="name" placeholder = "Naam">
+                <input type="password" id="pwd"  name="ww" placeholder = "Wachtwoord"><br>
+                <input onclick="mySubmit(this)" type="submit" name="submit" value="Account aanmaken">
+                <p class="message">Al geregistreerd? <a href="/login">Log In</a></p>
+                </form>
+                
+            </div>   
+            </div>
 </body>
 </html>
