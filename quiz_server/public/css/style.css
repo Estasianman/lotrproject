@@ -434,6 +434,7 @@ header h1 {
   }
   .form .message a {
     color: black;
+    text-decoration: none;
   }
 
 /*#endregion*/
