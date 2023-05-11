@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -8,6 +9,7 @@
     <script src="js/hashpassword.js"></script>
     <title>Document</title>
 </head>
+
 <body>
     <!-- <form action="/create" method="POST">
         <label for="name">Naam</label><br />
@@ -18,16 +20,17 @@
     </form><br> -->
 
     <div>
-        <div class ="login-page">
-           <div class ="form">
-            <form action="/create" method="POST" class = "register-form">
-                <input type = "text" name="name" placeholder = "Naam">
-                <input type="password" id="pwd"  name="ww" placeholder = "Wachtwoord"><br>
-                <input onclick="mySubmit(this)" type="submit" name="submit" value="Account aanmaken">
-                <p class="message">Al geregistreerd? <a href="/login">Log In</a></p>
+        <div class="login-page">
+            <div class="form">
+                <form action="/create" method="POST" class="register-form">
+                    <input type="text" name="name" placeholder="Naam">
+                    <input type="password" id="pwd" name="ww" placeholder="Wachtwoord"><br>
+                    <input onclick="mySubmit(this)" type="submit" name="submit" value="Account aanmaken">
+                    <p class="message">Al geregistreerd? <a href="/login">Log In</a></p>
                 </form>
-                
-            </div>   
+
             </div>
+        </div>
 </body>
+
 </html>
