@@ -810,14 +810,16 @@ const getApiData = async (): Promise<void> => {
     }
   });
 
-  app.get("/landing", (req, res) => {
+  app.get("/", (req, res) => {
     gameData.gameType = "";
     let loggedIn: boolean;
-    if(req.session.user) {
+    if (req.session.user) {
       loggedIn = true;
-    } else {loggedIn = false;}
+    } else {
+      loggedIn = false;
+    }
 
-    res.render("landing", {loggedIn:loggedIn});
+    res.render("landing", { loggedIn: loggedIn });
   });
 
   app.get("/login", (req, res) => {
@@ -985,7 +987,7 @@ const getApiData = async (): Promise<void> => {
               { name: req.session.user?.name },
               { $set: { sdscore: gameData.score } }
             );
-            await getHighScores();
+          await getHighScores();
           res.render("highscore", { dataGame: gameData, dataApi: apiData });
         } catch (exc: any) {
           console.log(exc.message);
@@ -1213,7 +1215,7 @@ const getApiData = async (): Promise<void> => {
   );
 
   app.listen(app.get("port"), () =>
-    console.log("[server] http://localhost:" + app.get("port") + "/landing")
+    console.log("[server] http://localhost:" + app.get("port"))
   );
 };
 
