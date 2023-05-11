@@ -1139,6 +1139,43 @@ const getApiData = async (): Promise<void> => {
     }
   );
 
+  //remove from favorites
+  app.get(
+    "/deleteFavoriteQuote/:characterIndex/:quoteindex",
+    checkSession,
+    async (req, res) => {
+      try {
+        let characterIndex: number = parseInt(req.params.characterIndex);
+        let quoteIndex: number = parseInt(req.params.quoteindex);
+        req.session.user!.favorites![characterIndex].favoriteQuotes.splice(
+          quoteIndex,
+          1
+        );
+        if (
+          req.session.user!.favorites![characterIndex].favoriteQuotes.length ==
+          0
+        ) {
+          req.session.user!.favorites!.splice(characterIndex, 1);
+        }
+
+        await client.connect();
+
+        //remove from list on database
+        await client
+          .db("LOTR")
+          .collection("users")
+          .findOneAndReplace(
+            { name: req.session.user?.name },
+            { favorites: req.session.user?.favorites }
+          );
+      } catch (exc) {
+        console.log(exc);
+      } finally {
+        await client.close();
+      }
+    }
+  );
+
   app.listen(app.get("port"), () =>
     console.log("[server] http://localhost:" + app.get("port") + "/landing")
   );
