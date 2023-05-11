@@ -444,6 +444,20 @@ header h1 {
 }
 
 
+#thumbs-up {
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    float: right;
+}
+
+#thumbs-down {
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    float: left;
+}
+
 
 
 

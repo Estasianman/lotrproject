@@ -6,8 +6,8 @@
             <h2>Quote: <span id="game-counter">(<%- dataGame.gameCounter %> / 10)</span>
             </h2>
             <p id="quote">" <%- dataApi.quote.dialog %> "</p>
-            <button id="thumbs-up"></button>
-            <button id="thumbs-down"></i></button>
+            <button id="thumbs-up"><i class="fa-solid fa-heart"></i></button>
+            <button id="thumbs-down"><i class="fa-solid fa-xmark"></i></button>
             <h3>Score: <span id="points"> <%- dataGame.score %></span></h3>
         </div>
         <form id="form-quiz" action="/highscore" method="post">
