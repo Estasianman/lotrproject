@@ -648,6 +648,8 @@ const getApiData = async (): Promise<void> => {
   };
 
   const getHighScores = async () => {
+    gameData.qHighscores.slice(0, gameData.qHighscores.length);
+    gameData.sHighscores.slice(0, gameData.sHighscores.length);
     try {
       await client.connect();
 
@@ -748,7 +750,7 @@ const getApiData = async (): Promise<void> => {
         break;
       case "/favorites":
         if (req.session.user!.favorites == undefined) {
-          let alert: string = "Fout, je hebt nog geen favorieten!";
+          let alert: string = "You have no favorite quotes yet! <br>Maybe you should play another round";
           gameData.headerTitle = "LOTR Quiz";
           gameData.gameType = "";
           res.render("index", {
@@ -777,7 +779,7 @@ const getApiData = async (): Promise<void> => {
       case "/blacklist":
         console.log(req.session.user);
         if (req.session.user?.blacklisted == null) {
-          let alert: string = "Fout, je hebt nog geen geblackliste quotes!";
+          let alert: string = "You have no blacklisted quotes yet!<br><span>Maybe you should play another round</span>";
           gameData.headerTitle = "LOTR Quiz";
           gameData.gameType = "";
           res.render("index", {
