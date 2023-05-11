@@ -218,7 +218,7 @@ header h1 {
     max-width: 300px;
     max-height: 300px;
     box-shadow: 10px 5px 5px rgba(0, 0, 0, 0.6);
-    border-radius: 5px;
+    border-radius: 8px;
     transition: transform .5s;
 }
 
@@ -236,6 +236,7 @@ header h1 {
     line-height: 26px;
     cursor: pointer;
     margin: 20px;
+    position: relative;
 }
 
 .index-tutorial:before {
@@ -252,23 +253,25 @@ header h1 {
 .index-tutorial p {
     display: none;
     text-align: left;
-    background-color: #1E2021;
-    padding: 20px;
-    width: 300px;
-    border-radius: 3px;
-    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+    background-color: var(--black-color);
+    padding: 0.5rem;
+    width: 275px;
+    border-radius: 8px;
     color: #FFF;
     font-size: 18px;
     line-height: 1.4;
+    position: absolute;
+    top: -110px;
+    left: -132px;
 }
 
-.index-tutorial p:before {
+/* .index-tutorial p:before {
     position: absolute;
     content: '';
     width: 0;
     height: 0;
     right: 10px;
-    top: -12px;
+    top: 12px;
 }
 
 .index-tutorial p:after {
@@ -276,9 +279,9 @@ header h1 {
     height: 40px;
     content: '';
     position: absolute;
-    top: -40px;
+    top: 40px;
     left: 0;
-}
+} */
 
 #welcome-message{
     font-size: 38px;
@@ -801,7 +804,6 @@ input[type="radio"] {
 
 .highscore h2 {
     padding: 0;
-    padding-top: 6rem;
     font-size: 72px;
     color: white;
     width: 100%;
@@ -854,7 +856,7 @@ input[type="radio"] {
     text-align: center;
     max-width: 400px;
     border: 2px #fff solid;
-    margin: 1rem;
+    margin: 0.5rem 1rem 0.5rem 1rem;
     background-color: #000000;
     border-collapse: separate;
     border-radius: 8px;
