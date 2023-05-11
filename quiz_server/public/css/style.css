@@ -204,7 +204,7 @@ header h1 {
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    margin-top: 50px;
+    margin-top: 2rem;
     gap: 100px;
 }
 
@@ -284,10 +284,23 @@ header h1 {
 } */
 
 #welcome-message{
+    padding-top: 0.5rem;
     font-size: 38px;
     font-weight: bold;
     color: #FFF;
 }
+
+#index-alert {
+    background-color: red;
+    color: #fff;
+    text-align: center;
+    padding: 0.5rem;
+    border-radius: 3px;
+    margin-top: 1rem;
+    font-size: 18px;
+    font-weight: bold;
+}
+
 
 
 /*#endregion*/
