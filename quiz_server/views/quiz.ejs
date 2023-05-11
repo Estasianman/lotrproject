@@ -1,378 +1,383 @@
 <%- include("partials/header") %>
 
-    <% if (dataGame.gameCounter >= 10 && dataGame.gameType == "quiz"){ %>
+    <% if (dataGame.gameCounter>= 10 && dataGame.gameType == "quiz"){ %>
 
         <div id="quote-container">
             <h2>Quote: <span id="game-counter">(<%- dataGame.gameCounter %> / 10)</span>
             </h2>
             <p id="quote">" <%- dataApi.quote.dialog %> "</p>
+            <button id="thumbs-up"></button>
+            <button id="thumbs-down"></i></button>
             <h3>Score: <span id="points"> <%- dataGame.score %></span></h3>
         </div>
         <form id="form-quiz" action="/highscore" method="post">
-            
-            <div id="aside">
-                <% if(dataGame.userCorrectFeedback.rightMovie == 1){%>
-                    <h2 class = "movie flash-green">Movie</h2>
-                <%}else if(dataGame.userCorrectFeedback.rightMovie == -1) {%>
-    
-                    <h2 class = "movie flash-red">Movie</h2>
-                <%} else {%>
-                    <h2 class = "movie">Movie</h2>
-    
-                <%}%>
-                <p id="movie-output"></p>
-                <div>
-                    <button id="submit-button" type='submit'>Next</button>
-                </div>
-                <% if(dataGame.userCorrectFeedback.rightCharacter == 1){%>
-                    <h2 class = "character flash-green" >Character</h2>
-            <%} else if(dataGame.userCorrectFeedback.rightCharacter == -1) {%>
 
-                <h2 class = "character flash-red">Character</h2>
-            <%}else {%>
-                <h2 class = "character">Character</h2>
-                
-            <%}%>
-                <p id="character-output"></p>
+            <div id="aside">
+                <% if(dataGame.userCorrectFeedback.rightMovie==1){%>
+                    <h2 class="movie flash-green">Movie</h2>
+                    <%}else if(dataGame.userCorrectFeedback.rightMovie==-1) {%>
+
+                        <h2 class="movie flash-red">Movie</h2>
+                        <%} else {%>
+                            <h2 class="movie">Movie</h2>
+
+                            <%}%>
+                                <p id="movie-output"></p>
+                                <div>
+                                    <button id="submit-button" type='submit'>Next</button>
+                                </div>
+                                <% if(dataGame.userCorrectFeedback.rightCharacter==1){%>
+                                    <h2 class="character flash-green">Character</h2>
+                                    <%} else if(dataGame.userCorrectFeedback.rightCharacter==-1) {%>
+
+                                        <h2 class="character flash-red">Character</h2>
+                                        <%}else {%>
+                                            <h2 class="character">Character</h2>
+
+                                            <%}%>
+                                                <p id="character-output"></p>
             </div>
             <div id="photos-container">
-                
-            <article id="movie-photos">
-                <ul>
-                    
-    <%} else {%>
 
-        <div id="quote-container">
-            <% if (dataGame.gameType == "quiz"){ %>
-                <h2>Quote: <span id="game-counter">(<%- dataGame.gameCounter %> / 10)</span></h2>
-                <%} else if (dataGame.gameType == "sudden_death") {%>
-                    <h2>Quote: <span id="game-counter">(<%- dataGame.gameCounter %> / &infin;)</span></h2>
+                <article id="movie-photos">
+                    <ul>
 
-                <%}%>
-        
-            <p id="quote">" <%- dataApi.quote.dialog %> "</p>
-            <h3>Score: <span id="points"> <%- dataGame.score %></span>
-            </h3>
-        </div>
-        <form id="form-quiz" action="/<%- dataGame.gameType %>#form-quiz" method="post">
-       
-        <div id="aside">
+                        <%} else {%>
 
-            <% if(dataGame.userCorrectFeedback.rightMovie == 1){%>
-                <h2 class = "movie flash-green">Movie</h2>
-            <%}else if(dataGame.userCorrectFeedback.rightMovie == -1) {%>
+                            <div id="quote-container">
+                                <% if (dataGame.gameType=="quiz" ){ %>
+                                    <h2>Quote: <span id="game-counter">(<%- dataGame.gameCounter %> / 10)</span></h2>
+                                    <%} else if (dataGame.gameType=="sudden_death" ) {%>
+                                        <h2>Quote: <span id="game-counter">(<%- dataGame.gameCounter %> /
+                                                    &infin;)</span></h2>
 
-                <h2 class = "movie flash-red">Movie</h2>
-            <%} else {%>
-                <h2 class = "movie">Movie</h2>
+                                        <%}%>
 
-            <%}%>
+                                            <p id="quote">" <%- dataApi.quote.dialog %> "</p>
+                                            <h3>Score: <span id="points"> <%- dataGame.score %></span>
+                                            </h3>
+                            </div>
+                            <form id="form-quiz" action="/<%- dataGame.gameType %>#form-quiz" method="post">
 
-            <p id="movie-output"></p>
-            <div>
-                <button id="submit-button" type='submit'>Next</button>
-            </div>
+                                <div id="aside">
 
-            <% if(dataGame.userCorrectFeedback.rightCharacter == 1){%>
+                                    <% if(dataGame.userCorrectFeedback.rightMovie==1){%>
+                                        <h2 class="movie flash-green">Movie</h2>
+                                        <%}else if(dataGame.userCorrectFeedback.rightMovie==-1) {%>
 
-                    <h2 class = "character flash-green" >Character</h2>
+                                            <h2 class="movie flash-red">Movie</h2>
+                                            <%} else {%>
+                                                <h2 class="movie">Movie</h2>
 
-            <%} else if(dataGame.userCorrectFeedback.rightCharacter == -1) {%>
+                                                <%}%>
 
-                <h2 class = "character flash-red">Character</h2>
+                                                    <p id="movie-output"></p>
+                                                    <div>
+                                                        <button id="submit-button" type='submit'>Next</button>
+                                                    </div>
 
-            <%}else {%>
+                                                    <% if(dataGame.userCorrectFeedback.rightCharacter==1){%>
 
-                <h2 class = "character">Character</h2>
-                
-            <%}%>
+                                                        <h2 class="character flash-green">Character</h2>
 
-            <p id="character-output"></p>
-        </div>
-        <div id="photos-container">
-        <article id="movie-photos">
-            <ul>
+                                                        <%} else if(dataGame.userCorrectFeedback.rightCharacter==-1) {%>
 
-    <%}%>
-    
-            <% if (dataGame.randomNumberMovie == 1){ %>
+                                                            <h2 class="character flash-red">Character</h2>
 
-                <% for (let i = 0; i < dataGame.moviePhotoArray.length; i++) {%>
+                                                            <%}else {%>
 
-                    <li>
-                        <figure>
-                            <img src="<%- dataGame.moviePhotoArray[i] %>"
-                                    alt="<%- dataGame.movieArray[i].name %>">
-                        </figure>
-                        
-                        <input id="radio-button" name="checkboxMovie"
-                            type="radio" value="<%- dataGame.movieArray[i].name %>">
-                    </li>
+                                                                <h2 class="character">Character</h2>
 
-                <% }; %> 
+                                                                <%}%>
 
-                </ul>
+                                                                    <p id="character-output"></p>
+                                </div>
+                                <div id="photos-container">
+                                    <article id="movie-photos">
+                                        <ul>
+
+                                            <%}%>
+
+                                                <% if (dataGame.randomNumberMovie==1){ %>
+
+                                                    <% for (let i=0; i < dataGame.moviePhotoArray.length; i++) {%>
+
+                                                        <li>
+                                                            <figure>
+                                                                <img src="<%- dataGame.moviePhotoArray[i] %>"
+                                                                    alt="<%- dataGame.movieArray[i].name %>">
+                                                            </figure>
+
+                                                            <input id="radio-button" name="checkboxMovie" type="radio"
+                                                                value="<%- dataGame.movieArray[i].name %>">
+                                                        </li>
+
+                                                        <% }; %>
+
+                                        </ul>
+                                    </article>
+                                    <article id="character-photos">
+                                        <ul>
+
+                                            <% if (dataGame.randomNumberCharacter==1){ %>
+
+                                                <li>
+                                                    <figure>
+                                                        <img src="<%- dataGame.characterPhotoArray[1] %>"
+                                                            alt="<%- dataGame.characterArray[1].name %>">
+                                                        <p id="names-button"><span><%- dataGame.characterArray[1].name
+                                                                    %></span></p>
+                                                    </figure>
+                                                    <input id="radio-button" name="checkboxCharacter" type="radio"
+                                                        value="<%- dataGame.characterArray[1].name %>">
+
+                                                </li>
+                                                <li>
+                                                    <figure>
+                                                        <img src="<%- dataGame.characterPhotoArray[2] %>"
+                                                            alt="<%- dataGame.characterArray[2].name %>">
+                                                        <p id="names-button"><span><%- dataGame.characterArray[2].name
+                                                                    %></span></p>
+                                                    </figure>
+                                                    <input id="radio-button" name="checkboxCharacter" type="radio"
+                                                        value="<%- dataGame.characterArray[2].name %>">
+
+                                                </li>
+                                                <li>
+                                                    <figure>
+                                                        <img src="<%- dataGame.characterPhotoArray[0] %>"
+                                                            alt="<%- dataGame.characterArray[0].name %>">
+                                                        <p id="names-button"><span><%- dataGame.characterArray[0].name
+                                                                    %></span></p>
+                                                    </figure>
+                                                    <input id="radio-button" name="checkboxCharacter" type="radio"
+                                                        value="<%- dataGame.characterArray[0].name %>">
+
+                                                </li>
+
+                                                <%} else if (dataGame.randomNumberCharacter==2) { %>
+
+                                                    <li>
+                                                        <figure>
+                                                            <img src="<%- dataGame.characterPhotoArray[0] %>"
+                                                                alt="<%- dataGame.characterArray[0].name %>">
+                                                            <p id="names-button"><span><%-
+                                                                        dataGame.characterArray[0].name %></span></p>
+                                                        </figure>
+                                                        <input id="radio-button" name="checkboxCharacter" type="radio"
+                                                            value="<%- dataGame.characterArray[0].name %>">
+
+                                                    </li>
+                                                    <li>
+                                                        <figure>
+                                                            <img src="<%- dataGame.characterPhotoArray[2] %>"
+                                                                alt="<%- dataGame.characterArray[2].name %>">
+                                                            <p id="names-button"><span><%-
+                                                                        dataGame.characterArray[2].name %></span></p>
+                                                        </figure>
+                                                        <input id="radio-button" name="checkboxCharacter" type="radio"
+                                                            value="<%- dataGame.characterArray[2].name %>">
+
+                                                    </li>
+                                                    <li>
+                                                        <figure>
+                                                            <img src="<%- dataGame.characterPhotoArray[1] %>"
+                                                                alt="<%- dataGame.characterArray[1].name %>">
+                                                            <p id="names-button"><span><%-
+                                                                        dataGame.characterArray[1].name %></span></p>
+                                                        </figure>
+                                                        <input id="radio-button" name="checkboxCharacter" type="radio"
+                                                            value="<%- dataGame.characterArray[1].name %>">
+
+                                                    </li>
+
+                                                    <%} %>
+
+                                        </ul>
+                                    </article>
+
+                                    <%} else if (dataGame.randomNumberMovie==2) { %>
+
+                                        <li>
+                                            <figure>
+                                                <img src="<%- dataGame.moviePhotoArray[1] %>"
+                                                    alt="<%- dataGame.movieArray[1].name %>">
+                                            </figure>
+
+                                            <input id="radio-button" name="checkboxMovie" type="radio"
+                                                value="<%- dataGame.movieArray[1].name %>">
+                                        </li>
+                                        <li>
+                                            <figure>
+                                                <img src="<%- dataGame.moviePhotoArray[2] %>"
+                                                    alt="<%- dataGame.movieArray[2].name %>">
+                                            </figure>
+                                            <input id="radio-button" name="checkboxMovie" type="radio"
+                                                value="<%- dataGame.movieArray[2].name %>">
+                                        </li>
+                                        <li>
+                                            <figure>
+                                                <img src="<%- dataGame.moviePhotoArray[0] %>"
+                                                    alt="<%- dataGame.movieArray[0].name %>">
+                                            </figure>
+                                            <input id="radio-button" name="checkboxMovie" type="radio"
+                                                value="<%- dataGame.movieArray[0].name %>">
+                                        </li>
+                    </ul>
                 </article>
+
                 <article id="character-photos">
                     <ul>
 
-                        <% if (dataGame.randomNumberCharacter == 1){ %>
+                        <% if (dataGame.randomNumberCharacter==1){ %>
 
-                        <li>
-                            <figure>
-                                <img src="<%- dataGame.characterPhotoArray[1] %>"
-                                        alt="<%- dataGame.characterArray[1].name %>">
-                                        <p id="names-button"><span><%- dataGame.characterArray[1].name %></span></p>
-                            </figure>
-                            <input id="radio-button"
-                                            name="checkboxCharacter" type="radio" value="<%- dataGame.characterArray[1].name %>">
-                            
-                        </li>
-                        <li>
-                            <figure>
-                                <img src="<%- dataGame.characterPhotoArray[2] %>"
-                                        alt="<%- dataGame.characterArray[2].name %>">
-                                        <p id="names-button"><span><%- dataGame.characterArray[2].name %></span></p>
-                            </figure>
-                            <input id="radio-button"
-                                            name="checkboxCharacter" type="radio" value="<%- dataGame.characterArray[2].name %>">
-                            
-                        </li>
-                        <li>
-                            <figure>
-                                <img src="<%- dataGame.characterPhotoArray[0] %>"
-                                        alt="<%- dataGame.characterArray[0].name %>">
-                                        <p id="names-button"><span><%- dataGame.characterArray[0].name %></span></p>
-                            </figure>
-                            <input id="radio-button"
-                                            name="checkboxCharacter" type="radio" value="<%- dataGame.characterArray[0].name %>">
-                            
-                        </li>
-                
-                        <%} else if (dataGame.randomNumberCharacter== 2) { %> 
+                            <% for (let i=0; i < dataGame.characterPhotoArray.length; i++) {%>
 
-                            <li>
-                                <figure>
-                                    <img src="<%- dataGame.characterPhotoArray[0] %>"
-                                            alt="<%- dataGame.characterArray[0].name %>">
-                                            <p id="names-button"><span><%- dataGame.characterArray[0].name %></span></p>
-                                </figure>
-                                <input id="radio-button"
-                                                name="checkboxCharacter" type="radio" value="<%- dataGame.characterArray[0].name %>">
-                                
-                            </li>
-                            <li>
-                                <figure>
-                                    <img src="<%- dataGame.characterPhotoArray[2] %>"
-                                            alt="<%- dataGame.characterArray[2].name %>">
-                                            <p id="names-button"><span><%- dataGame.characterArray[2].name %></span></p>
-                                </figure>
-                                <input id="radio-button"
-                                                name="checkboxCharacter" type="radio" value="<%- dataGame.characterArray[2].name %>">
-                                
-                            </li>
-                            <li>
-                                <figure>
-                                    <img src="<%- dataGame.characterPhotoArray[1] %>"
-                                            alt="<%- dataGame.characterArray[1].name %>">
-                                            <p id="names-button"><span><%- dataGame.characterArray[1].name %></span></p>
-                                </figure>
-                                <input id="radio-button"
-                                                name="checkboxCharacter" type="radio" value="<%- dataGame.characterArray[1].name %>">
-                                
-                            </li>
+                                <li>
+                                    <figure>
+                                        <img src="<%- dataGame.characterPhotoArray[i] %>"
+                                            alt="<%- dataGame.characterArray[i].name %>">
+                                        <p id="names-button"><span><%- dataGame.characterArray[i].name %></span></p>
+                                    </figure>
+                                    <input id="radio-button" name="checkboxCharacter" type="radio"
+                                        value="<%- dataGame.characterArray[i].name %>">
 
-                        <%} %>
+                                </li>
+
+                                <% }; %>
+
+                                    <%} else if (dataGame.randomNumberCharacter==2) { %>
+
+                                        <li>
+                                            <figure>
+                                                <img src="<%- dataGame.characterPhotoArray[1] %>"
+                                                    alt="<%- dataGame.characterArray[1].name %>">
+                                                <p id="names-button"><span><%- dataGame.characterArray[1].name %></span>
+                                                </p>
+                                            </figure>
+                                            <input id="radio-button" name="checkboxCharacter" type="radio"
+                                                value="<%- dataGame.characterArray[1].name %>">
+
+                                        </li>
+                                        <li>
+                                            <figure>
+                                                <img src="<%- dataGame.characterPhotoArray[0] %>"
+                                                    alt="<%- dataGame.characterArray[0].name %>">
+                                                <p id="names-button"><span><%- dataGame.characterArray[0].name %></span>
+                                                </p>
+                                            </figure>
+                                            <input id="radio-button" name="checkboxCharacter" type="radio"
+                                                value="<%- dataGame.characterArray[0].name %>">
+
+                                        </li>
+                                        <li>
+                                            <figure>
+                                                <img src="<%- dataGame.characterPhotoArray[2] %>"
+                                                    alt="<%- dataGame.characterArray[2].name %>">
+                                                <p id="names-button"><span><%- dataGame.characterArray[2].name %></span>
+                                                </p>
+                                            </figure>
+                                            <input id="radio-button" name="checkboxCharacter" type="radio"
+                                                value="<%- dataGame.characterArray[2].name %>">
+
+                                        </li>
+
+                                        <%}%>
 
                     </ul>
                 </article>
 
-                <%} else if (dataGame.randomNumberMovie == 2) { %>
+                <%} else { %>
 
                     <li>
                         <figure>
-                            <img src="<%- dataGame.moviePhotoArray[1] %>"
-                                    alt="<%- dataGame.movieArray[1].name %>">
+                            <img src="<%- dataGame.moviePhotoArray[2] %>" alt="<%- dataGame.movieArray[2].name %>">
                         </figure>
-                        
-                        <input id="radio-button"
-                            name="checkboxMovie" type="radio" value="<%- dataGame.movieArray[1].name %>">
+                        <input id="radio-button" name="checkboxMovie" type="radio"
+                            value="<%- dataGame.movieArray[2].name %>">
                     </li>
                     <li>
                         <figure>
-                            <img src="<%- dataGame.moviePhotoArray[2] %>"
-                                    alt="<%- dataGame.movieArray[2].name %>">
+                            <img src="<%- dataGame.moviePhotoArray[0] %>" alt="<%- dataGame.movieArray[0].name %>">
                         </figure>
-                        <input id="radio-button"
-                            name="checkboxMovie" type="radio" value="<%- dataGame.movieArray[2].name %>">
+                        <input id="radio-button" name="checkboxMovie" type="radio"
+                            value="<%- dataGame.movieArray[0].name %>">
                     </li>
                     <li>
                         <figure>
-                            <img src="<%- dataGame.moviePhotoArray[0] %>"
-                                    alt="<%- dataGame.movieArray[0].name %>">
+                            <img src="<%- dataGame.moviePhotoArray[1] %>" alt="<%- dataGame.movieArray[1].name %>">
                         </figure>
-                        <input id="radio-button"
-                            name="checkboxMovie" type="radio" value="<%- dataGame.movieArray[0].name %>">
+                        <input id="radio-button" name="checkboxMovie" type="radio"
+                            value="<%- dataGame.movieArray[1].name %>">
                     </li>
                     </ul>
                     </article>
 
                     <article id="character-photos">
                         <ul>
+                            <% if (dataGame.randomNumberCharacter==1){ %>
 
-                            <% if (dataGame.randomNumberCharacter == 1){ %>
-                                
-                            <% for (let i = 0; i < dataGame.characterPhotoArray.length; i++) {%>
+                                <% for (let i=0; i < dataGame.characterPhotoArray.length; i++) {%>
 
-                                <li>
-                                    <figure>
-                                        <img src="<%- dataGame.characterPhotoArray[i] %>"
+                                    <li>
+                                        <figure>
+                                            <img src="<%- dataGame.characterPhotoArray[i] %>"
                                                 alt="<%- dataGame.characterArray[i].name %>">
-                                                <p id="names-button"><span><%- dataGame.characterArray[i].name %></span></p>
-                                    </figure>
-                                    <input id="radio-button"
-                                                    name="checkboxCharacter" type="radio"
-                                                    value="<%- dataGame.characterArray[i].name %>">
-                                    
-                                </li>
-            
-                            <% }; %> 
+                                            <p id="names-button"><span><%- dataGame.characterArray[i].name %></span></p>
+                                        </figure>
+                                        <input id="radio-button" name="checkboxCharacter" type="radio"
+                                            value="<%- dataGame.characterArray[i].name %>">
 
-                            <%} else if (dataGame.randomNumberCharacter == 2) { %>
+                                    </li>
 
-                                <li>
-                                    <figure>
-                                        <img src="<%- dataGame.characterPhotoArray[1] %>"
-                                                alt="<%- dataGame.characterArray[1].name %>">
-                                                <p id="names-button"><span><%- dataGame.characterArray[1].name %></span></p>
-                                    </figure>
-                                    <input id="radio-button"
-                                                    name="checkboxCharacter" type="radio"
+                                    <% }; %>
+
+                                        <%} else if (dataGame.randomNumberCharacter==2) { %>
+
+                                            <li>
+                                                <figure>
+                                                    <img src="<%- dataGame.characterPhotoArray[1] %>"
+                                                        alt="<%- dataGame.characterArray[1].name %>">
+                                                    <p id="names-button"><span><%- dataGame.characterArray[1].name
+                                                                %></span></p>
+                                                </figure>
+                                                <input id="radio-button" name="checkboxCharacter" type="radio"
                                                     value="<%- dataGame.characterArray[1].name %>">
-                                    
-                                </li>
-                                <li>
-                                    <figure>
-                                        <img src="<%- dataGame.characterPhotoArray[0] %>"
-                                                alt="<%- dataGame.characterArray[0].name %>">
-                                                <p id="names-button"><span><%- dataGame.characterArray[0].name %></span></p>
-                                    </figure>
-                                    <input id="radio-button"
-                                                    name="checkboxCharacter" type="radio"
-                                                    value="<%- dataGame.characterArray[0].name %>">
-                                    
-                                </li>
-                                <li>
-                                    <figure>
-                                        <img src="<%- dataGame.characterPhotoArray[2] %>"
-                                                alt="<%- dataGame.characterArray[2].name %>">
-                                                <p id="names-button"><span><%- dataGame.characterArray[2].name %></span></p>
-                                    </figure>
-                                    <input id="radio-button"
-                                                    name="checkboxCharacter" type="radio"
-                                                    value="<%- dataGame.characterArray[2].name %>">
-                                    
-                                </li>
 
-                            <%}%>
-                            
+                                            </li>
+                                            <li>
+                                                <figure>
+                                                    <img src="<%- dataGame.characterPhotoArray[0] %>"
+                                                        alt="<%- dataGame.characterArray[0].name %>">
+                                                    <p id="names-button"><span><%- dataGame.characterArray[0].name
+                                                                %></span></p>
+                                                </figure>
+                                                <input id="radio-button" name="checkboxCharacter" type="radio"
+                                                    value="<%- dataGame.characterArray[0].name %>">
+
+                                            </li>
+                                            <li>
+                                                <figure>
+                                                    <img src="<%- dataGame.characterPhotoArray[2] %>"
+                                                        alt="<%- dataGame.characterArray[2].name %>">
+                                                    <p id="names-button"><span><%- dataGame.characterArray[2].name
+                                                                %></span></p>
+                                                </figure>
+                                                <input id="radio-button" name="checkboxCharacter" type="radio"
+                                                    value="<%- dataGame.characterArray[2].name %>">
+
+                                            </li>
+
+                                            <%}%>
+
                         </ul>
                     </article>
+            </div>
 
-                    <%} else { %>
+            <%}%>
 
-                        <li>
-                            <figure>
-                                <img src="<%- dataGame.moviePhotoArray[2] %>"
-                                        alt="<%- dataGame.movieArray[2].name %>">
-                            </figure>
-                            <input id="radio-button"
-                                name="checkboxMovie" type="radio" value="<%- dataGame.movieArray[2].name %>">
-                        </li>
-                        <li>
-                            <figure>
-                                <img src="<%- dataGame.moviePhotoArray[0] %>"
-                                        alt="<%- dataGame.movieArray[0].name %>">
-                            </figure>
-                            <input id="radio-button"
-                                name="checkboxMovie" type="radio" value="<%- dataGame.movieArray[0].name %>">
-                        </li>
-                        <li>
-                            <figure>
-                                <img src="<%- dataGame.moviePhotoArray[1] %>"
-                                        alt="<%- dataGame.movieArray[1].name %>">
-                            </figure>
-                            <input id="radio-button"
-                                name="checkboxMovie" type="radio" value="<%- dataGame.movieArray[1].name %>">
-                        </li>
-                        </ul>
-                        </article>
+        </form>
+        </main>
+        </body>
 
-                        <article id="character-photos">
-                            <ul>
-                                <% if (dataGame.randomNumberCharacter == 1){ %>
-
-                                    <% for (let i = 0; i < dataGame.characterPhotoArray.length; i++) {%>
-
-                                        <li>
-                                            <figure>
-                                                <img src="<%- dataGame.characterPhotoArray[i] %>"
-                                                        alt="<%- dataGame.characterArray[i].name %>">
-                                                        <p id="names-button"><span><%- dataGame.characterArray[i].name %></span></p>
-                                            </figure>
-                                            <input id="radio-button"
-                                                            name="checkboxCharacter" type="radio"
-                                                            value="<%- dataGame.characterArray[i].name %>">
-                                            
-                                        </li>
-                    
-                                    <% }; %> 
-
-                                <%} else if (dataGame.randomNumberCharacter == 2) { %>
-
-                                    <li>
-                                        <figure>
-                                            <img src="<%- dataGame.characterPhotoArray[1] %>"
-                                                    alt="<%- dataGame.characterArray[1].name %>">
-                                                    <p id="names-button"><span><%- dataGame.characterArray[1].name %></span></p>
-                                        </figure>
-                                        <input id="radio-button"
-                                                        name="checkboxCharacter" type="radio"
-                                                        value="<%- dataGame.characterArray[1].name %>">
-                                        
-                                    </li>
-                                    <li>
-                                        <figure>
-                                            <img src="<%- dataGame.characterPhotoArray[0] %>"
-                                                    alt="<%- dataGame.characterArray[0].name %>">
-                                                    <p id="names-button"><span><%- dataGame.characterArray[0].name %></span></p>
-                                        </figure>
-                                        <input id="radio-button"
-                                                        name="checkboxCharacter" type="radio"
-                                                        value="<%- dataGame.characterArray[0].name %>">
-                                        
-                                    </li>
-                                    <li>
-                                        <figure>
-                                            <img src="<%- dataGame.characterPhotoArray[2] %>"
-                                                    alt="<%- dataGame.characterArray[2].name %>">
-                                                    <p id="names-button"><span><%- dataGame.characterArray[2].name %></span></p>
-                                        </figure>
-                                        <input id="radio-button"
-                                                        name="checkboxCharacter" type="radio"
-                                                        value="<%- dataGame.characterArray[2].name %>">
-                                        
-                                    </li>
-
-                                <%}%>
-                                
-                            </ul>
-                        </article>
-                    </div>
-
-                        <%}%>
-                    
-                            </form>
-                            </main>
-                            </body>
-                            </html>
+        </html>
