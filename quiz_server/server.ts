@@ -812,7 +812,12 @@ const getApiData = async (): Promise<void> => {
 
   app.get("/landing", (req, res) => {
     gameData.gameType = "";
-    res.render("landing");
+    let loggedIn: boolean;
+    if(req.session.user) {
+      loggedIn = true;
+    } else {loggedIn = false;}
+
+    res.render("landing", {loggedIn:loggedIn});
   });
 
   app.get("/login", (req, res) => {

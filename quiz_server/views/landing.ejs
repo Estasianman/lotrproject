@@ -13,7 +13,9 @@
     <header>
       <h1>THE OLDIES</h1>
       <div class = "buttons">
+        <% if(!loggedIn) { %>
       <button onclick="window.location.href='/login';" class = "button">Log-in</button>
+      <% } %>
     </div>
     </header>
 
@@ -82,12 +84,24 @@
       </section>
     </main>
 
+    <% if(loggedIn) { %>
     <script> const errorAlerts = document.querySelectorAll(".errorMessage"); 
       console.log(errorAlerts);
       errorAlerts.forEach(alertMessage => {
       alertMessage.onclick = () => {
       alert('Je hebt geen toegang tot dit spel!');
     };}); </script>
+    <% } else {%>
+      <script> const errorAlerts1 = document.querySelectorAll(".errorMessage"); 
+        console.log(errorAlerts1);
+        errorAlerts1.forEach(alertMessage1 => {
+        alertMessage1.onclick = () => {
+        alert('Log eerst in a.u.b.');
+      };}); </script>
+
+      <% } %>
+
+    
 
   </body>
 </html>
