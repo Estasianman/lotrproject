@@ -488,7 +488,7 @@ header h1 {
 
 #points {
     font-weight: 700;
-
+    color: #ffffff;
 }
 
 #game-counter {
@@ -512,25 +512,32 @@ header h1 {
     border-bottom: 0.5px var(--dark-yellow-color) solid;
 }
 
-#points {
-    color: #ffffff;
-}
 
-
-#thumbs-up {
+#favorite-btn,
+#blacklist-btn {
+    color: var(--dark-yellow-color);
+    font-size: 30px;
     padding: 10px;
     display: flex;
     align-items: center;
-    float: right;
+    justify-content: center;
+    cursor: pointer;
+    background: none;
+    border: none;
 }
 
-#thumbs-down {
-    padding: 10px;
-    display: flex;
-    align-items: center;
+#favorite-btn:hover,
+#blacklist-btn:hover {
+    color: var(--light-yellow-color);
+}
+
+#blacklist-btn {
     float: left;
 }
 
+#favorite-btn {
+    float: right;
+}
 
 
 
