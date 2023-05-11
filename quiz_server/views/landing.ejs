@@ -73,7 +73,12 @@
         </figure></a>
       </section>
       <section>
+        <% if(loggedIn) { %>
         <a href="/index">
+          <% } else {%>
+            <a href="" class ="errorMessage">
+            <% } %>
+          
         <figure>
           <img
             src="/images/landing/lord-of-the-rings-png-title-logo-1.png"
@@ -97,11 +102,13 @@
         errorAlerts1.forEach(alertMessage1 => {
         alertMessage1.onclick = () => {
         alert('Log eerst in a.u.b.');
-      };}); </script>
+      };}); 
+      
+    </script>
 
       <% } %>
 
-    
+   
 
   </body>
 </html>
