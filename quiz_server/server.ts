@@ -985,6 +985,7 @@ const getApiData = async (): Promise<void> => {
               { name: req.session.user?.name },
               { $set: { sdscore: gameData.score } }
             );
+            await getHighScores();
           res.render("highscore", { dataGame: gameData, dataApi: apiData });
         } catch (exc: any) {
           console.log(exc.message);
@@ -993,6 +994,7 @@ const getApiData = async (): Promise<void> => {
         }
       // if the score is less than the users highest score, go directly to highscore page:
       else {
+        await getHighScores();
         res.render("highscore", { dataGame: gameData, dataApi: apiData });
       }
     }
