@@ -360,12 +360,11 @@ header h1 {
 .landing-page main figure img {
     width: 200px;
     height: 150px;
-    margin: 30px 30px 20px 30px;
-
+    padding: 30px;
+    
 }
 
 .landing-page figure {
-    margin: 10px 25px 10px 25px;
     border-radius: 10%;
     transition-duration: 0.5s;
     background-color: #ececec;
@@ -373,7 +372,8 @@ header h1 {
     width: initial;
     height: initial;
     flex: none;
-
+    max-width: none;
+    max-height: none;
 
 }
 
@@ -382,6 +382,9 @@ header h1 {
     box-shadow: none;
 }
 
+.landing-page section {
+    padding: 1rem;
+}
 
 
 
