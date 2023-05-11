@@ -16,12 +16,12 @@
 
             <%} else {%>
 
-                <form id="form-quiz" action="/quiz#form-quiz" method="post">
+                <form id="form-quiz" action="/<%- dataGame.gameType %>#form-quiz" method="post">
 
                 <%}%>
 
             <div id="aside">
-                
+
                 <% if(dataGame.userCorrectFeedback.rightMovie==1){%>
                     <h2 class="movie flash-green">Movie</h2>
                     <%}else if(dataGame.userCorrectFeedback.rightMovie==-1) {%>
