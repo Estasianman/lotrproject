@@ -383,7 +383,6 @@ const addtoFavorites = async (
 
 //check if user is logged in
 const checkSession = (req: any, res: any, next: any): void => {
-  console.log(req.session.user);
   if (req.session.user) {
     next();
   } else {
@@ -750,7 +749,8 @@ const getApiData = async (): Promise<void> => {
         break;
       case "/favorites":
         if (req.session.user!.favorites == undefined) {
-          let alert: string = "You have no favorite quotes yet! <br>Maybe you should play another round";
+          let alert: string =
+            "You have no favorite quotes yet! <br>Maybe you should play another round";
           gameData.headerTitle = "LOTR Quiz";
           gameData.gameType = "";
           res.render("index", {
@@ -779,7 +779,8 @@ const getApiData = async (): Promise<void> => {
       case "/blacklist":
         console.log(req.session.user);
         if (req.session.user?.blacklisted == null) {
-          let alert: string = "You have no blacklisted quotes yet!<br><span>Maybe you should play another round</span>";
+          let alert: string =
+            "You have no blacklisted quotes yet!<br><span>Maybe you should play another round</span>";
           gameData.headerTitle = "LOTR Quiz";
           gameData.gameType = "";
           res.render("index", {
@@ -1055,6 +1056,44 @@ const getApiData = async (): Promise<void> => {
     }
   });
 
+  //remove from favorites
+  app.get(
+    "/deleteFavoriteQuote/:characterIndex/:quoteindex",
+    checkSession,
+    async (req, res) => {
+      try {
+        let characterIndex: number = parseInt(req.params.characterIndex);
+        let quoteIndex: number = parseInt(req.params.quoteindex);
+        req.session.user!.favorites![characterIndex].favoriteQuotes.splice(
+          quoteIndex,
+          1
+        );
+        if (
+          req.session.user!.favorites![characterIndex].favoriteQuotes ==
+          undefined
+        ) {
+          req.session.user!.blacklisted?.splice(characterIndex, 1);
+        }
+
+        await client.connect();
+
+        //remove from list on database
+        await client
+          .db("LOTR")
+          .collection("users")
+          .updateOne(
+            { name: req.session.user?.name },
+            { $set: { blacklisted: req.session.user?.blacklisted } }
+          );
+      } catch (exc) {
+        console.log(exc);
+      } finally {
+        await client.close();
+        res.redirect("/favorites");
+      }
+    }
+  );
+
   //remove from blacklist
   app.get(
     "/deleteBlacklistQuote/:characterIndex/:quoteindex",
@@ -1131,6 +1170,37 @@ const getApiData = async (): Promise<void> => {
       } finally {
         await client.close();
         res.redirect("/favorites");
+      }
+    }
+  );
+
+  //edit reason
+  app.post(
+    "/editReason/:characterIndex/:quoteIndex",
+    checkSession,
+    async (req, res) => {
+      try {
+        let characterIndex = parseInt(req.params.characterIndex);
+        let quoteIndex = parseInt(req.params.characterIndex);
+        let newReason: string = req.body.editreason;
+        console.log(newReason);
+
+        req.session.user!.blacklisted![characterIndex].reason[quoteIndex] =
+          newReason;
+        console.log(req.session.user?.blacklisted![characterIndex].reason);
+        await client.connect();
+        await client
+          .db("LOTR")
+          .collection("users")
+          .updateOne(
+            { name: req.session.user?.name },
+            { $set: { blacklisted: req.session.user!.blacklisted } }
+          );
+      } catch (exc) {
+        console.log(exc);
+      } finally {
+        await client.close();
+        res.redirect("/blacklist");
       }
     }
   );
