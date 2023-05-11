@@ -284,7 +284,6 @@ header h1 {
 } */
 
 #welcome-message {
-    padding-top: 0.5rem;
     font-size: 38px;
     font-weight: bold;
     color: #FFF;
@@ -361,6 +360,7 @@ header h1 {
     width: 200px;
     height: 150px;
     margin: 30px 30px 20px 30px;
+
 }
 
 .landing-page figure {
@@ -372,6 +372,9 @@ header h1 {
     width: initial;
     height: initial;
     flex: none;
+    max-height: none;
+    max-width: none;
+
 }
 
 .landing-page figure:hover {
@@ -385,7 +388,54 @@ header h1 {
 /*#endregion*/
 
 /*#region--------------------------ACCOUNT----------------------------------*/
+.login-page {
+    width: 360px;
+    padding: 8% 0 0;
+    margin: auto;
+  }
+  .form {
+    position: relative;
+    z-index: 1;
+    background: #FFFFFF;
+    max-width: 360px;
+    margin: 0 auto 100px;
+    padding: 45px;
+    text-align: center;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+  }
+  .form input {
+    font-family:sans-serif;
+    outline: 0;
+    background: #f2f2f2;
+    width: 100%;
+    border: 0;
+    margin: 0 0 15px;
+    padding: 15px;
+    box-sizing: border-box;
+    font-size: 14px;
+  }
+  .form button {
+    font-family: sans-serif;
+    text-transform: uppercase;
+    outline: 0;
+    background: #4CAF50;
+    width: 100%;
+    border: 0;
+    padding: 15px;
+    color: #FFFFFF;
+    font-size: 14px;
+    cursor: pointer;
+  }
 
+  .form .message {
+    margin: 15px 0 0;
+    color: #b3b3b3;
+    font-size: 12px;
+  }
+  .form .message a {
+    color: black;
+    text-decoration: none;
+  }
 
 /*#endregion*/
 
