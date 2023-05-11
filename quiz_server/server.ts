@@ -743,103 +743,58 @@ const getApiData = async (): Promise<void> => {
           dataGame: gameData,
           dataApi: apiData,
           userData: req.session.user,
+          alertstate: null,
         });
         break;
       case "/favorites":
-        // variable here under is to test the favorites page, the data is meant to mimic the data which would come out of the databank
-
-        let fakeUserData: FavoriteList[] = [
-          {
-            characterName: "Gandalf",
-            favoriteQuotes: [
-              "All we have to decide is what to do with the time that is given us",
-              "This is no place for a Hobbit!",
-            ],
-            characterInfo: {
-              _id: "",
-              height: "",
-              race: "",
-              gender: Gender.Empty,
-              birth: "",
-              spouse: "",
-              death: "",
-              realm: "",
-              hair: "",
-              name: "",
-              wikiUrl: "",
-            },
-          },
-          {
-            characterName: "Samwise Gamgee",
-            favoriteQuotes: [
-              "You don't mean that. You can't leave.",
-              "He took it. He must have.",
-              "You can't save him, Mr. Frodo.",
-            ],
-            characterInfo: {
-              _id: "",
-              height: "",
-              race: "",
-              gender: Gender.Empty,
-              birth: "",
-              spouse: "",
-              death: "",
-              realm: "",
-              hair: "",
-              name: "",
-              wikiUrl: "",
-            },
-          },
-        ];
-
-        for (let i = 0; i < fakeUserData.length; i++) {
-          fakeUserData[i].characterInfo = findCharacterInfoForFavoriteList(
-            fakeUserData[i].characterName
-          );
+        if (req.session.user!.favorites == undefined) {
+          let alert: string = "Fout, je hebt nog geen favorieten!";
+          gameData.headerTitle = "LOTR Quiz";
+          gameData.gameType = "";
+          res.render("index", {
+            dataGame: gameData,
+            dataApi: apiData,
+            userData: req.session.user,
+            alertstate: alert,
+          });
+        } else {
+          for (let i = 0; i < req.session.user!.favorites!.length; i++) {
+            req.session.user!.favorites![i].characterInfo =
+              findCharacterInfoForFavoriteList(
+                req.session.user!.favorites![i].characterName
+              );
+          }
+          gameData.headerTitle = "Favorites";
+          gameData.gameType = "";
+          res.render("favorites", {
+            dataGame: gameData,
+            dataApi: apiData,
+            favoriteData: req.session.user!.favorites,
+          });
         }
 
-        gameData.headerTitle = "Favorites";
-        gameData.gameType = "";
-        res.render("favorites", {
-          dataGame: gameData,
-          dataApi: apiData,
-          favoriteData: fakeUserData,
-        });
         break;
       case "/blacklist":
-        // variable here under is to test the blacklist page, the data is meant to mimic the data which would come out of the databank
-
-        let fakeUserBlacklistData: Blacklist[] = [
-          {
-            characterName: "Gandalf",
-            blacklistQuotes: [
-              "All we have to decide is what to do with the time that is given us",
-              "This is no place for a Hobbit!",
-            ],
-            reason: ["Didn't list this quote", "Bad quote"],
-          },
-          {
-            characterName: "Samwise Gamgee",
-            blacklistQuotes: [
-              "You don't mean that. You can't leave.",
-              "He took it. He must have.",
-              "You can't save him, Mr. Frodo.",
-            ],
-            reason: [
-              "Bad quote",
-              "I don't like this quote",
-              "I don't like this character",
-            ],
-          },
-        ];
-
-        gameData.headerTitle = "Blacklist";
-        gameData.gameType = "";
-        res.render("blacklist", {
-          dataGame: gameData,
-          dataApi: apiData,
-          blacklistData: fakeUserBlacklistData,
-        });
+        console.log(req.session.user);
+        if (req.session.user?.blacklisted == null) {
+          let alert: string = "Fout, je hebt nog geen geblackliste quotes!";
+          gameData.headerTitle = "LOTR Quiz";
+          gameData.gameType = "";
+          res.render("index", {
+            dataGame: gameData,
+            dataApi: apiData,
+            userData: req.session.user,
+            alertstate: alert,
+          });
+        } else {
+          gameData.headerTitle = "Blacklist";
+          gameData.gameType = "";
+          res.render("blacklist", {
+            dataGame: gameData,
+            dataApi: apiData,
+            blacklistData: req.session.user!.blacklisted,
+          });
+        }
         break;
       case "/account":
         gameData.headerTitle = "Account";
@@ -1115,8 +1070,8 @@ const getApiData = async (): Promise<void> => {
           1
         );
         if (
-          req.session.user!.blacklisted![characterIndex].blacklistQuotes
-            .length == 0
+          req.session.user!.blacklisted![characterIndex].blacklistQuotes ==
+          undefined
         ) {
           req.session.user!.blacklisted?.splice(characterIndex, 1);
         }
@@ -1127,14 +1082,15 @@ const getApiData = async (): Promise<void> => {
         await client
           .db("LOTR")
           .collection("users")
-          .findOneAndReplace(
+          .updateOne(
             { name: req.session.user?.name },
-            { blacklist: req.session.user?.blacklisted }
+            { $set: { blacklisted: req.session.user?.blacklisted } }
           );
       } catch (exc) {
         console.log(exc);
       } finally {
         await client.close();
+        res.redirect("/blacklist");
       }
     }
   );
@@ -1152,8 +1108,8 @@ const getApiData = async (): Promise<void> => {
           1
         );
         if (
-          req.session.user!.favorites![characterIndex].favoriteQuotes.length ==
-          0
+          req.session.user!.favorites![characterIndex].favoriteQuotes ==
+          undefined
         ) {
           req.session.user!.favorites!.splice(characterIndex, 1);
         }
@@ -1164,14 +1120,15 @@ const getApiData = async (): Promise<void> => {
         await client
           .db("LOTR")
           .collection("users")
-          .findOneAndReplace(
+          .updateOne(
             { name: req.session.user?.name },
-            { favorites: req.session.user?.favorites }
+            { $set: { favorites: req.session.user?.favorites } }
           );
       } catch (exc) {
         console.log(exc);
       } finally {
         await client.close();
+        res.redirect("/favorites");
       }
     }
   );

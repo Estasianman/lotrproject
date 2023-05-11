@@ -2,6 +2,9 @@
 
     <div id="index">
         <p id="welcome-message">Welcome <%- userData.name %>!</p>
+        <% if(alertstate != null){ %>
+            <p style="text-align: center; background-color: red; color: white;"><%= alertstate %></p>
+        <%}%>
         <section id="index-container">
             <article class="index-choice">
                 <a href="/quiz">
