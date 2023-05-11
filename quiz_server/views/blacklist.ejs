@@ -28,8 +28,10 @@
                                             <container id="edit-reason-input-container" role="region" aria-hidden="true">
                                                 <container>
                                                     Edit Reason:&nbsp;
-                                                <textarea type="text" name="edit-reason" id="edit-reason-text-input" class="a"></textarea>
-                                                <a href="/editReason/<%- i %>/<%- j %>">Submit</a>
+                                                    <form action="/editReason/<%- i %>/<%- j %>" method="POST">
+                                                <textarea type="text" name="editreason" id="edit-reason-text-input" class="a"></textarea>
+                                                <input type="submit">
+                                            </form>       
                                             </container>
                                             </container>
                                             
