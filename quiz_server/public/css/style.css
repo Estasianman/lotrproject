@@ -361,6 +361,7 @@ header h1 {
     width: 200px;
     height: 150px;
     margin: 30px 30px 20px 30px;
+
 }
 
 .landing-page figure {
@@ -372,6 +373,9 @@ header h1 {
     width: initial;
     height: initial;
     flex: none;
+    max-height: none;
+    max-width: none;
+
 }
 
 .landing-page figure:hover {

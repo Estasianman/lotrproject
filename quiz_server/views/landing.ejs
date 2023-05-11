@@ -19,7 +19,7 @@
 
     <main class = "projects">
       <section>
-        <a href="#"> <figure>
+        <a href="" class ="errorMessage"> <figure>
           <img
             src="/images/landing/pngimg.com - fifa_PNG26.png"
             alt="fifa"
@@ -29,13 +29,13 @@
         </figure></a>
       </section>
       <section>
-        <a href="#"><figure>
+        <a href="" class ="errorMessage"><figure>
           <img src="/images/landing/characters-fortnite-icon-moxalis-deviantart-23.png" alt="fortnite" />
           <!-- <figcaption>Bron: gamecomputers.nl</figcaption> -->
         </figure></a>
       </section>
       <section>
-        <a href="#"><figure>
+        <a href="" class ="errorMessage"><figure>
           <img
             src="/images/landing/LEGO-Logo-1952.png"
             alt="lego"
@@ -44,7 +44,7 @@
         </figure></a>
       </section>
       <section>
-        <a href="#"> <figure>
+        <a href="" class ="errorMessage"> <figure>
           <img
             src="/images/landing/Magic-The-Gathering-Logo-1993.png"
             alt="MTG"
@@ -53,7 +53,7 @@
         </figure></a>
       </section>
       <section>
-        <a href="#"> <figure>
+        <a href="" class ="errorMessage"> <figure>
           <img
             src="/images/landing/logo-nl.svg"
             alt="nbb"
@@ -62,7 +62,7 @@
         </figure></a>
       </section>
       <section>
-        <a href="#"> <figure>
+        <a href="" class ="errorMessage"> <figure>
           <img
             src="/images/landing/International_Pokémon_logo.svg.png"
             alt="pokemon"
@@ -81,5 +81,13 @@
         </figure></a>
       </section>
     </main>
+
+    <script> const errorAlerts = document.querySelectorAll(".errorMessage"); 
+      console.log(errorAlerts);
+      errorAlerts.forEach(alertMessage => {
+      alertMessage.onclick = () => {
+      alert('Je hebt geen toegang tot dit spel!');
+    };}); </script>
+
   </body>
 </html>
