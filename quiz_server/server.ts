@@ -1056,6 +1056,44 @@ const getApiData = async (): Promise<void> => {
     }
   });
 
+  //remove from favorites
+  app.get(
+    "/deleteFavoriteQuote/:characterIndex/:quoteindex",
+    checkSession,
+    async (req, res) => {
+      try {
+        let characterIndex: number = parseInt(req.params.characterIndex);
+        let quoteIndex: number = parseInt(req.params.quoteindex);
+        req.session.user!.favorites![characterIndex].favoriteQuotes.splice(
+          quoteIndex,
+          1
+        );
+        if (
+          req.session.user!.favorites![characterIndex].favoriteQuotes ==
+          undefined
+        ) {
+          req.session.user!.blacklisted?.splice(characterIndex, 1);
+        }
+
+        await client.connect();
+
+        //remove from list on database
+        await client
+          .db("LOTR")
+          .collection("users")
+          .updateOne(
+            { name: req.session.user?.name },
+            { $set: { blacklisted: req.session.user?.blacklisted } }
+          );
+      } catch (exc) {
+        console.log(exc);
+      } finally {
+        await client.close();
+        res.redirect("/favorites");
+      }
+    }
+  );
+
   //remove from blacklist
   app.get(
     "/deleteBlacklistQuote/:characterIndex/:quoteindex",
