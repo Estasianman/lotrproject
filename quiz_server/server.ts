@@ -771,6 +771,7 @@ const getApiData = async (): Promise<void> => {
           res.render("favorites", {
             dataGame: gameData,
             dataApi: apiData,
+            userData: req.session.user,
             favoriteData: req.session.user!.favorites,
           });
         }
@@ -795,6 +796,7 @@ const getApiData = async (): Promise<void> => {
           res.render("blacklist", {
             dataGame: gameData,
             dataApi: apiData,
+            userData: req.session.user,
             blacklistData: req.session.user!.blacklisted,
           });
         }
@@ -802,7 +804,7 @@ const getApiData = async (): Promise<void> => {
       case "/account":
         gameData.headerTitle = "Account";
         gameData.gameType = "";
-        res.render("account", { dataGame: gameData, dataApi: apiData });
+        res.render("account", { dataGame: gameData, dataApi: apiData, userData: req.session.user });
         break;
 
       default:

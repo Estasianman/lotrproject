@@ -15,7 +15,10 @@
       <div class = "buttons">
         <% if(!loggedIn) { %>
       <button onclick="window.location.href='/login';" class = "button">Log-in</button>
-      <% } %>
+      <% } else {%>
+        <button onclick="window.location.href='/logout';" class = "button">Log-out</button>
+        <button onclick="window.location.href='/account';" class = "button">Account</button>
+        <% }%>
     </div>
     </header>
 
