@@ -180,9 +180,9 @@ let characters: Characters = {
 };
 
 // main game variables used in the quiz
-interface Highscores{
-  name:string,
-  score:number
+interface Highscores {
+  name: string;
+  score: number;
 }
 
 interface GameVariables {
@@ -204,8 +204,8 @@ interface GameVariables {
     rightMovie: number;
     rightCharacter: number;
   };
-  qHighscores: Highscores[],
-  sHighscores: Highscores[]
+  qHighscores: Highscores[];
+  sHighscores: Highscores[];
 }
 
 let gameData: GameVariables = {
@@ -228,7 +228,7 @@ let gameData: GameVariables = {
     rightCharacter: 0,
   },
   qHighscores: [],
-  sHighscores: []
+  sHighscores: [],
 };
 
 // find Doc (character info) to put in favorite list data
@@ -542,8 +542,24 @@ const getApiData = async (): Promise<void> => {
 
     // check if the character from the random quote is not MINOR_CHARACTER, else get new quote and character
     while (apiData.charactersArray[0].name == "MINOR_CHARACTER") {
-      quoteId = getRandomNumber(0, quotes.docs.length);
-      apiData.quote = quotes.docs[quoteId];
+      if (
+        req.session.user.blacklisted != null &&
+        req.session.user.blacklisted != undefined
+      ) {
+        let notInBlacklist: boolean = false;
+
+        while (!notInBlacklist) {
+          quoteId = getRandomNumber(0, quotes.docs.length);
+          apiData.quote = quotes.docs[quoteId];
+          if (blacklistedQuotes.indexOf(apiData.quote.dialog) == -1) {
+            notInBlacklist = true;
+          }
+        }
+      } else {
+        quoteId = getRandomNumber(0, quotes.docs.length);
+        apiData.quote = quotes.docs[quoteId];
+      }
+
       characterId = apiData.quote.character;
 
       for (let i = 0; i < characters.docs.length; i++) {
@@ -635,34 +651,40 @@ const getApiData = async (): Promise<void> => {
     try {
       await client.connect();
 
-      const data = await client.db("LOTR").collection("users").find({}).sort({ qscore: -1 }).limit(10);
+      const data = await client
+        .db("LOTR")
+        .collection("users")
+        .find({})
+        .sort({ qscore: -1 })
+        .limit(10);
       let qScores = await data.toArray();
       qScores.forEach((element, index) => {
-        if (element.qscore != undefined){
-          gameData.qHighscores[index] = {name: "", score: 0};
+        if (element.qscore != undefined) {
+          gameData.qHighscores[index] = { name: "", score: 0 };
           gameData.qHighscores[index].name = element.name;
           gameData.qHighscores[index].score = element.qscore;
         }
-        
       });
-      const data2 = await client.db("LOTR").collection("users").find({}).sort({ sdscore: -1 }).limit(10);
+      const data2 = await client
+        .db("LOTR")
+        .collection("users")
+        .find({})
+        .sort({ sdscore: -1 })
+        .limit(10);
       let sScores = await data2.toArray();
       sScores.forEach((element, index) => {
-        if (element.sdscore != undefined){
-          gameData.sHighscores[index] = {name: "", score: 0};
+        if (element.sdscore != undefined) {
+          gameData.sHighscores[index] = { name: "", score: 0 };
           gameData.sHighscores[index].name = element.name;
           gameData.sHighscores[index].score = element.sdscore;
         }
-        
       });
-    }
-    catch (error: any) {
+    } catch (error: any) {
       console.log(error.message);
-    }
-    finally {
+    } finally {
       await client.close();
     }
-  }
+  };
 
   // array for app.get routes:
   let routes = [
@@ -910,7 +932,7 @@ const getApiData = async (): Promise<void> => {
 
     if (
       gameData.userMovieAnswer == apiData.correctMovieName &&
-      gameData.userCharacterAnswer == apiData.correctCharacterName && 
+      gameData.userCharacterAnswer == apiData.correctCharacterName &&
       gameData.gameCounter != 0
     ) {
       gameData.score++;
@@ -1075,6 +1097,47 @@ const getApiData = async (): Promise<void> => {
       res.render("highscore", { dataGame: gameData, dataApi: apiData });
     }
   });
+
+  //remove from blacklist
+  app.get(
+    "/deleteBlacklistQuote/:characterIndex/:quoteindex",
+    checkSession,
+    async (req, res) => {
+      try {
+        let characterIndex: number = parseInt(req.params.characterIndex);
+        let quoteIndex: number = parseInt(req.params.quoteindex);
+        req.session.user!.blacklisted![characterIndex].blacklistQuotes.splice(
+          quoteIndex,
+          1
+        );
+        req.session.user!.blacklisted![characterIndex].reason.splice(
+          quoteIndex,
+          1
+        );
+        if (
+          req.session.user!.blacklisted![characterIndex].blacklistQuotes
+            .length == 0
+        ) {
+          req.session.user!.blacklisted?.splice(characterIndex, 1);
+        }
+
+        await client.connect();
+
+        //remove from list on database
+        await client
+          .db("LOTR")
+          .collection("users")
+          .findOneAndReplace(
+            { name: req.session.user?.name },
+            { blacklist: req.session.user?.blacklisted }
+          );
+      } catch (exc) {
+        console.log(exc);
+      } finally {
+        await client.close();
+      }
+    }
+  );
 
   app.listen(app.get("port"), () =>
     console.log("[server] http://localhost:" + app.get("port") + "/landing")
