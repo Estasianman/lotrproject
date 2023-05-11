@@ -283,8 +283,12 @@ header h1 {
     left: 0;
 } */
 
+<<<<<<< HEAD
 #welcome-message{
     padding-top: 0.5rem;
+=======
+#welcome-message {
+>>>>>>> thumbsUp-thumbsDown
     font-size: 38px;
     font-weight: bold;
     color: #FFF;
@@ -397,7 +401,7 @@ header h1 {
     font-family: 'ringbearermedium', 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     padding: 0.25rem;
     font-size: 30px;
-    max-width: max-content;
+    max-width: 80%;
     border-bottom: 1px var(--light-yellow-color) solid;
     color: var(--light-yellow-color);
     margin: 0 auto;
@@ -459,6 +463,20 @@ header h1 {
     color: #ffffff;
 }
 
+
+#thumbs-up {
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    float: right;
+}
+
+#thumbs-down {
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    float: left;
+}
 
 
 
@@ -666,7 +684,7 @@ input[type="radio"] {
     width: min-content;
     height: auto;
     flex-shrink: 1;
-    
+
 }
 
 #movie-output,
@@ -812,7 +830,7 @@ input[type="radio"] {
     color: #e8d069;
     width: 100%;
     height: auto;
-    
+
 }
 
 .highscore h2 {
@@ -856,7 +874,7 @@ input[type="radio"] {
     text-shadow: 6px 6px 7px #000000;
 }
 
-#highscore-container{
+#highscore-container {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -864,7 +882,7 @@ input[type="radio"] {
     padding: 2rem 0 2rem 0;
 }
 
-#highscore-table{
+#highscore-table {
     color: #fff;
     text-align: center;
     max-width: 400px;
@@ -875,11 +893,11 @@ input[type="radio"] {
     border-radius: 8px;
 }
 
-#highscore-table tr{
+#highscore-table tr {
     padding: 1rem;
 }
 
-#highscore-table th{
+#highscore-table th {
     font-family: 'ringbearermedium', 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     font-size: 38px;
     color: var(--light-yellow-color);
@@ -888,7 +906,7 @@ input[type="radio"] {
     padding: 1.25rem;
 }
 
-#highscore-table td{
+#highscore-table td {
     font-size: 28px;
     border: 2px #FFF solid;
     padding: 1rem;
@@ -901,7 +919,8 @@ input[type="radio"] {
 
 /*#region--------------------------FAVORITES / BLACKLIST PAGE---------------*/
 
-#favorites-list, #blacklist {
+#favorites-list,
+#blacklist {
     width: min(125ch, 100% - 4rem);
     margin-inline: auto;
 }
@@ -939,7 +958,7 @@ input[type="radio"] {
     flex-direction: column;
 }
 
-#favorites-list .name button, 
+#favorites-list .name button,
 #blacklist .name button {
     font-size: 32px;
     color: var(--dark-yellow-color);
@@ -950,12 +969,12 @@ input[type="radio"] {
     transition: 0.5s;
 }
 
-#favorites-list .name button:hover, 
+#favorites-list .name button:hover,
 #blacklist .name button:hover {
     color: var(--light-yellow-color);
 }
 
-#favorites-list .name .content p, 
+#favorites-list .name .content p,
 #blacklist .name .content p {
     padding: 0.5rem;
 }
@@ -1054,7 +1073,7 @@ input[type="radio"] {
     transform: rotate(405deg);
 }
 
-#favorite-quote-container, 
+#favorite-quote-container,
 #blacklist-quote-container {
     display: flex;
     flex-direction: row;
@@ -1063,17 +1082,17 @@ input[type="radio"] {
     margin: 0;
 }
 
-#edit-reason-input-container{
+#edit-reason-input-container {
     display: grid;
     grid-template-rows: 0fr;
     transition: grid-template-rows 500ms;
 }
 
-#edit-reason-input-container[aria-hidden="false"]{
+#edit-reason-input-container[aria-hidden="false"] {
     grid-template-rows: 1fr;
 }
 
-#edit-reason-input-container>container{
+#edit-reason-input-container>container {
     overflow: hidden;
 }
 
@@ -1112,27 +1131,27 @@ input[type="radio"] {
     vertical-align: bottom;
 }
 
-#delete-quote-article{
-   max-width: 35px;
-   max-height: 35px;
-   align-self: center;
+#delete-quote-article {
+    max-width: 35px;
+    max-height: 35px;
+    align-self: center;
 }
 
-#delete-quote > img{
+#delete-quote>img {
     width: 25px;
     height: 25px;
     transition: 500ms;
 }
 
-#delete-quote > img:hover {
+#delete-quote>img:hover {
     transform: scale(1.1);
 }
 
-.quote:has(+ #delete-quote-article){
+.quote:has(+ #delete-quote-article) {
     transition: 100ms;
 }
 
-.quote:has(+ #delete-quote-article:hover){
+.quote:has(+ #delete-quote-article:hover) {
     text-decoration: red line-through;
     opacity: 0.85;
 }
