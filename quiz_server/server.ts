@@ -383,7 +383,6 @@ const addtoFavorites = async (
 
 //check if user is logged in
 const checkSession = (req: any, res: any, next: any): void => {
-  console.log(req.session.user);
   if (req.session.user) {
     next();
   } else {
@@ -747,7 +746,74 @@ const getApiData = async (): Promise<void> => {
         });
         break;
       case "/favorites":
-        if (req.session.user!.favorites == undefined) {
+        //test favorites
+        let fakeUserData: FavoriteList[] = [
+          {
+            characterName: "Gandalf",
+            favoriteQuotes: [
+              "All we have to decide is what to do with the time that is given us",
+              "This is no place for a Hobbit!",
+            ],
+            characterInfo: {
+              _id: "",
+              height: "",
+              race: "",
+              gender: Gender.Empty,
+              birth: "",
+              spouse: "",
+              death: "",
+              realm: "",
+              hair: "",
+              name: "",
+              wikiUrl: "",
+            },
+          },
+          {
+            characterName: "Samwise Gamgee",
+            favoriteQuotes: [
+              "You don't mean that. You can't leave.",
+              "He took it. He must have.",
+              "You can't save him, Mr. Frodo.",
+            ],
+            characterInfo: {
+              _id: "",
+              height: "",
+              race: "",
+              gender: Gender.Empty,
+              birth: "",
+              spouse: "",
+              death: "",
+              realm: "",
+              hair: "",
+              name: "",
+              wikiUrl: "",
+            },
+          },
+        ];
+
+        for (let i = 0; i < fakeUserData.length; i++) {
+          fakeUserData[i].characterInfo = findCharacterInfoForFavoriteList(
+            fakeUserData[i].characterName
+          );
+        }
+
+        req.session.user!.favorites = fakeUserData;
+        try {
+          await client.connect();
+          await client
+            .db("LOTR")
+            .collection("users")
+            .updateOne(
+              { name: req.session.user?.name },
+              { $set: { favorites: req.session.user!.favorites } }
+            );
+        } catch (exc) {
+          console.log(exc);
+        } finally {
+          await client.close();
+        }
+
+        if (req.session.user!.favorites == undefined || null) {
           let alert: string = "Fout, je hebt nog geen favorieten!";
           gameData.headerTitle = "LOTR Quiz";
           gameData.gameType = "";
@@ -1129,6 +1195,37 @@ const getApiData = async (): Promise<void> => {
       } finally {
         await client.close();
         res.redirect("/favorites");
+      }
+    }
+  );
+
+  //edit reason
+  app.post(
+    "/editReason/:characterIndex/:quoteIndex",
+    checkSession,
+    async (req, res) => {
+      try {
+        let characterIndex = parseInt(req.params.characterIndex);
+        let quoteIndex = parseInt(req.params.characterIndex);
+        let newReason: string = req.body.editreason;
+        console.log(newReason);
+
+        req.session.user!.blacklisted![characterIndex].reason[quoteIndex] =
+          newReason;
+        console.log(req.session.user?.blacklisted![characterIndex].reason);
+        await client.connect();
+        await client
+          .db("LOTR")
+          .collection("users")
+          .updateOne(
+            { name: req.session.user?.name },
+            { $set: { blacklisted: req.session.user!.blacklisted } }
+          );
+      } catch (exc) {
+        console.log(exc);
+      } finally {
+        await client.close();
+        res.redirect("/blacklist");
       }
     }
   );
