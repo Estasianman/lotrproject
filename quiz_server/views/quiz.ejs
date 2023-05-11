@@ -1,7 +1,5 @@
 <%- include("partials/header") %>
 
-    <% if (dataGame.gameCounter>= 10 && dataGame.gameType == "quiz"){ %>
-
         <div id="quote-container">
             <h2>Quote: <span id="game-counter">(<%- dataGame.gameCounter %> / 10)</span>
             </h2>
@@ -11,9 +9,19 @@
 
             <h3>Score: <span id="points"> <%- dataGame.score %></span></h3>
         </div>
+
+        <% if (dataGame.gameCounter>= 10 && dataGame.gameType == "quiz"){ %>
+
         <form id="form-quiz" action="/highscore" method="post">
 
+            <%} else {%>
+
+                <form id="form-quiz" action="/quiz#form-quiz" method="post">
+
+                <%}%>
+
             <div id="aside">
+                
                 <% if(dataGame.userCorrectFeedback.rightMovie==1){%>
                     <h2 class="movie flash-green">Movie</h2>
                     <%}else if(dataGame.userCorrectFeedback.rightMovie==-1) {%>
@@ -43,63 +51,7 @@
                 <article id="movie-photos">
                     <ul>
 
-                        <%} else {%>
-
-                            <div id="quote-container">
-                                <% if (dataGame.gameType=="quiz" ){ %>
-                                    <h2>Quote: <span id="game-counter">(<%- dataGame.gameCounter %> / 10)</span></h2>
-                                    <%} else if (dataGame.gameType=="sudden_death" ) {%>
-                                        <h2>Quote: <span id="game-counter">(<%- dataGame.gameCounter %> /
-                                                    &infin;)</span></h2>
-
-                                        <%}%>
-                                            <button id="blacklist-btn"><i class="fa-solid fa-xmark"></i></button>
-                                            <p id="quote">" <%- dataApi.quote.dialog %> "</p>
-                                            <button id="favorite-btn"><i class="fa-solid fa-heart"></i></button>
-
-                                            <h3>Score: <span id="points"> <%- dataGame.score %></span>
-                                            </h3>
-                            </div>
-                            <form id="form-quiz" action="/<%- dataGame.gameType %>#form-quiz" method="post">
-
-                                <div id="aside">
-
-                                    <% if(dataGame.userCorrectFeedback.rightMovie==1){%>
-                                        <h2 class="movie flash-green">Movie</h2>
-                                        <%}else if(dataGame.userCorrectFeedback.rightMovie==-1) {%>
-
-                                            <h2 class="movie flash-red">Movie</h2>
-                                            <%} else {%>
-                                                <h2 class="movie">Movie</h2>
-
-                                                <%}%>
-
-                                                    <p id="movie-output"></p>
-                                                    <div>
-                                                        <button id="submit-button" type='submit'>Next</button>
-                                                    </div>
-
-                                                    <% if(dataGame.userCorrectFeedback.rightCharacter==1){%>
-
-                                                        <h2 class="character flash-green">Character</h2>
-
-                                                        <%} else if(dataGame.userCorrectFeedback.rightCharacter==-1) {%>
-
-                                                            <h2 class="character flash-red">Character</h2>
-
-                                                            <%}else {%>
-
-                                                                <h2 class="character">Character</h2>
-
-                                                                <%}%>
-
-                                                                    <p id="character-output"></p>
-                                </div>
-                                <div id="photos-container">
-                                    <article id="movie-photos">
-                                        <ul>
-
-                                            <%}%>
+                        
 
                                                 <% if (dataGame.randomNumberMovie==1){ %>
 
