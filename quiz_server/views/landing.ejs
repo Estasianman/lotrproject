@@ -15,14 +15,19 @@
       <div class = "buttons">
         <% if(!loggedIn) { %>
       <button onclick="window.location.href='/login';" class = "button">Log-in</button>
-      <% } else {%>
-        <button onclick="window.location.href='/logout';" class = "button">Log-out</button>
+      <% } else {%>       
         <button onclick="window.location.href='/account';" class = "button">Account</button>
+        <button onclick="window.location.href='/logout';" class = "button">Log-out</button>
         <% }%>
     </div>
     </header>
 
-    <main class = "projects">
+    <main>
+
+      <div id = "viewErrorMsg">
+      <p>Je hebt geen toegang tot dit spel!</p></div>
+
+      <section class = "projects">
       <section>
         <a href="" class ="errorMessage"> <figure>
           <img
@@ -90,6 +95,7 @@
           <!-- <figcaption>Bron: nerdist.com</figcaption> -->
         </figure></a>
       </section>
+    </section>
     </main>
 
     <% if(loggedIn) { %>
@@ -97,14 +103,19 @@
       console.log(errorAlerts);
       errorAlerts.forEach(alertMessage => {
       alertMessage.onclick = () => {
-      alert('Je hebt geen toegang tot dit spel!');
+      // alert('Je hebt geen toegang tot dit spel!');
+      const bodyMsg = document.getElementById("landing-page")[0];
+      let html = "<h3>Je hebt geen toegang tot dit spel!</h3>";
+      bodyMsg.insertAdjacentHTML("afterbegin", html);
     };}); </script>
     <% } else {%>
       <script> const errorAlerts1 = document.querySelectorAll(".errorMessage"); 
         console.log(errorAlerts1);
         errorAlerts1.forEach(alertMessage1 => {
         alertMessage1.onclick = () => {
-        alert('Log eerst in a.u.b.');
+        // const viewErrorMsg = document.getElementsByClassName("viewErrorMsg")[0];
+        // viewErrorMsg.style.display = block;
+        // alert('Log eerst in a.u.b.');
       };}); 
       
     </script>

@@ -293,6 +293,18 @@ header h1 {
     margin-left: 0;
 }
 
+.landing-page #viewErrorMsg {
+    display:flex;
+    justify-content: center;
+    background-color: white;
+    display: none;
+}
+
+.landing-page p {
+    background-image: none;
+    
+}
+
 .landing-page .projects {
     padding-top: 20px;
     display: flex;
@@ -332,6 +344,7 @@ header h1 {
     border: none;
     font-size: 16px;
     transition-duration: 0.2s;
+    margin: 0 5px 0 5px;
 }
 
 .landing-page .buttons button:hover {
@@ -351,6 +364,7 @@ header h1 {
     transition-duration: 0.5s;
     background-color: #ececec;
     box-shadow: 2px 2px grey;
+    margin: 0 10px 0 10px;
     width: initial;
     height: initial;
     flex: none;
