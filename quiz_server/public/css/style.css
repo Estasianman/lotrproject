@@ -297,7 +297,6 @@ header h1 {
     display:flex;
     justify-content: center;
     background-color: white;
-    display: none;
 }
 
 .landing-page p {

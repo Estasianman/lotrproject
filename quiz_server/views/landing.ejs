@@ -100,13 +100,15 @@
 
     <% if(loggedIn) { %>
     <script> const errorAlerts = document.querySelectorAll(".errorMessage"); 
-      console.log(errorAlerts);
+    const bodyMsg = document.getElementById("viewErrorMsg");
+      bodyMsg.style.display = "block";
       errorAlerts.forEach(alertMessage => {
       alertMessage.onclick = () => {
       // alert('Je hebt geen toegang tot dit spel!');
-      const bodyMsg = document.getElementById("landing-page")[0];
-      let html = "<h3>Je hebt geen toegang tot dit spel!</h3>";
-      bodyMsg.insertAdjacentHTML("afterbegin", html);
+      bodyMsg.style.display = "none";
+      // const errorMessage = document.createElement("h3");
+      // errorMessage.textContent = "Je hebt geen toegang tot dit spel!";
+      // alertMessage.parentNode.appendChild(errorMessage);
     };}); </script>
     <% } else {%>
       <script> const errorAlerts1 = document.querySelectorAll(".errorMessage"); 
