@@ -826,57 +826,99 @@ const getApiData = async (): Promise<void> => {
 
   app.get("/login", (req, res) => {
     gameData.gameType = "";
-    res.render("login");
+    res.render("login", {error: ""});
   });
 
   app.get("/create", (req, res) => {
     gameData.gameType = "";
-    res.render("create");
+    res.render("create", {error: ""});
   });
 
   //create new User
   app.post("/create", async (req, res) => {
-    let NewUser: Player = {
-      name: req.body.name,
-      ww: req.body.ww,
-    };
 
-    try {
-      await client.connect();
-      const result = await client
+    // check if name only contains letters or numbers:
+    if(req.body.name.match(/^[\w\áàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ]+$/)){
+      
+      let NewUser: Player = {
+        name: req.body.name,
+        ww: req.body.ww,
+      };
+  
+      try {
+        // check to see if the name already has an account:
+        await client.connect();
+        const nameLookUp = await client
         .db("LOTR")
         .collection("users")
-        .insertOne(NewUser);
-    } catch (exc: any) {
-      console.log(exc.message);
-    } finally {
-      await client.close();
+        .findOne({name : req.body.name});
+
+        // if name does not have account then make a new account:
+        if (nameLookUp == undefined || nameLookUp == null) {
+          const result = await client
+          .db("LOTR")
+          .collection("users")
+          .insertOne(NewUser);
+
+          res.redirect("/login");
+        }
+        // if name already has an account then show error message:
+        else{
+          res.render('create', {error: `<span>" ${req.body.name} "</span> already has an account.`});
+          return;
+        }
+      } catch (exc: any) {
+        console.log(exc.message);
+      } finally {
+        await client.close();
+      }
+      
     }
-    res.redirect("/login");
+    // if name contains something else than numbers or letters then show error message:
+    else{
+      res.render('create', {error: `<span>" ${req.body.name} "</span> is not a valid username.<br>Username can only include letters or numbers.`});
+      return;
+    }
   });
 
   //login
   app.post("/login", async (req, res) => {
-    try {
-      await client.connect();
-      let profile: Player = {
-        name: req.body.name,
-        ww: req.body.ww,
-      };
-      let result: Player | null = await client
-        .db("LOTR")
-        .collection("users")
-        .findOne<Player>({ name: profile.name, ww: profile.ww });
-      if (result) {
-        req.session.user = result;
-        req.session.save();
+
+    // check if name only contains letters or numbers:
+    if(req.body.name.match(/^[\w\áàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ]+$/)){
+
+      try {
+        await client.connect();
+        let profile: Player = {
+          name: req.body.name,
+          ww: req.body.ww,
+        };
+        let result: Player | null = await client
+          .db("LOTR")
+          .collection("users")
+          .findOne<Player>({ name: profile.name, ww: profile.ww });
+        if (result) {
+          req.session.user = result;
+          req.session.save();
+          res.redirect("/index");
+        }
+        // if profile not found show an error:
+        else{
+          res.render('login', {error: `Username or password was incorrect.`});
+          return;
+        }
+      } catch (exc: any) {
+        console.log(exc.message);
+      } finally {
+        await client.close();
       }
-    } catch (exc: any) {
-      console.log(exc.message);
-    } finally {
-      await client.close();
+      
     }
-    res.redirect("/index");
+    // if name contains something else than numbers or letters then show error message:
+    else{
+      res.render('login', {error: `<span>" ${req.body.name} "</span> is not a valid username.`});
+      return;
+    }
   });
 
   // NOTE: quiz scores are saved into the databank from the app.post highscore

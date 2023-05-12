@@ -1,37 +1,35 @@
 <!DOCTYPE html>
 <html lang="nl-BE">
-    <head>
-        <meta charset="UTF-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link rel="stylesheet" href="./css/reset.css" />
-        <link rel="stylesheet" href="./css/style.css" />
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jsSHA/2.0.2/sha.js"></script>
-        <script src="js/hashpassword.js"></script>
-        <title>Home</title>
-      </head>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./css/reset.css" />
+    <link rel="stylesheet" href="./css/style.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsSHA/2.0.2/sha.js"></script>
+    <script src="js/hashpassword.js"></script>
+    <title>Home</title>
+</head>
+
 <body>
-    <!-- <form action="/login" method="POST">
-        <label for="name">Naam</label><br />
-        <input reqired name="name"><br ?>
-        <label for="ww">Wachtwoord</label><br>
-        <input required id="pwd" type="password" name="ww"><br>
-        <input onclick="mySubmit(this)" type="submit" name="submit" value="Inloggen">
-    </form><br>
-    <a href='/create'">Account aanmaken</a> -->
 
     <div class="login-page">
         <div class="form">
-    <form class = "login-form" action="/login" method="POST">
-        <!-- <label for="name">Naam</label><br /> -->
-        <input type = "text" name="name" placeholder= "Name"><br />
-        <!-- <label for="ww">Wachtwoord</label><br> -->
-        <input id="pwd" type="password" name="ww" placeholder ="Password"><br>
-        <input onclick="mySubmit(this)" type="submit" name="submit" value="Login">
-        <p class="message">Not yet registered? <a href="/create">Create Account</a></p>
-    </form>  
-    </div>
+            <form class="login-form" action="/login" method="POST">
+                <!-- <label for="name">Naam</label><br /> -->
+                <input type="text" name="name" placeholder="Name"><br />
+                <%if (error !="" ){%>
+                    <p id="create-error"><%- error %></p>
+                    <%}%>
+                        <!-- <label for="ww">Wachtwoord</label><br> -->
+                        <input id="pwd" type="password" name="ww" placeholder="Password"><br>
+                        <input onclick="mySubmit(this)" type="submit" name="submit" value="Login">
+                        <p class="message">Not yet registered? <a href="/create">Create Account</a></p>
+            </form>
+        </div>
     </div>
 
 </body>
+
 </html>

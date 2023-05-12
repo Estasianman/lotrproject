@@ -373,6 +373,9 @@ header h1 {
 /*#endregion*/
 
 /*#region--------------------------ACCOUNT----------------------------------*/
+
+
+
 .login-page {
     width: 360px;
     padding: 8% 0 0;
@@ -399,7 +402,7 @@ header h1 {
     margin: 0 0 15px;
     padding: 15px;
     box-sizing: border-box;
-    font-size: 14px;
+    font-size: 18px;
 }
 
 #login-submit{
@@ -415,20 +418,32 @@ header h1 {
     border: 0;
     padding: 15px;
     color: #FFFFFF;
-    font-size: 14px;
+    font-size: 18px;
     cursor: pointer;
 }
 
 .form .message {
     margin: 15px 0 0;
     color: #b3b3b3;
-    font-size: 12px;
+    font-size: 16px;
 }
 
 .form .message a {
     color: black;
     text-decoration: none;
 }
+
+#create-error {
+    color: red;
+    font-size: 16px;
+    text-align: center;
+}
+
+#create-error span {
+    font-style: italic;
+}
+
+
 
 /*#endregion*/
 

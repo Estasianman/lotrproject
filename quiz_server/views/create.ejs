@@ -1,32 +1,30 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="nl-BE">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./css/reset.css" />
+    <link rel="stylesheet" href="./css/style.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jsSHA/2.0.2/sha.js"></script>
     <script src="js/hashpassword.js"></script>
-    <title>Document</title>
+    <title>Home</title>
 </head>
 
 <body>
-    <!-- <form action="/create" method="POST">
-        <label for="name">Naam</label><br />
-        <input required name="name"><br ?>
-        <label for="ww">Wachtwoord</label><br>
-        <input required id="pwd" type="password" name="ww"><br>
-        <input onclick="mySubmit(this)" type="submit" name="submit" value="Account aanmaken">
-    </form><br> -->
 
-    <div>
+    
         <div class="login-page">
             <div class="form">
                 <form action="/create" method="POST" class="register-form">
-                    <input type="text" name="name" placeholder="Naam">
-                    <input type="password" id="pwd" name="ww" placeholder="Wachtwoord"><br>
-                    <input onclick="mySubmit(this)" type="submit" name="submit" value="Account aanmaken">
-                    <p class="message">Al geregistreerd? <a href="/login">Log In</a></p>
+                    <input type="text" name="name" placeholder="Name (Aa-Zz 1-9)">
+                    <%if (error !="" ){%>
+                        <p id="create-error"><%- error %></p>
+                        <%}%>
+                            <input type="password" id="pwd" name="ww" placeholder="Password"><br>
+                            <input onclick="mySubmit(this)" type="submit" name="submit" value="Create Account">
+                            <p class="message">Have an account already? <a href="/login">Login</a></p>
                 </form>
 
             </div>
