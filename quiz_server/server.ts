@@ -656,7 +656,8 @@ const getApiData = async (): Promise<void> => {
       case "/account":
         gameData.headerTitle = "Account";
         gameData.gameType = "";
-        res.render("account", { dataGame: gameData, dataApi: apiData, userData: req.session.user });
+        let BtnBool: boolean = true;
+        res.render("account", { dataGame: gameData, dataApi: apiData, userData: req.session.user, BtnBool:BtnBool });
         break;
 
       default:

@@ -8,24 +8,27 @@
     <link rel="stylesheet" href="css/style.css">
     <title>Account</title>
 </head>
-<body>
+<body class ="account">
     <button onclick="window.location.href='/';" class = "button-account">Go Back</button>
 
     <div class="login-page">
-
         <div class="form">
             <img src="images/profile-avatar.png" width = 100 height = 100 >
-            <form class = "login-form" action="/login" method="POST">
-                <!-- <label for="name">Naam</label><br /> -->
+            <form class = "login-form" action="/account" method="POST">
+                <label for="name">Change Name</label><br />
                 <input type = "text" name="name" placeholder= "Name: <%- userData.name %>" readonly><br/>
                 <input type = "text" name="name" placeholder= "New name:"><br />
-                <!-- <label for="ww">Wachtwoord</label><br> -->
+                <input id="login-submit" type="submit" name="submit" value="Submit">
+                <br>
+                <br>
+                <label for="ww">Change Password</label><br>
                 <input id="pwd" type="password" name="wwOld" placeholder ="Type old password:"><br>
                 <input id="pwd" type="password" name="wwNew" placeholder ="New password:"><br>
                 <input id="login-submit" type="submit" name="submit" value="Submit">
          
             </form>  
+        </div>
     </div>
-    </div>
+
 </body>
 </html>
