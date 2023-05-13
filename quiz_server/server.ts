@@ -110,6 +110,48 @@ const findCharacterInfoForFavoriteList = (nameToFind: string): Doc => {
   return foundCharacterInfo;
 };
 
+// function to get top 10 highscores from databank:
+const getHighScores = async () => {
+  gameData.qHighscores.slice(0, gameData.qHighscores.length);
+  gameData.sHighscores.slice(0, gameData.sHighscores.length);
+  try {
+    await client.connect();
+
+    const data = await client
+      .db("LOTR")
+      .collection("users")
+      .find({})
+      .sort({ qscore: -1 })
+      .limit(10);
+    let qScores = await data.toArray();
+    qScores.forEach((element, index) => {
+      if (element.qscore != undefined) {
+        gameData.qHighscores[index] = { name: "", score: 0 };
+        gameData.qHighscores[index].name = element.name;
+        gameData.qHighscores[index].score = element.qscore;
+      }
+    });
+    const data2 = await client
+      .db("LOTR")
+      .collection("users")
+      .find({})
+      .sort({ sdscore: -1 })
+      .limit(10);
+    let sScores = await data2.toArray();
+    sScores.forEach((element, index) => {
+      if (element.sdscore != undefined) {
+        gameData.sHighscores[index] = { name: "", score: 0 };
+        gameData.sHighscores[index].name = element.name;
+        gameData.sHighscores[index].score = element.sdscore;
+      }
+    });
+  } catch (error: any) {
+    console.log(error.message);
+  } finally {
+    await client.close();
+  }
+};
+
 //add to blacklist
 const addtoBlacklist = async (
   req: any,
@@ -498,47 +540,6 @@ const getApiData = async (): Promise<void> => {
     addArrayElements(gameData.characterArray, apiData.charactersArray);
   };
 
-  const getHighScores = async () => {
-    gameData.qHighscores.slice(0, gameData.qHighscores.length);
-    gameData.sHighscores.slice(0, gameData.sHighscores.length);
-    try {
-      await client.connect();
-
-      const data = await client
-        .db("LOTR")
-        .collection("users")
-        .find({})
-        .sort({ qscore: -1 })
-        .limit(10);
-      let qScores = await data.toArray();
-      qScores.forEach((element, index) => {
-        if (element.qscore != undefined) {
-          gameData.qHighscores[index] = { name: "", score: 0 };
-          gameData.qHighscores[index].name = element.name;
-          gameData.qHighscores[index].score = element.qscore;
-        }
-      });
-      const data2 = await client
-        .db("LOTR")
-        .collection("users")
-        .find({})
-        .sort({ sdscore: -1 })
-        .limit(10);
-      let sScores = await data2.toArray();
-      sScores.forEach((element, index) => {
-        if (element.sdscore != undefined) {
-          gameData.sHighscores[index] = { name: "", score: 0 };
-          gameData.sHighscores[index].name = element.name;
-          gameData.sHighscores[index].score = element.sdscore;
-        }
-      });
-    } catch (error: any) {
-      console.log(error.message);
-    } finally {
-      await client.close();
-    }
-  };
-
   // array for app.get routes:
   let routes = [
     "/quiz",
@@ -627,7 +628,6 @@ const getApiData = async (): Promise<void> => {
             favoriteData: req.session.user!.favorites,
           });
         }
-
         break;
       case "/blacklist":
         console.log(req.session.user);
@@ -681,17 +681,16 @@ const getApiData = async (): Promise<void> => {
     res.render("login", {error: ""});
   });
 
-  app.get("/create", (req, res) => {
-    gameData.gameType = "";
-    res.render("create", {error: ""});
-  });
-
   app.get("/logout", (req,res) => {
     req.session.destroy((err) =>{
       res.redirect("/");
     });
-    
-  })
+  });
+
+  app.get("/create", (req, res) => {
+    gameData.gameType = "";
+    res.render("create", {error: ""});
+  });
 
   //create new User
   app.post("/create", async (req, res) => {
@@ -981,8 +980,7 @@ const getApiData = async (): Promise<void> => {
           1
         );
         if (
-          req.session.user!.favorites![characterIndex].favoriteQuotes ==
-          undefined
+          req.session.user!.favorites![characterIndex].favoriteQuotes.length == 0
         ) {
           req.session.user!.blacklisted?.splice(characterIndex, 1);
         }
@@ -1001,7 +999,12 @@ const getApiData = async (): Promise<void> => {
         console.log(exc);
       } finally {
         await client.close();
-        res.redirect("/favorites");
+        if (req.session.user!.favorites!.length == 0){
+          res.redirect("/index");
+        }
+        else{
+          res.redirect("/favorites");
+        }
       }
     }
   );
@@ -1048,44 +1051,6 @@ const getApiData = async (): Promise<void> => {
         else{
           res.redirect("/blacklist");
         }
-      }
-    }
-  );
-
-  //remove from favorites
-  app.get(
-    "/deleteFavoriteQuote/:characterIndex/:quoteindex",
-    checkSession,
-    async (req, res) => {
-      try {
-        let characterIndex: number = parseInt(req.params.characterIndex);
-        let quoteIndex: number = parseInt(req.params.quoteindex);
-        req.session.user!.favorites![characterIndex].favoriteQuotes.splice(
-          quoteIndex,
-          1
-        );
-        if (
-          req.session.user!.favorites![characterIndex].favoriteQuotes ==
-          undefined
-        ) {
-          req.session.user!.favorites!.splice(characterIndex, 1);
-        }
-
-        await client.connect();
-
-        //remove from list on database
-        await client
-          .db("LOTR")
-          .collection("users")
-          .updateOne(
-            { name: req.session.user?.name },
-            { $set: { favorites: req.session.user?.favorites } }
-          );
-      } catch (exc) {
-        console.log(exc);
-      } finally {
-        await client.close();
-        res.redirect("/favorites");
       }
     }
   );
