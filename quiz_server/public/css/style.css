@@ -199,12 +199,18 @@ header h1 {
     padding: 0;
 }
 
+#index-h1 {
+    color: var(--light-yellow-color);
+    padding-top: 3rem;
+    text-shadow: 4px 2px 2px #000000;
+}
+
 #index-container {
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    margin-top: 2rem;
+    padding-top: 1rem;
     gap: 100px;
 }
 
@@ -266,10 +272,11 @@ header h1 {
 }
 
 #welcome-message {
-    padding-top: 0.5rem;
+    padding: 1rem;
     font-size: 38px;
     font-weight: bold;
     color: #FFF;
+    text-shadow: 4px 2px 2px #000000;
 }
 
 #index-alert {
@@ -468,7 +475,6 @@ header h1 {
     width: 100%;
     height: auto;
     padding: 0.5rem 0 0.5rem 0;
-    /* background-image: url("../images/background2.jpg"); */
     background: linear-gradient(0deg, #00000039, #00000039), url("../images/background2.jpg");
     background-size: cover;
     border-bottom: 2px black solid;
