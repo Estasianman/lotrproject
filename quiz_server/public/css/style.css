@@ -1207,7 +1207,7 @@ input[type="radio"] {
     grid-template-rows: 1fr;
 }
 
-#edit-reason-input-container>container {
+#edit-reason-input-container > form {
     overflow: hidden;
 }
 
@@ -1220,6 +1220,10 @@ input[type="radio"] {
     transition: 500ms;
     margin-left: 10px;
     font-size: 24px;
+}
+
+#edit-reason-input-container input[type="submit"] {
+    font-size: 22px;
 }
 
 #edit-reason-input-container a:hover {

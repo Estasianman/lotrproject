@@ -23,19 +23,22 @@
                                     <container id="blacklist-quote-container">
                                     <article class="quote">
                                         <p><%- j+1 %>.&nbsp; " <%- blacklistData[i].blacklistQuotes[j] %> "</p>
-                                        <p id="blacklist-reason">Reason: &nbsp; <%- blacklistData[i].reason[j] %> 
+                                        <div id="blacklist-reason">Reason: &nbsp; <%- blacklistData[i].reason[j] %> 
                                             <img class="a edit-reason" id="edit-reason" src="../images/edit.png" alt="edit-reason" aria-expanded="false">
                                             <container id="edit-reason-input-container" role="region" aria-hidden="true">
-                                                <container>
+                                        <form action="/editReason/<%- i %>/<%- j %>" method="POST">
+
+                                            
+                                                
                                                     Edit Reason:&nbsp;
-                                                    <form action="/editReason/<%- i %>/<%- j %>" method="POST">
+                                                    
                                                 <textarea type="text" name="editreason" id="edit-reason-text-input" class="a"></textarea>
                                                 <input type="submit">
-                                            </form>       
-                                            </container>
-                                            </container>
+                            
                                             
-                                        </p>
+                                        </form> 
+                                    </container>
+                                    </div>
                                         
                                         
                                     </article>
