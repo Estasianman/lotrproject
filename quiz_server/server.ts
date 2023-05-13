@@ -748,7 +748,7 @@ const getApiData = async (): Promise<void> => {
         });
         break;
       case "/favorites":
-        if (req.session.user!.favorites == undefined) {
+        if (req.session.user!.favorites == undefined || req.session.user!.favorites.length == 0) {
           let alert: string =
             "You have no favorite quotes yet! <br>Maybe you should play another round";
           gameData.headerTitle = "LOTR Quiz";
@@ -779,7 +779,7 @@ const getApiData = async (): Promise<void> => {
         break;
       case "/blacklist":
         console.log(req.session.user);
-        if (req.session.user?.blacklisted == null) {
+        if (req.session.user?.blacklisted == null || req.session.user?.blacklisted.length == 0) {
           let alert: string =
             "You have no blacklisted quotes yet!<br><span>Maybe you should play another round</span>";
           gameData.headerTitle = "LOTR Quiz";
