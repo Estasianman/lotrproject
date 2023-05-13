@@ -293,10 +293,16 @@ header h1 {
     margin-left: 0;
 }
 
+.landing-page main {
+    background-image: none;
+    background-color: white;
+}
+
 .landing-page #viewErrorMsg {
     display: flex;
     justify-content: center;
     background-color: white;
+    max-height: 30px;
 }
 
 .landing-page p {
@@ -324,6 +330,7 @@ header h1 {
     padding: 90px 0 100px 80px;
     border-bottom: none;
     font-size: larger;
+    max-height: 278px;
 }
 
 .landing-page header h1 {
