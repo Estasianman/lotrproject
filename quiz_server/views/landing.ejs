@@ -25,8 +25,15 @@
     <main>
 
       <div id = "viewErrorMsg">
-      <p>Je hebt geen toegang tot dit spel!</p></div>
-
+      <p class = "viewMsg">
+        <% if(loggedIn) { %>
+        Je hebt geen toegang tot dit spel!
+      <% } else { %>
+        Log eerst in a.u.b.
+        <% } %>
+      </p>
+    </div>
+    
       <section class = "projects">
       <section>
         <a href="" class ="errorMessage"> <figure>
@@ -97,34 +104,19 @@
       </section>
     </section>
     </main>
-
-    <% if(loggedIn) { %>
-    <script> const errorAlerts = document.querySelectorAll(".errorMessage"); 
-    const bodyMsg = document.getElementById("viewErrorMsg");
-      bodyMsg.style.display = "block";
-      errorAlerts.forEach(alertMessage => {
-      alertMessage.onclick = () => {
-      // alert('Je hebt geen toegang tot dit spel!');
-      bodyMsg.style.display = "none";
-      // const errorMessage = document.createElement("h3");
-      // errorMessage.textContent = "Je hebt geen toegang tot dit spel!";
-      // alertMessage.parentNode.appendChild(errorMessage);
-    };}); </script>
-    <% } else {%>
-      <script> const errorAlerts1 = document.querySelectorAll(".errorMessage"); 
-        console.log(errorAlerts1);
-        errorAlerts1.forEach(alertMessage1 => {
-        alertMessage1.onclick = () => {
-        // const viewErrorMsg = document.getElementsByClassName("viewErrorMsg")[0];
-        // viewErrorMsg.style.display = block;
-        // alert('Log eerst in a.u.b.');
-      };}); 
-      
-    </script>
-
-      <% } %>
-
-   
-
+      <script>
+        let timeoutId;
+        const errorAlerts = document.querySelectorAll(".errorMessage");
+        errorAlerts.forEach(alertMessage => {
+          alertMessage.onclick = () => {
+            const viewMsg = document.getElementsByClassName("viewMsg")[0];
+            clearTimeout(timeoutId); // cancel any existing timeout
+            viewMsg.style.display = "block";
+            timeoutId = setTimeout(() => {
+              viewErrorMsg.style.display = "none";
+            }, 5000); // hide the message after 5 seconds
+          };
+        });
+      </script>  
   </body>
 </html>

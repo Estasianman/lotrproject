@@ -834,6 +834,13 @@ const getApiData = async (): Promise<void> => {
     res.render("create", {error: ""});
   });
 
+  app.get("/logout", (req,res) => {
+    req.session.destroy((err) =>{
+      res.redirect("/");
+    });
+    
+  })
+
   //create new User
   app.post("/create", async (req, res) => {
 
