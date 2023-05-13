@@ -834,6 +834,13 @@ const getApiData = async (): Promise<void> => {
     res.render("create", {error: ""});
   });
 
+  app.get("/logout", (req,res) => {
+    req.session.destroy((err) =>{
+      res.redirect("/");
+    });
+    
+  })
+
   //create new User
   app.post("/create", async (req, res) => {
 
@@ -1164,8 +1171,7 @@ const getApiData = async (): Promise<void> => {
           1
         );
         if (
-          req.session.user!.blacklisted![characterIndex].blacklistQuotes ==
-          undefined
+          req.session.user!.blacklisted![characterIndex].blacklistQuotes.length == 0
         ) {
           req.session.user!.blacklisted?.splice(characterIndex, 1);
         }
@@ -1184,7 +1190,12 @@ const getApiData = async (): Promise<void> => {
         console.log(exc);
       } finally {
         await client.close();
-        res.redirect("/blacklist");
+        if (req.session.user!.blacklisted!.length == 0){
+          res.redirect("/index");
+        }
+        else{
+          res.redirect("/blacklist");
+        }
       }
     }
   );
@@ -1234,7 +1245,7 @@ const getApiData = async (): Promise<void> => {
     async (req, res) => {
       try {
         let characterIndex = parseInt(req.params.characterIndex);
-        let quoteIndex = parseInt(req.params.characterIndex);
+        let quoteIndex = parseInt(req.params.quoteIndex);
         let newReason: string = req.body.editreason;
         console.log(newReason);
 

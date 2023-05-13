@@ -15,14 +15,26 @@
       <div class = "buttons">
         <% if(!loggedIn) { %>
       <button onclick="window.location.href='/login';" class = "button">Log-in</button>
-      <% } else {%>
-        <button onclick="window.location.href='/logout';" class = "button">Log-out</button>
+      <% } else {%>       
         <button onclick="window.location.href='/account';" class = "button">Account</button>
+        <button onclick="window.location.href='/logout';" class = "button">Log-out</button>
         <% }%>
     </div>
     </header>
+    <div id = "viewErrorMsg">
+      <p class = "viewMsg">
+        <% if(loggedIn) { %>
+        You don't have access to this game!
+      <% } else { %>
+        Please login first.
+        <% } %>
+      </p>
+    </div>
+    <main>
 
-    <main class = "projects">
+      
+    
+      <section class = "projects">
       <section>
         <a href="" class ="errorMessage"> <figure>
           <img
@@ -90,28 +102,21 @@
           <!-- <figcaption>Bron: nerdist.com</figcaption> -->
         </figure></a>
       </section>
+    </section>
     </main>
-
-    <% if(loggedIn) { %>
-    <script> const errorAlerts = document.querySelectorAll(".errorMessage"); 
-      console.log(errorAlerts);
-      errorAlerts.forEach(alertMessage => {
-      alertMessage.onclick = () => {
-      alert('Je hebt geen toegang tot dit spel!');
-    };}); </script>
-    <% } else {%>
-      <script> const errorAlerts1 = document.querySelectorAll(".errorMessage"); 
-        console.log(errorAlerts1);
-        errorAlerts1.forEach(alertMessage1 => {
-        alertMessage1.onclick = () => {
-        alert('Log eerst in a.u.b.');
-      };}); 
-      
-    </script>
-
-      <% } %>
-
-   
-
+      <script>
+        let timeoutId;
+        const errorAlerts = document.querySelectorAll(".errorMessage");
+        errorAlerts.forEach(alertMessage => {
+          alertMessage.onclick = () => {
+            const viewMsg = document.getElementsByClassName("viewMsg")[0];
+            clearTimeout(timeoutId); // cancel any existing timeout
+            viewMsg.style.display = "block";
+            timeoutId = setTimeout(() => {
+              viewErrorMsg.style.display = "none";
+            }, 5000); // hide the message after 5 seconds
+          };
+        });
+      </script>  
   </body>
 </html>
