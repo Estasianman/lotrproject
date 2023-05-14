@@ -706,16 +706,18 @@ const getApiData = async (): Promise<void> => {
       try {
         // check to see if the name already has an account:
         await client.connect();
-        const oldName = req.session.user!.name;
+        const oldName = req.session.user?.name;
+        const newName = req.body.newname;
         console.log(oldName);
-        console.log(req.body.newname);
-        
+        console.log(newName);
+
         if(req.body.nameSubmit) {
-        if(!req.body.newname == null) { 
+        if(!req.body.newname == null || !req.body.newname == undefined) { 
         const nameLookUp = await client
           .db("LOTR")
           .collection("users")
-          .findOne({ name: req.body.newname });
+          .findOne({ name: newName });
+          console.log(nameLookUp);
 
         // if name does is not taken then a namechange is possible:
         if (nameLookUp == undefined || nameLookUp == null) {
@@ -733,16 +735,16 @@ const getApiData = async (): Promise<void> => {
               errorName: `<span>" ${req.body.newname} "</span> already exists.`,
             });
             return;
-          }} }
+          }} } 
 
       if(req.body.passwordSubmit) {
-        if(!req.body.wwNew == null) {
+        if(!req.body.wwNew == null || !req.body.wwNew == undefined) {
             const result = await client
             .db("LOTR")
             .collection("users")
             .updateOne({ww: req.body.wwOld}, {$set: {ww: req.body.wwNew}});
             console.log(result);
-            res.redirect("/account");
+
           }}
 
           res.redirect("/account");
