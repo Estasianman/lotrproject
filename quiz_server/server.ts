@@ -700,14 +700,16 @@ const getApiData = async (): Promise<void> => {
     if (
       req.body.newname.match(
         /^[\w\áàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ]+$/
-      ) || req.body.wwNew.match(/^[\w\áàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ]+$/) || req.body.wwNew == null || req.body.newname == null 
+      ) || req.body.wwNew == null || req.body.newname == null 
     ) {
 
       try {
         // check to see if the name already has an account:
         await client.connect();
-        console.log(req.body.oldname);
+        const oldName = req.session.user!.name;
+        console.log(oldName);
         console.log(req.body.newname);
+        
         if(req.body.nameSubmit) {
         if(!req.body.newname == null) { 
         const nameLookUp = await client
@@ -717,13 +719,14 @@ const getApiData = async (): Promise<void> => {
 
         // if name does is not taken then a namechange is possible:
         if (nameLookUp == undefined || nameLookUp == null) {
-          await client
+          console.log("oldname: " + req.body.oldname + ", newname: " + req.body.newname);
+          const result = await client
             .db("LOTR")
             .collection("users")
-            .updateOne({name: req.body.oldname}, {$set: {name: req.body.newname}});
-            console.log("namechange done!")
-            res.redirect("/account");
+            .updateOne({name: oldName}, {$set: {name: req.body.newname}});
+            console.log(result);
           }
+
           // if name already has an account then show error message:
           else {
             res.render("account", {
@@ -734,10 +737,11 @@ const getApiData = async (): Promise<void> => {
 
       if(req.body.passwordSubmit) {
         if(!req.body.wwNew == null) {
-            await client
+            const result = await client
             .db("LOTR")
             .collection("users")
-            .updateOne({ww: req.body.wwOld}, {$set: {ww: req.body.wwNew}})
+            .updateOne({ww: req.body.wwOld}, {$set: {ww: req.body.wwNew}});
+            console.log(result);
             res.redirect("/account");
           }}
 
@@ -1251,39 +1255,39 @@ const getApiData = async (): Promise<void> => {
     }
   });
 
-  app.post("/account", async (req, res) => {
-    if (req.body.wwOld == req.session.user?.ww) {
-      if (req.body.newname != null || undefined || "") {
-        req.session.user!.name = req.body.newname;
-      }
-      if (req.body.wwNew != null || undefined || "") {
-        req.session.user!.ww = req.body.wwNew;
-      }
+  // app.post("/account", async (req, res) => {
+  //   if (req.body.wwOld == req.session.user?.ww) {
+  //     if (req.body.newname != null || undefined || "") {
+  //       req.session.user!.name = req.body.newname;
+  //     }
+  //     if (req.body.wwNew != null || undefined || "") {
+  //       req.session.user!.ww = req.body.wwNew;
+  //     }
 
-      try {
-        await client.connect();
-        await client
-          .db("LOTR")
-          .collection("users")
-          .updateOne(
-            { name: req.body.oldname },
-            { $set: { name: req.session.user!.name } }
-          );
-        await client
-          .db("LOTR")
-          .collection("users")
-          .updateOne(
-            { name: req.session.user!.name },
-            { $set: { ww: req.session.user!.ww } }
-          );
-      } catch (exc) {
-        console.log(exc);
-      } finally {
-        await client.close();
-        res.redirect("/account");
-      }
-    }
-  });
+  //     try {
+  //       await client.connect();
+  //       await client
+  //         .db("LOTR")
+  //         .collection("users")
+  //         .updateOne(
+  //           { name: req.body.oldname },
+  //           { $set: { name: req.session.user!.name } }
+  //         );
+  //       await client
+  //         .db("LOTR")
+  //         .collection("users")
+  //         .updateOne(
+  //           { name: req.session.user!.name },
+  //           { $set: { ww: req.session.user!.ww } }
+  //         );
+  //     } catch (exc) {
+  //       console.log(exc);
+  //     } finally {
+  //       await client.close();
+  //       res.redirect("/account");
+  //     }
+  //   }
+  // });
 
   app.listen(app.get("port"), () =>
     console.log("[server] http://localhost:" + app.get("port"))
