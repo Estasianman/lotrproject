@@ -700,19 +700,21 @@ const getApiData = async (): Promise<void> => {
     if (
       req.body.newname.match(
         /^[\w\áàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ]+$/
-      ) || req.body.wwNew == null || req.body.newname == null 
+      ) 
+        || req.body.newname == "" && req.body.wwOld != "" && req.body.wwNew != ""
     ) {
 
       try {
         // check to see if the name already has an account:
         await client.connect();
         const oldName = req.session.user?.name;
+        const userId = req.session.user?._id;
         const newName = req.body.newname;
         console.log(oldName);
         console.log(newName);
 
         if(req.body.nameSubmit) {
-        if(!req.body.newname == null || !req.body.newname == undefined) { 
+        if(req.body.newname != null || !req.body.newname != undefined || req.body.newname != "" ) { 
         const nameLookUp = await client
           .db("LOTR")
           .collection("users")
@@ -721,32 +723,37 @@ const getApiData = async (): Promise<void> => {
 
         // if name does is not taken then a namechange is possible:
         if (nameLookUp == undefined || nameLookUp == null) {
-          console.log("oldname: " + req.body.oldname + ", newname: " + req.body.newname);
+          console.log("oldname: " + oldName + ", newname: " + req.body.newname);
           const result = await client
             .db("LOTR")
             .collection("users")
             .updateOne({name: oldName}, {$set: {name: req.body.newname}});
             console.log(result);
+           
           }
 
           // if name already has an account then show error message:
           else {
             res.render("account", {
-              errorName: `<span>" ${req.body.newname} "</span> already exists.`,
-            });
+              error: `Name <span>" ${req.body.newname} "</span> already exists.`,
+            userData: req.session.user});
             return;
           }} } 
 
       if(req.body.passwordSubmit) {
-        if(!req.body.wwNew == null || !req.body.wwNew == undefined) {
+        if(req.body.wwNew != null || req.body.wwNew != undefined || req.body.wwNew != "") {
+          if(req.body.wwOld == req.session.user?.ww) {
             const result = await client
             .db("LOTR")
             .collection("users")
-            .updateOne({ww: req.body.wwOld}, {$set: {ww: req.body.wwNew}});
+            .updateOne({_id: userId}, {$set: {ww: req.body.wwNew}});
             console.log(result);
-
+          }
+          res.render("account", {
+            error: `Your current password is wrong!`,
+          userData: req.session.user});
+          return;
           }}
-
           res.redirect("/account");
       } catch (exc: any) {
         console.log(exc.message);
@@ -757,7 +764,7 @@ const getApiData = async (): Promise<void> => {
     // if name contains something else than numbers or letters then show error message:
     else {
       res.render("account", {
-        error: `<span>" ${req.body.name} "</span> or password is not valid.<br>They can only include letters or numbers.`,
+        error: `Password is not valid.<br>They can only include letters or numbers.`, userData: req.session.user
       });
       return;
     }
