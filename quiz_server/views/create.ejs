@@ -18,10 +18,11 @@
         <div class="login-page">
             <div class="form">
                 <form action="/create" method="POST" class="register-form">
-                    <input type="text" name="name" placeholder="Name (Aa-Zz 1-9)">
                     <%if (error !="" ){%>
                         <p id="create-error"><%- error %></p>
                         <%}%>
+                    <input type="text" name="name" placeholder="Name (Aa-Zz 1-9)">
+                    
                             <input type="password" id="pwd" name="ww" placeholder="Password"><br>
                             <input onclick="mySubmit(this)" type="submit" name="submit" value="Create Account">
                             <p class="message">Have an account already? <a href="/login">Login</a></p>

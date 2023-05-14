@@ -693,6 +693,63 @@ const getApiData = async (): Promise<void> => {
     }
   });
 
+  // Account page - change password or change name
+  app.post("/account", async (req, res) => {
+    // check if name only contains letters or numbers:
+    if (
+      req.body.newname.match(
+        /^[\w\áàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ]+$/
+      ) || req.body.wwNew.match(/^[\w\áàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ]+$/) || req.body.wwNew == null || req.body.newname == null
+    ) {
+
+      try {
+        // check to see if the name already has an account:
+        await client.connect();
+
+        if(!req.body.newname == null) { 
+        const nameLookUp = await client
+          .db("LOTR")
+          .collection("users")
+          .findOne({ name: req.body.newname });
+
+        // if name does is not taken then a namechange is possible:
+        if (nameLookUp == undefined || nameLookUp == null) {
+          await client
+            .db("LOTR")
+            .collection("users")
+            .updateOne({name: req.body.oldname}, {$set: {name: req.body.newname}});
+          }} 
+          // if name already has an account then show error message:
+          else {
+            res.render("account", {
+              errorName: `<span>" ${req.body.newname} "</span> already exists.`,
+            });
+            return;
+          }
+
+          if(!req.body.wwNew == null) {
+            await client
+            .db("LOTR")
+            .collection("users")
+            .updateOne({ww: req.body.wwOld}, {$set: {ww: req.body.wwNew}})
+          }
+          
+          res.redirect("/account");
+      } catch (exc: any) {
+        console.log(exc.message);
+      } finally {
+        await client.close();
+      }
+    }
+    // if name contains something else than numbers or letters then show error message:
+    else {
+      res.render("account", {
+        error: `<span>" ${req.body.name} "</span> or password is not valid.<br>They can only include letters or numbers.`,
+      });
+      return;
+    }
+  });
+
   // NOTE: quiz scores are saved into the databank from the app.post highscore
   app.post("/quiz", async (req, res) => {
     gameData.userCorrectFeedback.rightMovie = 0;

@@ -18,6 +18,9 @@
             <img src="images/profile-avatar.png" width = 100 height = 100 >
             <form class = "login-form" action="/account" method="POST">
                 <label for="name">Change Name</label><br />
+                <%if (errorName !="" ){%>
+                    <p id="create-error"><%- error %></p>
+                    <%}%>
                 <input type = "text" name="oldname" placeholder= "Name: <%- userData.name %>" readonly><br/>
                 <input type = "text" name="newname" placeholder= "New name:"><br />
                 <input id="login-submit" type="submit" name="submit" value="Submit">
