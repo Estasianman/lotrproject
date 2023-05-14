@@ -562,6 +562,7 @@ const getApiData = async (): Promise<void> => {
           dataApi: apiData,
           userData: req.session.user,
           BtnBool: BtnBool,
+          error: ""
         });
         break;
 
@@ -699,13 +700,15 @@ const getApiData = async (): Promise<void> => {
     if (
       req.body.newname.match(
         /^[\w\áàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ]+$/
-      ) || req.body.wwNew.match(/^[\w\áàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ]+$/) || req.body.wwNew == null || req.body.newname == null
+      ) || req.body.wwNew.match(/^[\w\áàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ]+$/) || req.body.wwNew == null || req.body.newname == null 
     ) {
 
       try {
         // check to see if the name already has an account:
         await client.connect();
-
+        console.log(req.body.oldname);
+        console.log(req.body.newname);
+        if(req.body.nameSubmit) {
         if(!req.body.newname == null) { 
         const nameLookUp = await client
           .db("LOTR")
@@ -718,22 +721,26 @@ const getApiData = async (): Promise<void> => {
             .db("LOTR")
             .collection("users")
             .updateOne({name: req.body.oldname}, {$set: {name: req.body.newname}});
-          }} 
+            console.log("namechange done!")
+            res.redirect("/account");
+          }
           // if name already has an account then show error message:
           else {
             res.render("account", {
               errorName: `<span>" ${req.body.newname} "</span> already exists.`,
             });
             return;
-          }
+          }} }
 
-          if(!req.body.wwNew == null) {
+      if(req.body.passwordSubmit) {
+        if(!req.body.wwNew == null) {
             await client
             .db("LOTR")
             .collection("users")
             .updateOne({ww: req.body.wwOld}, {$set: {ww: req.body.wwNew}})
-          }
-          
+            res.redirect("/account");
+          }}
+
           res.redirect("/account");
       } catch (exc: any) {
         console.log(exc.message);
