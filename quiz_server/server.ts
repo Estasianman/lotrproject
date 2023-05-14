@@ -705,7 +705,6 @@ const getApiData = async (): Promise<void> => {
     ) {
 
       try {
-        // check to see if the name already has an account:
         await client.connect();
         const oldName = req.session.user?.name;
         const userId = req.session.user?._id;
@@ -713,15 +712,18 @@ const getApiData = async (): Promise<void> => {
         console.log(oldName);
         console.log(newName);
 
+        // CHANGE NAME
         if(req.body.nameSubmit) {
         if(req.body.newname != null || !req.body.newname != undefined || req.body.newname != "" ) { 
+
+        // check to see if the name already exists:
         const nameLookUp = await client
           .db("LOTR")
           .collection("users")
           .findOne({ name: newName });
           console.log(nameLookUp);
 
-        // if name does is not taken then a namechange is possible:
+        // if name is not taken then a namechange is possible:
         if (nameLookUp == undefined || nameLookUp == null) {
           console.log("oldname: " + oldName + ", newname: " + req.body.newname);
           const result = await client
@@ -732,7 +734,7 @@ const getApiData = async (): Promise<void> => {
            
           }
 
-          // if name already has an account then show error message:
+          // if name already exists then show error message:
           else {
             res.render("account", {
               error: `Name <span>" ${req.body.newname} "</span> already exists.`,
@@ -740,19 +742,22 @@ const getApiData = async (): Promise<void> => {
             return;
           }} } 
 
+      // CHANGE PASSWORD
       if(req.body.passwordSubmit) {
         if(req.body.wwNew != null || req.body.wwNew != undefined || req.body.wwNew != "") {
-          if(req.body.wwOld == req.session.user?.ww) {
+          // Check if the old password is valid
+          if(req.session.user?.ww == req.body.wwOld) {
             const result = await client
             .db("LOTR")
             .collection("users")
             .updateOne({_id: userId}, {$set: {ww: req.body.wwNew}});
             console.log(result);
-          }
+          } else {
+            // if old password is not valid then show error message
           res.render("account", {
             error: `Your current password is wrong!`,
           userData: req.session.user});
-          return;
+          return;}
           }}
           res.redirect("/account");
       } catch (exc: any) {
@@ -764,7 +769,7 @@ const getApiData = async (): Promise<void> => {
     // if name contains something else than numbers or letters then show error message:
     else {
       res.render("account", {
-        error: `Password is not valid.<br>They can only include letters or numbers.`, userData: req.session.user
+        error: `Name <span>" ${req.body.newname} "</span> is not valid.<br>They can only include letters or numbers.`, userData: req.session.user
       });
       return;
     }
