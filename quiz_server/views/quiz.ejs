@@ -1,8 +1,7 @@
 <%- include("partials/header") %>
 
         <div id="quote-container">
-            <h2>Quote: <span id="game-counter">(<%- dataGame.gameCounter %> / 10)</span>
-            </h2>
+            <h2>Quote: <span id="game-counter">(<%- dataGame.gameCounter %> / 10)</span><button id="full-screen-button" onclick="openFullscreen()"></button></h2>
             <button id="blacklist-btn"><i class="fa-solid fa-xmark"></i></button>
             <p id="quote">" <%- dataApi.quote.dialog %> "</p>
             <button id="favorite-btn"><i class="fa-solid fa-heart"></i></button>

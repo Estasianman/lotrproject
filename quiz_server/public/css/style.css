@@ -548,6 +548,15 @@ header h1 {
     font-size: 28px;
     color: var(--dark-yellow-color);
     text-shadow: 3px 3px 4px #000000;
+    position: relative;
+}
+
+#quote-container h2 button {
+    position: absolute;
+    right: 4px;
+    top: 0;
+    font-size: 16px;
+    border-radius: 4px;
 }
 
 #quote-container h3 {
