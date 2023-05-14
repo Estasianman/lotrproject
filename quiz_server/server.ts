@@ -1001,8 +1001,8 @@ const getApiData = async (): Promise<void> => {
   );
 
   app.post("/addToFavorites", async (req, res) => {
-    let name: string = req.body.character;
-    let quote: string = req.body.quote;
+    let name: string = apiData.correctCharacterName;
+    let quote: string = apiData.quote.dialog;
 
     try {
       //connect

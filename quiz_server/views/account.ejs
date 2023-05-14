@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsSHA/2.0.2/sha.js"></script>
+    <script src="js/hashpassword.js"></script>
     <title>Account</title>
 </head>
 <body class ="account">
@@ -22,9 +24,9 @@
                 <br>
                 <br>
                 <label for="ww">Change Password</label><br>
-                <input id="pwd" type="password" name="wwOld" placeholder ="Type old password:"><br>
-                <input id="pwd" type="password" name="wwNew" placeholder ="New password:"><br>
-                <input id="login-submit" type="submit" name="submit" value="Submit">
+                <input class="pwd" type="password" name="wwOld" placeholder ="Type old password:"><br>
+                <input class="pwd" type="password" name="wwNew" placeholder ="New password:"><br>
+                <input onclick="mySubmit(this)" id="login-submit" type="submit" name="submit" value="Submit">
          
             </form>  
         </div>
