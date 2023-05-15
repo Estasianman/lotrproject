@@ -146,7 +146,7 @@ header h1 {
     display: inline-block;
 }
 
-#profile-button:hover,
+#profile-button:hover, #profile-button a:hover,
 #header-container a:hover button,
 .dropdown-content a:hover {
     color: var(--light-yellow-color);
