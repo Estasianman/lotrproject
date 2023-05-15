@@ -111,12 +111,12 @@ const findCharacterInfoForFavoriteList = (nameToFind: string): Doc => {
 };
 
 // function to get top 10 highscores from databank:
-const getHighScores = async () => {
+const getHighScores = async (): Promise<void> => {
   gameData.qHighscores.slice(0, gameData.qHighscores.length);
   gameData.sHighscores.slice(0, gameData.sHighscores.length);
   try {
     await client.connect();
-
+    // first get the 10 round quiz top 10 scores:
     const data = await client
       .db("LOTR")
       .collection("users")
@@ -124,13 +124,13 @@ const getHighScores = async () => {
       .sort({ qscore: -1 })
       .limit(10);
     let qScores = await data.toArray();
+    // loop through data and put element into gameData variable, make sure element is not empty:
     qScores.forEach((element, index) => {
       if (element.qscore != undefined) {
-        gameData.qHighscores[index] = { name: "", score: 0 };
-        gameData.qHighscores[index].name = element.name;
-        gameData.qHighscores[index].score = element.qscore;
+        gameData.qHighscores[index] = { name: element.name, score: element.qscore };
       }
     });
+    // then get sudden death top 10 scores:
     const data2 = await client
       .db("LOTR")
       .collection("users")
@@ -138,11 +138,10 @@ const getHighScores = async () => {
       .sort({ sdscore: -1 })
       .limit(10);
     let sScores = await data2.toArray();
+    // loop through data and put element into gameData variable, make sure element is not empty:
     sScores.forEach((element, index) => {
       if (element.sdscore != undefined) {
-        gameData.sHighscores[index] = { name: "", score: 0 };
-        gameData.sHighscores[index].name = element.name;
-        gameData.sHighscores[index].score = element.sdscore;
+        gameData.sHighscores[index] = { name: element.name, score: element.sdscore };
       }
     });
   } catch (error: any) {
@@ -160,9 +159,7 @@ const addtoBlacklist = async (
   reason: string
 ): Promise<void> => {
   try {
-    //connect
     await client.connect();
-
     // check if character already has quotes in the blacklist:
     let characterIndex: number = -1;
     for (
@@ -174,7 +171,6 @@ const addtoBlacklist = async (
         characterIndex = i;
       }
     }
-
     // if character already has quotes in the blacklist, then add the new quote to the characters list of blacklist quotes:
     if (characterIndex != -1) {
       req.session.user.blacklisted[characterIndex].blacklistQuotes.push(quote);
@@ -192,8 +188,7 @@ const addtoBlacklist = async (
       newBlacklistData.reason.push(reason);
       req.session.user.blacklisted.push(newBlacklistData);
     }
-
-    //add to database
+    // update/add to database
     await client
       .db("LOTR")
       .collection("users")
@@ -215,9 +210,7 @@ const addtoFavorites = async (
   quote: string
 ): Promise<void> => {
   try {
-    //connect
     await client.connect();
-
     // check if character already has quotes in the favorite list:
     let characterIndex: number = -1;
     for (
@@ -229,7 +222,6 @@ const addtoFavorites = async (
         characterIndex = i;
       }
     }
-
     // if character already has quotes in the favorite list, then add the new quote to the characters list of favorite list quotes:
     if (characterIndex != -1) {
       req.session.user.favorites[characterIndex].favoriteQuotes.push(quote);
@@ -253,14 +245,12 @@ const addtoFavorites = async (
           wikiUrl: "",
         },
       };
-
       newFavoriteListData.favoriteQuotes.push(quote);
       newFavoriteListData.characterInfo =
         findCharacterInfoForFavoriteList(name);
       req.session.user.favorites.push(newFavoriteListData);
     }
-
-    //add to database
+    // update/add to database
     await client
       .db("LOTR")
       .collection("users")
@@ -299,11 +289,9 @@ const getApiData = async (): Promise<void> => {
     //get quotes from api
     let result = await axios.get("https://the-one-api.dev/v2/quote", auth);
     quotes = result.data;
-
     //get characters from api
     result = await axios.get("https://the-one-api.dev/v2/character", auth);
     characters = result.data;
-
     //get movies from api
     result = await axios.get("https://the-one-api.dev/v2/movie", auth);
     movies = result.data;
@@ -630,7 +618,6 @@ const getApiData = async (): Promise<void> => {
         }
         break;
       case "/blacklist":
-        console.log(req.session.user);
         if (req.session.user?.blacklisted == null || req.session.user?.blacklisted.length == 0) {
           let alert: string =
             "You have no blacklisted quotes yet!<br><span>Maybe you should play another round</span>";
@@ -1065,11 +1052,8 @@ const getApiData = async (): Promise<void> => {
         let characterIndex = parseInt(req.params.characterIndex);
         let quoteIndex = parseInt(req.params.quoteIndex);
         let newReason: string = req.body.editreason;
-        console.log(newReason);
-
         req.session.user!.blacklisted![characterIndex].reason[quoteIndex] =
           newReason;
-        console.log(req.session.user?.blacklisted![characterIndex].reason);
         await client.connect();
         await client
           .db("LOTR")
