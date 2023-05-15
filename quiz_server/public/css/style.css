@@ -124,6 +124,7 @@ header h1 {
     text-align: center;
     padding: 6px 15px;
     max-height: 50px;
+    min-height: 50px;
     font-size: 20px;
     text-decoration: none;
     color: var(--dark-yellow-color);
@@ -134,7 +135,7 @@ header h1 {
     margin: 0 0.5rem 0 0.5rem;
 }
 
-#home-button a {
+#header-container a {
     text-decoration: none;
     color: var(--dark-yellow-color);
     transition: 0.5s;
@@ -146,7 +147,7 @@ header h1 {
 }
 
 #profile-button:hover,
-#home-button:hover a,
+#header-container a:hover button,
 .dropdown-content a:hover {
     color: var(--light-yellow-color);
 }
