@@ -1,11 +1,14 @@
 <%- include("partials/header") %>
 
         <div id="quote-container">
-            <h2>Quote: <span id="game-counter">(<%- dataGame.gameCounter %> / 10)</span>
-            </h2>
-            <button id="blacklist-btn"><i class="fa-solid fa-xmark"></i></button>
+            <h2>Quote: <span id="game-counter">(<%- dataGame.gameCounter %> / 10)</span><button id="full-screen-button" onclick="openFullscreen()"></button></h2>
+            <form action="/addToBlacklist" method="POST">
+                <button onclick="" id="blacklist-btn"><i class="fa-solid fa-xmark"></i></button>
+            </form>
             <p id="quote">" <%- dataApi.quote.dialog %> "</p>
-            <button id="favorite-btn"><i class="fa-solid fa-heart"></i></button>
+            <form action="/addToFavorites" method="POST">
+                <button id="favorite-btn"><i class="fa-solid fa-heart"></i></button>
+            </form>
 
             <h3>Score: <span id="points"> <%- dataGame.score %></span></h3>
         </div>
