@@ -498,6 +498,16 @@ header h1 {
     font-style: italic;
 }
 
+#create-success {
+    color: green;
+    font-size: 16px;
+    text-align: center;
+}
+
+#create-success span {
+    font-style: italic;
+}
+
 .button-account {
     width: 110px;
     height: 40px;

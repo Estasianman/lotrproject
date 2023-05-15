@@ -559,7 +559,8 @@ const getApiData = async (): Promise<void> => {
           dataApi: apiData,
           userData: req.session.user,
           BtnBool: BtnBool,
-          error: ""
+          error: "",
+          success: ""
         });
         break;
 
@@ -711,7 +712,7 @@ const getApiData = async (): Promise<void> => {
 
         // CHANGE NAME
         if(req.body.nameSubmit) {
-        if(req.body.newname != null || !req.body.newname != undefined || req.body.newname != "" ) { 
+        if(req.body.newname != null && !req.body.newname != undefined && req.body.newname != "" ) { 
 
         // check to see if the name already exists:
         const nameLookUp = await client
@@ -728,6 +729,18 @@ const getApiData = async (): Promise<void> => {
             .collection("users")
             .updateOne({name: oldName}, {$set: {name: req.body.newname}});
             console.log(result);
+
+            gameData.headerTitle = "Account";
+             gameData.gameType = "";
+            let BtnBool: boolean = true;
+            res.render("account", {
+          dataGame: gameData,
+          dataApi: apiData,
+          userData: req.session.user,
+          BtnBool: BtnBool,
+          error: "",
+          success: "Name changed!"
+        });
            
           }
 
@@ -741,22 +754,34 @@ const getApiData = async (): Promise<void> => {
 
       // CHANGE PASSWORD
       if(req.body.passwordSubmit) {
-        if(req.body.wwNew != null || req.body.wwNew != undefined || req.body.wwNew != "") {
+        if(req.body.wwNew != null && req.body.wwNew != undefined && req.body.wwNew != "") {
           // Check if the old password is valid
-          if(req.session.user?.ww == req.body.wwOld) {
+          if(await req.session.user?.ww == req.body.wwOld) {
+            console.log(req.body.wwOld);
+            console.log(req.body.wwNew);
+            console.log(req.session.user?.ww);
+            
             const result = await client
             .db("LOTR")
             .collection("users")
-            .updateOne({_id: userId}, {$set: {ww: req.body.wwNew}});
+            .updateOne({name: oldName}, {$set: {ww: req.body.wwNew}});
             console.log(result);
+
+            res.render("account", {
+            error: "",
+            success: `Password changed!`,
+            userData: req.session.user});
+            return;
+
           } else {
             // if old password is not valid then show error message
           res.render("account", {
+            success:"",
             error: `Your current password is wrong!`,
           userData: req.session.user});
           return;}
           }}
-          res.redirect("/account");
+
       } catch (exc: any) {
         console.log(exc.message);
       } finally {
@@ -766,6 +791,7 @@ const getApiData = async (): Promise<void> => {
     // if name contains something else than numbers or letters then show error message:
     else {
       res.render("account", {
+        success: "",
         error: `Name <span>" ${req.body.newname} "</span> is not valid.<br>They can only include letters or numbers.`, userData: req.session.user
       });
       return;

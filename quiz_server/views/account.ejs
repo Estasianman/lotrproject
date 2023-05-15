@@ -21,13 +21,17 @@
                 <%if (error !="" ){%>
                     <p id="create-error"><%- error %></p>
                     <%}%>
-                <input type = "text" name="oldname" placeholder= "Name: <%- userData.name %>" readonly><br/>
+                                   
+                <input type = "text" name="oldname" placeholder= "Current name: <%- userData.name %>" readonly><br/>
                 <input type = "text" name="newname" placeholder= "New name:"><br />
                 <input id="name-submit" type="submit" name="nameSubmit" value="Submit">
                 <br>
                 <br>
                 <label for="ww">Change Password</label><br>
-                <input class="pwd" type="password" name="wwOld" placeholder ="Type old password:"><br>
+                <% if(success != "") {%>
+                    <p id="create-success"><%- success %></p>
+                    <%}%>
+                <input class="pwd" type="password" name="wwOld" placeholder ="Current password:"><br>
                 <input class="pwd" type="password" name="wwNew" placeholder ="New password:"><br>
                 <input onclick="mySubmit(this)" id="password-submit" type="submit" name="passwordSubmit" value="Submit">
          
