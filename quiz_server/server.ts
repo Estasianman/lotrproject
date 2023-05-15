@@ -729,24 +729,16 @@ const getApiData = async (): Promise<void> => {
             .collection("users")
             .updateOne({name: oldName}, {$set: {name: req.body.newname}});
             console.log(result);
+            req.session.user!.name = req.body.newname;
+            res.render("account", {error: "", success: "Name changed!",
+            userData: req.session.user});
+            return;
 
-            gameData.headerTitle = "Account";
-             gameData.gameType = "";
-            let BtnBool: boolean = true;
-            res.render("account", {
-          dataGame: gameData,
-          dataApi: apiData,
-          userData: req.session.user,
-          BtnBool: BtnBool,
-          error: "",
-          success: "Name changed!"
-        });
-           
           }
 
           // if name already exists then show error message:
           else {
-            res.render("account", {
+            res.render("account", {success: "",
               error: `Name <span>" ${req.body.newname} "</span> already exists.`,
             userData: req.session.user});
             return;
@@ -756,11 +748,7 @@ const getApiData = async (): Promise<void> => {
       if(req.body.passwordSubmit) {
         if(req.body.wwNew != null && req.body.wwNew != undefined && req.body.wwNew != "") {
           // Check if the old password is valid
-          if(await req.session.user?.ww == req.body.wwOld) {
-            console.log(req.body.wwOld);
-            console.log(req.body.wwNew);
-            console.log(req.session.user?.ww);
-            
+          if(await req.session.user?.ww == req.body.wwOld) {            
             const result = await client
             .db("LOTR")
             .collection("users")
