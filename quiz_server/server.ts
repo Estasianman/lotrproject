@@ -562,6 +562,7 @@ const getApiData = async (): Promise<void> => {
           dataApi: apiData,
           userData: req.session.user,
           BtnBool: BtnBool,
+          error: ""
         });
         break;
 
@@ -688,6 +689,87 @@ const getApiData = async (): Promise<void> => {
     else {
       res.render("login", {
         error: `<span>" ${req.body.name} "</span> is not a valid username.`,
+      });
+      return;
+    }
+  });
+
+  // Account page - change password or change name
+  app.post("/account", async (req, res) => {
+    // check if name only contains letters or numbers:
+    if (
+      req.body.newname.match(
+        /^[\w\áàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ]+$/
+      ) 
+        || req.body.newname == "" && req.body.wwOld != "" && req.body.wwNew != ""
+    ) {
+
+      try {
+        await client.connect();
+        const oldName = req.session.user?.name;
+        const userId = req.session.user?._id;
+        const newName = req.body.newname;
+        console.log(oldName);
+        console.log(newName);
+
+        // CHANGE NAME
+        if(req.body.nameSubmit) {
+        if(req.body.newname != null || !req.body.newname != undefined || req.body.newname != "" ) { 
+
+        // check to see if the name already exists:
+        const nameLookUp = await client
+          .db("LOTR")
+          .collection("users")
+          .findOne({ name: newName });
+          console.log(nameLookUp);
+
+        // if name is not taken then a namechange is possible:
+        if (nameLookUp == undefined || nameLookUp == null) {
+          console.log("oldname: " + oldName + ", newname: " + req.body.newname);
+          const result = await client
+            .db("LOTR")
+            .collection("users")
+            .updateOne({name: oldName}, {$set: {name: req.body.newname}});
+            console.log(result);
+           
+          }
+
+          // if name already exists then show error message:
+          else {
+            res.render("account", {
+              error: `Name <span>" ${req.body.newname} "</span> already exists.`,
+            userData: req.session.user});
+            return;
+          }} } 
+
+      // CHANGE PASSWORD
+      if(req.body.passwordSubmit) {
+        if(req.body.wwNew != null || req.body.wwNew != undefined || req.body.wwNew != "") {
+          // Check if the old password is valid
+          if(req.session.user?.ww == req.body.wwOld) {
+            const result = await client
+            .db("LOTR")
+            .collection("users")
+            .updateOne({_id: userId}, {$set: {ww: req.body.wwNew}});
+            console.log(result);
+          } else {
+            // if old password is not valid then show error message
+          res.render("account", {
+            error: `Your current password is wrong!`,
+          userData: req.session.user});
+          return;}
+          }}
+          res.redirect("/account");
+      } catch (exc: any) {
+        console.log(exc.message);
+      } finally {
+        await client.close();
+      }
+    }
+    // if name contains something else than numbers or letters then show error message:
+    else {
+      res.render("account", {
+        error: `Name <span>" ${req.body.newname} "</span> is not valid.<br>They can only include letters or numbers.`, userData: req.session.user
       });
       return;
     }
@@ -1187,39 +1269,39 @@ const getApiData = async (): Promise<void> => {
     }
   });
 
-  app.post("/account", async (req, res) => {
-    if (req.body.wwOld == req.session.user?.ww) {
-      if (req.body.newname != null || undefined || "") {
-        req.session.user!.name = req.body.newname;
-      }
-      if (req.body.wwNew != null || undefined || "") {
-        req.session.user!.ww = req.body.wwNew;
-      }
+  // app.post("/account", async (req, res) => {
+  //   if (req.body.wwOld == req.session.user?.ww) {
+  //     if (req.body.newname != null || undefined || "") {
+  //       req.session.user!.name = req.body.newname;
+  //     }
+  //     if (req.body.wwNew != null || undefined || "") {
+  //       req.session.user!.ww = req.body.wwNew;
+  //     }
 
-      try {
-        await client.connect();
-        await client
-          .db("LOTR")
-          .collection("users")
-          .updateOne(
-            { name: req.body.oldname },
-            { $set: { name: req.session.user!.name } }
-          );
-        await client
-          .db("LOTR")
-          .collection("users")
-          .updateOne(
-            { name: req.session.user!.name },
-            { $set: { ww: req.session.user!.ww } }
-          );
-      } catch (exc) {
-        console.log(exc);
-      } finally {
-        await client.close();
-        res.redirect("/account");
-      }
-    }
-  });
+  //     try {
+  //       await client.connect();
+  //       await client
+  //         .db("LOTR")
+  //         .collection("users")
+  //         .updateOne(
+  //           { name: req.body.oldname },
+  //           { $set: { name: req.session.user!.name } }
+  //         );
+  //       await client
+  //         .db("LOTR")
+  //         .collection("users")
+  //         .updateOne(
+  //           { name: req.session.user!.name },
+  //           { $set: { ww: req.session.user!.ww } }
+  //         );
+  //     } catch (exc) {
+  //       console.log(exc);
+  //     } finally {
+  //       await client.close();
+  //       res.redirect("/account");
+  //     }
+  //   }
+  // });
 
   app.listen(app.get("port"), () =>
     console.log("[server] http://localhost:" + app.get("port"))

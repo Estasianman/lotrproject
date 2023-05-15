@@ -2,6 +2,7 @@ import { ObjectId } from "mongodb";
 
 // Player interface which is saved in databank
 export interface Player {
+    _id?: any;
     name: string;
     ww: string;
     qscore?: number;
