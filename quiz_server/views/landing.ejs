@@ -24,7 +24,7 @@
     <div id = "viewErrorMsg">
       <p class = "viewMsg">
         <% if(loggedIn) { %>
-        You don't have access to this game!
+        You do not have access to this game!
       <% } else { %>
         Please login first.
         <% } %>
@@ -36,62 +36,62 @@
     
       <section class = "projects">
       <section>
-        <a href="" class ="errorMessage"> <figure>
+        <div class ="errorMessage"> <figure>
           <img
             src="/images/landing/pngimg.com - fifa_PNG26.png"
             alt="fifa"
 
           />
           <!-- <figcaption>Bron: Wikipedia.com</figcaption> -->
-        </figure></a>
+        </figure></div>
       </section>
       <section>
-        <a href="" class ="errorMessage"><figure>
+        <div class ="errorMessage"><figure>
           <img src="/images/landing/characters-fortnite-icon-moxalis-deviantart-23.png" alt="fortnite" />
           <!-- <figcaption>Bron: gamecomputers.nl</figcaption> -->
-        </figure></a>
+        </figure></div>
       </section>
       <section>
-        <a href="" class ="errorMessage"><figure>
+        <div class ="errorMessage"><figure>
           <img
             src="/images/landing/LEGO-Logo-1952.png"
             alt="lego"
           />
           <!-- <figcaption>Bron: Wikipedia.com</figcaption> -->
-        </figure></a>
+        </figure></div>
       </section>
       <section>
-        <a href="" class ="errorMessage"> <figure>
+        <div class ="errorMessage"> <figure>
           <img
             src="/images/landing/Magic-The-Gathering-Logo-1993.png"
             alt="MTG"
           />
           <!-- <figcaption>Bron: Fandom.com</figcaption> -->
-        </figure></a>
+        </figure></div>
       </section>
       <section>
-        <a href="" class ="errorMessage"> <figure>
+        <div class ="errorMessage"> <figure>
           <img
             src="/images/landing/logo-nl.svg"
             alt="nbb"
           />
           <!-- <figcaption>Bron: nbb.be</figcaption> -->
-        </figure></a>
+        </figure></div>
       </section>
       <section>
-        <a href="" class ="errorMessage"> <figure>
+        <div class ="errorMessage"> <figure>
           <img
             src="/images/landing/International_Pokémon_logo.svg.png"
             alt="pokemon"
           />
           <!-- <figcaption>Bron: Wikipedia.com</figcaption> -->
-        </figure></a>
+        </figure></div>
       </section>
       <section>
         <% if(loggedIn) { %>
         <a href="/index">
           <% } else {%>
-            <a href="" class ="errorMessage">
+            <div class ="errorMessage">
             <% } %>
           
         <figure>
@@ -100,20 +100,23 @@
             alt="LOTR"
           />
           <!-- <figcaption>Bron: nerdist.com</figcaption> -->
-        </figure></a>
+        </figure><% if(loggedIn) { %>
+        </a>
+            <% } else {%>
+            </div>
+              <% } %>
       </section>
     </section>
     </main>
       <script>
         let timeoutId;
-        const errorAlerts = document.querySelectorAll(".errorMessage");
-        errorAlerts.forEach(alertMessage => {
+        const viewMsg = document.getElementsByClassName("viewMsg")[0];
+        const errorAlerts = document.querySelectorAll(".errorMessage").forEach(alertMessage => {
           alertMessage.onclick = () => {
-            const viewMsg = document.getElementsByClassName("viewMsg")[0];
             clearTimeout(timeoutId); // cancel any existing timeout
             viewMsg.style.display = "block";
             timeoutId = setTimeout(() => {
-              viewErrorMsg.style.display = "none";
+              viewMsg.style.display = "none";
             }, 5000); // hide the message after 5 seconds
           };
         });

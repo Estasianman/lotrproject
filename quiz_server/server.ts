@@ -445,7 +445,7 @@ const getApiData = async (): Promise<void> => {
   app.get(routes, checkSession, async (req, res) => {
     let parsedUrl = new URL(`http://localhost:${app.get("port")}${req.url}`);
     let path = parsedUrl.pathname;
-    console.log(path);
+
     // check which app.get route was requested:
     switch (path) {
       case "/quiz":
@@ -524,7 +524,6 @@ const getApiData = async (): Promise<void> => {
         }
         break;
       case "/blacklist":
-        console.log(req.session.user);
         if (
           req.session.user?.blacklisted == null ||
           req.session.user?.blacklisted.length == 0
@@ -707,8 +706,6 @@ const getApiData = async (): Promise<void> => {
         const oldName = req.session.user?.name;
         const userId = req.session.user?._id;
         const newName = req.body.newname;
-        console.log(oldName);
-        console.log(newName);
 
         // CHANGE NAME
         if(req.body.nameSubmit) {
@@ -719,17 +716,16 @@ const getApiData = async (): Promise<void> => {
           .db("LOTR")
           .collection("users")
           .findOne({ name: newName });
-          console.log(nameLookUp);
 
         // if name is not taken then a namechange is possible:
         if (nameLookUp == undefined || nameLookUp == null) {
-          console.log("oldname: " + oldName + ", newname: " + req.body.newname);
           const result = await client
             .db("LOTR")
             .collection("users")
             .updateOne({name: oldName}, {$set: {name: req.body.newname}});
-            console.log(result);
+
             req.session.user!.name = req.body.newname;
+
             res.render("account", {error: "", success: "Name changed!",
             userData: req.session.user});
             return;
@@ -753,12 +749,12 @@ const getApiData = async (): Promise<void> => {
             .db("LOTR")
             .collection("users")
             .updateOne({name: oldName}, {$set: {ww: req.body.wwNew}});
-            console.log(result);
 
             res.render("account", {
             error: "",
             success: `Password changed!`,
             userData: req.session.user});
+            req.session.user!.ww = req.body.wwNew;
             return;
 
           } else {
