@@ -127,6 +127,17 @@ const findCharacterInfoForFavoriteList = (nameToFind: string): Doc => {
   return foundCharacterInfo;
 };
 
+// function to count how many quotes a character has in api:
+const countCharactersQuotes = (character: Doc):number =>{
+  let counter: number = 0;
+  for (let i = 0; i < quotes.docs.length; i++) {
+    if (character._id == quotes.docs[i].character) {
+        counter++;
+    }
+  }
+  return counter;
+}
+
 // function to get top 10 highscores from databank:
 const getHighScores = async (): Promise<void> => {
   gameData.qHighscores.slice(0, gameData.qHighscores.length);
@@ -512,6 +523,7 @@ const getApiData = async (): Promise<void> => {
               findCharacterInfoForFavoriteList(
                 req.session.user!.favorites![i].characterName
               );
+              req.session.user!.favorites![i].quotesAmount = countCharactersQuotes(req.session.user!.favorites![i].characterInfo);
           }
           gameData.headerTitle = "Favorites";
           gameData.gameType = "";
@@ -1128,11 +1140,13 @@ const getApiData = async (): Promise<void> => {
             name: "",
             wikiUrl: "",
           },
+          quotesAmount:0
         };
 
         newFavoriteListData.favoriteQuotes.push(quote);
         newFavoriteListData.characterInfo =
           findCharacterInfoForFavoriteList(name);
+        newFavoriteListData.quotesAmount = countCharactersQuotes(newFavoriteListData.characterInfo);
         req.session.user!.favorites!.push(newFavoriteListData);
       }
 
@@ -1249,11 +1263,13 @@ const getApiData = async (): Promise<void> => {
             name: "",
             wikiUrl: "",
           },
+          quotesAmount: 0
         };
 
         newFavoriteListData.favoriteQuotes.push(quote);
         newFavoriteListData.characterInfo =
           findCharacterInfoForFavoriteList(name);
+        newFavoriteListData.quotesAmount = countCharactersQuotes(newFavoriteListData.characterInfo);
         req.session.user!.favorites!.push(newFavoriteListData);
       }
 

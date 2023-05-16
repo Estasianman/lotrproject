@@ -23,6 +23,7 @@ export interface FavoriteList {
     characterName: string;
     favoriteQuotes: string[];
     characterInfo: Doc;
+    quotesAmount: number;
 }
 
 //API character interface
