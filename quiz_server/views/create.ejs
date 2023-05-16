@@ -12,11 +12,13 @@
     <title>Home</title>
 </head>
 
-<body>
+<body class="account-page">
+    <header>
     <button onclick="window.location.href='/';" class = "button-account">Go Back</button>
-    
+</header>
         <div class="login-page">
             <div class="form">
+                <h2 class = "form-title">Register</h2>
                 <form action="/create" method="POST" class="register-form">
                     <%if (error !="" ){%>
                         <p id="create-error"><%- error %></p>
