@@ -296,6 +296,9 @@ header h1 {
 /*#endregion*/
 
 /*#region--------------------------LANDING PAGE-----------------------------*/
+
+
+
 .landing-page {
     position: relative;
     margin-left: 0;
@@ -333,8 +336,7 @@ header h1 {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    justify-content: center;
-    background: rgb(255, 255, 255);
+    justify-content: space-evenly;
     background: linear-gradient(0deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 1) 42%, rgba(223, 220, 220, 1) 100%);
 }
 
@@ -348,8 +350,8 @@ header h1 {
 
 .landing-page header h1 {
     color: white;
-    font-family: system-ui, sans-serif;
-    text-shadow: 3px 5px black;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    text-shadow: 3px 5px 4px black;
     text-transform: uppercase;
     font-size: 60px;
 }
@@ -362,18 +364,21 @@ header h1 {
 }
 
 .landing-page .buttons button {
+    cursor: pointer;
     width: 110px;
     height: 40px;
-    border-radius: 15%;
+    border-radius: 8px;
     border: none;
     font-size: 16px;
     transition-duration: 0.2s;
     margin: 0 5px 0 5px;
+    box-shadow: 2px 2px 4px black;
+    transition: 0.25s;
 }
 
 .landing-page .buttons button:hover {
     transform: scale(1.1);
-    cursor: pointer;
+    box-shadow: none;
 }
 
 .landing-page main figure img {
@@ -384,17 +389,17 @@ header h1 {
 }
 
 .landing-page figure {
-    border-radius: 10%;
+    border-radius: 15px;
     transition-duration: 0.5s;
     background-color: #ececec;
-    box-shadow: 2px 2px grey;
+    box-shadow: 2px 2px 4px grey;
     margin: 0 10px 0 10px;
     width: initial;
     height: initial;
     flex: none;
     max-width: none;
     max-height: none;
-
+    cursor: pointer;
 }
 
 .landing-page figure:hover {
@@ -422,7 +427,8 @@ header h1 {
 
 .login-page input[type="submit"] {
     cursor: pointer;
-    color: grey
+    color: grey;
+    transition: 0.25s;
 }
 
 .login-page input[type="submit"]:hover {
@@ -440,6 +446,7 @@ header h1 {
     padding: 45px;
     text-align: center;
     box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+    border-radius: 6px;
 }
 
 .form input {
@@ -448,14 +455,15 @@ header h1 {
     background: #f2f2f2;
     width: 100%;
     border: 0;
-    margin: 0 0 15px;
+    margin: 0.5rem 0 0.5rem 0;
     padding: 15px;
     box-sizing: border-box;
     font-size: 18px;
+    border-radius: 4px;
 }
 
 .form label {
-    font-size: 16px;
+    font-size: 24px;
 
 }
 
@@ -516,21 +524,25 @@ header h1 {
 .button-account {
     width: 110px;
     height: 40px;
-    border-radius: 15%;
+    border-radius: 8px;
     border: none;
     font-size: 16px;
-    transition-duration: 0.2s;
     margin: 10px 5px 0 20px;
+    box-shadow: 0 0 14px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+    transition: 0.25s;
+    cursor: pointer;
 }
 
 .button-account:hover {
     transform: scale(1.1);
-    cursor: pointer;
+    box-shadow: none;
 }
 
 .account .login-page {
     padding-top: 0;
 }
+
+
 
 /*#endregion*/
 
