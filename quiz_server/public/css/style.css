@@ -65,7 +65,7 @@ h1 {
     font-family: 'ringbearermedium', 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     text-transform: uppercase;
     padding: 0.25rem;
-    font-size: 32px;
+    font-size: 36px;
     /* margin: 0 auto; */
 }
 
@@ -99,18 +99,11 @@ header h1 {
     text-shadow: 6px 4px 4px #000000;
 }
 
-#header-section {
+#header-container {
     color: var(--light-yellow-color);
     width: 100%;
-    height: auto;
-    margin-top: 5px;
     display: flex;
-    justify-content: center;
-}
-
-#header-container {
-    width: 100%;
-    display: flex;
+    flex-direction: row;
     height: auto;
     justify-content: space-around;
     flex-wrap: wrap;
@@ -131,19 +124,21 @@ header h1 {
     background-color: black;
     border-radius: 8px;
     outline: none;
-    transition: 0.5s color;
-    margin: 0 0.5rem 0 0.5rem;
+    transition: 0.5s;
+    margin: 0.5rem;
 }
 
 #header-container a {
     text-decoration: none;
     color: var(--dark-yellow-color);
     transition: 0.5s;
+    align-self: center;
 }
 
 #profile-button {
     position: relative;
     display: inline-block;
+    align-self: center;
 }
 
 #profile-button:hover, #profile-button a:hover,
@@ -415,14 +410,17 @@ header h1 {
 
 /*#endregion*/
 
-/*#region--------------------------ACCOUNT----------------------------------*/
+/*#region--------------------------ACCOUNT/LOGIN-------------------------------*/
 
 
 
 .login-page {
-    width: 360px;
-    padding: 8% 0 0;
-    margin: auto;
+    align-self: center;
+    padding: 0.5rem 0.5rem 4rem 0.5rem;
+}
+
+.login {
+    padding-bottom: 15rem;
 }
 
 .login-page input[type="submit"] {
@@ -436,14 +434,11 @@ header h1 {
 
 }
 
-
 .form {
-    position: relative;
     z-index: 1;
     background: #FFFFFF;
     max-width: 360px;
-    margin: -160px auto 100px;
-    padding: 45px;
+    padding: 45px; 
     text-align: center;
     box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
     border-radius: 6px;
@@ -510,22 +505,16 @@ header h1 {
 
 #create-error {
     color: red;
-    font-size: 16px;
+    font-size: 22px;
+    font-weight: bold;
     text-align: center;
-}
-
-#create-error span {
-    font-style: italic;
 }
 
 #create-success {
     color: green;
-    font-size: 16px;
+    font-size: 24px;
+    font-weight: bold;
     text-align: center;
-}
-
-#create-success span {
-    font-style: italic;
 }
 
 .button-account {
@@ -534,7 +523,7 @@ header h1 {
     border-radius: 8px;
     border: none;
     font-size: 16px;
-    margin: 10px 5px 0 20px;
+    margin: 15px 0 15px 25px;
     box-shadow: 0 0 14px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
     transition: 0.25s;
     cursor: pointer;
@@ -550,6 +539,10 @@ header h1 {
 }
 
 .account-page {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: space-between;
     /* background: linear-gradient(0deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 1) 20%, rgba(223, 220, 220, 1) 100%); */
     background-image: url("https://w.wallhaven.cc/full/0w/wallhaven-0wek2q.jpg");
     background-size: cover;

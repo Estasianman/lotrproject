@@ -641,7 +641,7 @@ const getApiData = async (): Promise<void> => {
         // if name already has an account then show error message:
         else {
           res.render("create", {
-            error: `<span>" ${req.body.name} "</span> already has an account.`,
+            error: `"${req.body.name}" already has an account.`,
           });
           return;
         }
@@ -654,7 +654,7 @@ const getApiData = async (): Promise<void> => {
     // if name contains something else than numbers or letters then show error message:
     else {
       res.render("create", {
-        error: `<span>" ${req.body.name} "</span> is not a valid username.<br>Username can only include letters or numbers.`,
+        error: `"${req.body.name}" is not a valid username.<br>Username can only include letters or numbers.`,
       });
       return;
     }
@@ -697,7 +697,7 @@ const getApiData = async (): Promise<void> => {
     // if name contains something else than numbers or letters then show error message:
     else {
       res.render("login", {
-        error: `<span>" ${req.body.name} "</span> is not a valid username.`,
+        error: `"${req.body.name}" is not a valid username.`,
       });
       return;
     }
@@ -747,7 +747,7 @@ const getApiData = async (): Promise<void> => {
           // if name already exists then show error message:
           else {
             res.render("account", {success: "",
-              error: `Name <span>" ${req.body.newname} "</span> already exists.`,
+              error: `Name "${req.body.newname}" already exists.`,
             userData: req.session.user});
             return;
           }} } 
@@ -761,19 +761,19 @@ const getApiData = async (): Promise<void> => {
             .db("LOTR")
             .collection("users")
             .updateOne({name: oldName}, {$set: {ww: req.body.wwNew}});
-
+            req.session.user!.ww = req.body.wwNew;
             res.render("account", {
             error: "",
             success: `Password changed!`,
             userData: req.session.user});
-            req.session.user!.ww = req.body.wwNew;
+            
             return;
 
           } else {
             // if old password is not valid then show error message
           res.render("account", {
             success:"",
-            error: `Your current password is wrong!`,
+            error: `Your current password was wrong!`,
           userData: req.session.user});
           return;}
           }}
@@ -788,7 +788,7 @@ const getApiData = async (): Promise<void> => {
     else {
       res.render("account", {
         success: "",
-        error: `Name <span>" ${req.body.newname} "</span> is not valid.<br>They can only include letters or numbers.`, userData: req.session.user
+        error: `Name "${req.body.newname}" is not valid.<br>Username can only include letters or numbers.`, userData: req.session.user
       });
       return;
     }
