@@ -11,12 +11,15 @@
     <script src="js/hashpassword.js"></script>
     <title>Home</title>
 </head>
-<body>
+<body class="account-page">
+    <header>
     <button onclick="window.location.href='/';" class = "button-account">Go Back</button>
+</header>
     <div class="login-page">
-        
         <div class="form">
+            <h2 class = "form-title">Login</h2>
             <form class="login-form" action="/login" method="POST">
+                
                 <%if (error !="" ){%>
                     <p id="create-error"><%- error %></p>
                     <%}%>
