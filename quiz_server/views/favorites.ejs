@@ -1,31 +1,37 @@
 <%- include("partials/header") %>
 
-    <section id="favorites-list">
-        <div class="accordion">
+<script> src = "/js/textfile.js"</script>
+
+<section id="favorites-list">
+    <div class="accordion">
         <ul>
-            
-        <% for (let i = 0; i < favoriteData.length; i++) {%>
+
+            <% for (let i = 0; i < favoriteData.length; i++) {%>
 
             <li>
                 <article class="name">
-                        <div class="accordion-panel">
-                          <h2 id="panel<%-i+1%>-title">
-                            <button class="accordion-trigger" aria-expanded="false" aria-controls="accordion<%-i+1%>-content">
+                    <div class="accordion-panel">
+                        <h2 id="panel<%-i+1%>-title">
+                            <button class="accordion-trigger" aria-expanded="false"
+                                aria-controls="accordion<%-i+1%>-content">
                                 <%- favoriteData[i].characterName %> (<%- favoriteData[i].favoriteQuotes.length %>)
                             </button>
-                          </h2>
-                          <div class="accordion-content" role="region" aria-labelledby="panel<%-i+1%>-title" aria-hidden="true" id="panel<%-i+1%>-content">
+                        </h2>
+                        <div class="accordion-content" role="region" aria-labelledby="panel<%-i+1%>-title"
+                            aria-hidden="true" id="panel<%-i+1%>-content">
                             <div>
                                 <p>Saved Quotes List:</p>
 
                                 <% for (let j = 0; j < favoriteData[i].favoriteQuotes.length; j++) {%>
 
-                                    <container id="favorite-quote-container">
+                                <container id="favorite-quote-container">
                                     <article class="quote">
                                         <p><%- j+1 %>.&nbsp; " <%- favoriteData[i].favoriteQuotes[j] %> "</p>
-                                        
+
                                     </article>
-                                    <article id="delete-quote-article"><a class="a" id="delete-quote" href="/deleteFavoriteQuote/<%- i %>/<%- j %>"><img src="../images/delete.png" alt="delete-quote"></a></article>
+                                    <article id="delete-quote-article"><a class="a" id="delete-quote"
+                                            href="/deleteFavoriteQuote/<%- i %>/<%- j %>"><img
+                                                src="../images/delete.png" alt="delete-quote"></a></article>
                                 </container>
 
                                 <%}%>
@@ -34,32 +40,37 @@
 
                                 <div class="accordion-panel more-content">
                                     <h2 id="panel<%-i+2%>-title">
-                                      <button class="accordion-trigger more-info" aria-expanded="false" aria-controls="accordion<%-i+2%>-content">
-                                          More info
-                                      </button>
-                                    </h2>
-                                    <div class="accordion-content" role="region" aria-labelledby="panel<%-i+2%>-title" aria-hidden="true" id="panel<%-i+2%>-content">
-                                        <div id="more-info">
-                                            <p><%- favoriteData[i].characterName %> has <%- favoriteData[i].quotesAmount %> quotes in our system.</p>
-                                            <p>Race:&nbsp; <%- favoriteData[i].characterInfo.race %></p>
-                                            <p>Height:&nbsp; <%- favoriteData[i].characterInfo.height %></p>
-                                            <p>Hair:&nbsp; <%- favoriteData[i].characterInfo.hair %></p>
-                                            <p>Birth:&nbsp; <%- favoriteData[i].characterInfo.birth %></p>
-                                            <p>Death:&nbsp; <%- favoriteData[i].characterInfo.death %></p>
-                                            <p><a class="a" href="https://lotr.fandom.com/wiki/<%- favoriteData[i].characterName %>" target="_blank">Link to wiki</a></p> 
-                                        </div>
+                                <button class="accordion-trigger more-info" aria-expanded="false"
+                                    aria-controls="accordion<%-i+2%>-content">
+                                    More info
+                                </button>
+                                </h2>
+                                <div class="accordion-content" role="region" aria-labelledby="panel<%-i+2%>-title"
+                                    aria-hidden="true" id="panel<%-i+2%>-content">
+                                    <div id="more-info">
+                                        <p><%- favoriteData[i].characterName %> has <%- favoriteData[i].quotesAmount %>
+                                            quotes in our system.</p>
+                                        <p>Race:&nbsp; <%- favoriteData[i].characterInfo.race %></p>
+                                        <p>Height:&nbsp; <%- favoriteData[i].characterInfo.height %></p>
+                                        <p>Hair:&nbsp; <%- favoriteData[i].characterInfo.hair %></p>
+                                        <p>Birth:&nbsp; <%- favoriteData[i].characterInfo.birth %></p>
+                                        <p>Death:&nbsp; <%- favoriteData[i].characterInfo.death %></p>
+                                        <p><a class="a"
+                                                href="https://lotr.fandom.com/wiki/<%- favoriteData[i].characterName %>"
+                                                target="_blank">Link to wiki</a></p>
                                     </div>
+                                </div>
                             </div>
-                          </div>
+                        </div>
                 </article>
             </li>
 
-        <% }; %> 
-        
-    </ul>
-</div>
-    </section>
-    </main>
-    </body>
+            <% }; %>
 
-    </html>
+        </ul>
+    </div>
+</section>
+</main>
+</body>
+
+</html>

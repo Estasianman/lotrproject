@@ -1,11 +1,11 @@
 <%- include("partials/header") %>
 
-    <div id="index">
-        <p id="welcome-message">Welcome <%- userData.name %>!</p>
-        <h1 id="index-h1">Guess That Quote Game!</h1>
-        <% if(alertstate != null){ %>
-            <p id="index-alert"><%- alertstate %></p>
-        <%}%>
+<div id="index">
+    <p id="welcome-message">Welcome <%- userData.name %>!</p>
+    <h1 id="index-h1">Guess That Quote Game!</h1>
+    <% if(alertstate != null){ %>
+    <p id="index-alert"><%- alertstate %></p>
+    <%}%>
         <section id="index-container">
             <article class="index-choice">
                 <a href="/quiz">
@@ -26,6 +26,7 @@
                 </div>
             </article>
         </section>
+        <button class="button" onclick="printTextFile()">Export to TXT</button>
     </div>
     </main>
 

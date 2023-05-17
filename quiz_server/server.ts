@@ -1,4 +1,5 @@
 import express from "express";
+import * as fs from "fs";
 const axios = require("axios");
 import { MongoClient } from "mongodb";
 import {
@@ -128,15 +129,15 @@ const findCharacterInfoForFavoriteList = (nameToFind: string): Doc => {
 };
 
 // function to count how many quotes a character has in api:
-const countCharactersQuotes = (character: Doc):number =>{
+const countCharactersQuotes = (character: Doc): number => {
   let counter: number = 0;
   for (let i = 0; i < quotes.docs.length; i++) {
     if (character._id == quotes.docs[i].character) {
-        counter++;
+      counter++;
     }
   }
   return counter;
-}
+};
 
 // function to get top 10 highscores from databank:
 const getHighScores = async (): Promise<void> => {
@@ -451,6 +452,7 @@ const getApiData = async (): Promise<void> => {
     "/favorites",
     "/blacklist",
     "/account",
+    "/textfile",
   ];
 
   app.get(routes, checkSession, async (req, res) => {
@@ -523,7 +525,7 @@ const getApiData = async (): Promise<void> => {
               findCharacterInfoForFavoriteList(
                 req.session.user!.favorites![i].characterName
               );
-              req.session.user!.favorites![i].quotesAmount = countCharactersQuotes(req.session.user!.favorites![i].characterInfo);
+            req.session.user!.favorites![i].quotesAmount = countCharactersQuotes(req.session.user!.favorites![i].characterInfo);
           }
           gameData.headerTitle = "Favorites";
           gameData.gameType = "";
@@ -574,11 +576,23 @@ const getApiData = async (): Promise<void> => {
           success: ""
         });
         break;
+      case "/textfile":
+        const data = [
+          { qoute: "You shall not pass!", name: 'Gandalf' },
+          { qoute: "You shall not pass!", name: 'Gandalf' },
+          { qoute: "You shall not pass!", name: 'Gandalf' },
+          { qoute: "You shall not pass!", name: 'Gandalf' },
+        ];
+        const content = data.map((item) => Object.values(item).join('\t')).join('\n');
+        const filename = 'print.txt';
+        fs.writeFileSync(filename, content);
+        res.download(__dirname);
 
       default:
         break;
     }
   });
+
 
   app.get("/", (req, res) => {
     gameData.gameType = "";
@@ -709,8 +723,8 @@ const getApiData = async (): Promise<void> => {
     if (
       req.body.newname.match(
         /^[\w\áàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ]+$/
-      ) 
-        || req.body.newname == "" && req.body.wwOld != "" && req.body.wwNew != ""
+      )
+      || req.body.newname == "" && req.body.wwOld != "" && req.body.wwNew != ""
     ) {
 
       try {
@@ -720,63 +734,73 @@ const getApiData = async (): Promise<void> => {
         const newName = req.body.newname;
 
         // CHANGE NAME
-        if(req.body.nameSubmit) {
-        if(req.body.newname != null && !req.body.newname != undefined && req.body.newname != "" ) { 
+        if (req.body.nameSubmit) {
+          if (req.body.newname != null && !req.body.newname != undefined && req.body.newname != "") {
 
-        // check to see if the name already exists:
-        const nameLookUp = await client
-          .db("LOTR")
-          .collection("users")
-          .findOne({ name: newName });
+            // check to see if the name already exists:
+            const nameLookUp = await client
+              .db("LOTR")
+              .collection("users")
+              .findOne({ name: newName });
 
-        // if name is not taken then a namechange is possible:
-        if (nameLookUp == undefined || nameLookUp == null) {
-          const result = await client
-            .db("LOTR")
-            .collection("users")
-            .updateOne({name: oldName}, {$set: {name: req.body.newname}});
+            // if name is not taken then a namechange is possible:
+            if (nameLookUp == undefined || nameLookUp == null) {
+              const result = await client
+                .db("LOTR")
+                .collection("users")
+                .updateOne({ name: oldName }, { $set: { name: req.body.newname } });
 
-            req.session.user!.name = req.body.newname;
+              req.session.user!.name = req.body.newname;
 
-            res.render("account", {error: "", success: "Name changed!",
-            userData: req.session.user});
-            return;
+              res.render("account", {
+                error: "", success: "Name changed!",
+                userData: req.session.user
+              });
+              return;
 
+            }
+
+            // if name already exists then show error message:
+            else {
+              res.render("account", {
+                success: "",
+                error: `Name "${req.body.newname}" already exists.`,
+                userData: req.session.user
+              });
+              return;
+            }
           }
+        }
 
-          // if name already exists then show error message:
-          else {
-            res.render("account", {success: "",
-              error: `Name "${req.body.newname}" already exists.`,
-            userData: req.session.user});
-            return;
-          }} } 
+        // CHANGE PASSWORD
+        if (req.body.passwordSubmit) {
+          if (req.body.wwNew != null && req.body.wwNew != undefined && req.body.wwNew != "") {
+            // Check if the old password is valid
+            if (await req.session.user?.ww == req.body.wwOld) {
+              const result = await client
+                .db("LOTR")
+                .collection("users")
+                .updateOne({ name: oldName }, { $set: { ww: req.body.wwNew } });
+              req.session.user!.ww = req.body.wwNew;
+              res.render("account", {
+                error: "",
+                success: `Password changed!`,
+                userData: req.session.user
+              });
 
-      // CHANGE PASSWORD
-      if(req.body.passwordSubmit) {
-        if(req.body.wwNew != null && req.body.wwNew != undefined && req.body.wwNew != "") {
-          // Check if the old password is valid
-          if(await req.session.user?.ww == req.body.wwOld) {            
-            const result = await client
-            .db("LOTR")
-            .collection("users")
-            .updateOne({name: oldName}, {$set: {ww: req.body.wwNew}});
-            req.session.user!.ww = req.body.wwNew;
-            res.render("account", {
-            error: "",
-            success: `Password changed!`,
-            userData: req.session.user});
-            
-            return;
+              return;
 
-          } else {
-            // if old password is not valid then show error message
-          res.render("account", {
-            success:"",
-            error: `Your current password was wrong!`,
-          userData: req.session.user});
-          return;}
-          }}
+            } else {
+              // if old password is not valid then show error message
+              res.render("account", {
+                success: "",
+                error: `Your current password was wrong!`,
+                userData: req.session.user
+              });
+              return;
+            }
+          }
+        }
 
       } catch (exc: any) {
         console.log(exc.message);
@@ -1140,7 +1164,7 @@ const getApiData = async (): Promise<void> => {
             name: "",
             wikiUrl: "",
           },
-          quotesAmount:0
+          quotesAmount: 0
         };
 
         newFavoriteListData.favoriteQuotes.push(quote);
@@ -1329,4 +1353,4 @@ const getApiData = async (): Promise<void> => {
 };
 
 getApiData();
-export {};
+export { };
