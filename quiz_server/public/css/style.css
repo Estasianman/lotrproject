@@ -550,15 +550,19 @@ header h1 {
 }
 
 .account-page {
-    background: linear-gradient(0deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 1) 20%, rgba(223, 220, 220, 1) 100%);
+    /* background: linear-gradient(0deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 1) 20%, rgba(223, 220, 220, 1) 100%); */
+    background-image: url("https://w.wallhaven.cc/full/0w/wallhaven-0wek2q.jpg");
+    background-size: cover;
 }
 
 .account-page header {
-    background-image: url("/images/landing/wallhaven-pkogk3.png");
+    /* background-image: url("/images/landing/wallhaven-pkogk3.png");
     padding: 140px 0 138px 80px;
     border-bottom: none;
     font-size: larger;
-    max-height: 278px;
+    max-height: 278px; */
+    background-image: none;
+    border-bottom: none;
 }
 
 
