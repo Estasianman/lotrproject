@@ -585,7 +585,12 @@ const getApiData = async (): Promise<void> => {
         ];
         const content = data.map((item) => Object.values(item).join('\t')).join('\n');
         const filename = 'print.txt';
-        fs.writeFileSync(filename, content);
+        try {
+          fs.writeFileSync(filename, content, { flag: "a" });
+        } catch (error) {
+          console.log("no such file");
+        }
+
         res.download(__dirname);
 
       default:
