@@ -654,7 +654,7 @@ header h1 {
     border: 2px solid black;
     border-radius: 10px;
     transition: 0.5s transform, 0.5s box-shadow, 0.5s color, 0.5s background-color;
-    box-shadow: 3px 3px 2px 2px #02234047;
+    box-shadow: 2px 2px 1px 1px #02234047;
     cursor: pointer;
 }
 
@@ -668,10 +668,53 @@ header h1 {
     color: var(--light-yellow-color);
 }
 
-
-#blacklist-field {
-    display: none;
+#blacklist-form {
+    position: relative;
 }
+
+
+
+
+
+#blacklist-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    max-width: 80%;
+    padding: 1rem;
+    background-color: white;
+    border-radius: 10px;
+    text-align: center;
+    z-index: 9999;
+    display: none;
+  }
+  
+  #blacklist-popup h4 {
+    font-size: 24px;
+    margin-bottom: 1rem;
+  }
+  
+  #blacklist-popup input[type="text"] {
+    width: 100%;
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  #blacklist-popup button {
+    padding: 0.5rem 1rem;
+    font-size: 16px;
+    background-color: var(--dark-yellow-color);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
 
 /*#endregion*/
 

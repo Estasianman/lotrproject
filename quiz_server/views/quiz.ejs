@@ -6,10 +6,12 @@
             <h3>Score: <span id="points"> <%- dataGame.score %></span></h3>
             <div id="list-btns">
                 <form id="blacklist-form" action="/addToBlacklist" method="POST">
-                    <button onclick="showTextField()" id="blacklist-btn"><i class="fa-solid fa-thumbs-down"></i></button>
-                    <div id="blacklist-field">
+                    <button onclick="showPopUp()" id="blacklist-btn"><i class="fa-solid fa-thumbs-down"></i></button>
+                    <div id="blacklist-popup">
+                        <h4>Why don't you like this quote?</h4>
                         <input type="text" name="blacklist-reason" placeholder="Type your reason for blacklisting this quote">
                         <button type="submit">Add to blacklist</button>
+                        <button type="button" onclick="closePopUp()">Cancel</button>
                         </div> 
                 </form>
             <form action="/addToFavorites" method="POST">
