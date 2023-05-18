@@ -49,13 +49,32 @@
                                 <div class="accordion-content" role="region" aria-labelledby="panel<%-i+2%>-title"
                                     aria-hidden="true" id="panel<%-i+2%>-content">
                                     <div id="more-info">
-                                        <p><%- favoriteData[i].characterName %> has <%- favoriteData[i].quotesAmount %>
-                                            quotes in our system.</p>
-                                        <p>Race:&nbsp; <%- favoriteData[i].characterInfo.race %></p>
-                                        <p>Height:&nbsp; <%- favoriteData[i].characterInfo.height %></p>
-                                        <p>Hair:&nbsp; <%- favoriteData[i].characterInfo.hair %></p>
-                                        <p>Birth:&nbsp; <%- favoriteData[i].characterInfo.birth %></p>
-                                        <p>Death:&nbsp; <%- favoriteData[i].characterInfo.death %></p>
+                                        <p><%- favoriteData[i].characterName %> has <%- favoriteData[i].quotesAmount %> quotes in our system.</p>
+                                        <%if (favoriteData[i].characterInfo.height != ""){%>
+                                            <p>Height:&nbsp; <%- favoriteData[i].characterInfo.height %></p>
+                                        <%}%>
+                                        <% if (favoriteData[i].characterInfo.hair != ""){%>
+                                            <p>Hair:&nbsp; <%- favoriteData[i].characterInfo.hair %></p>
+                                        <%}%>
+                                        <% if (favoriteData[i].characterInfo.gender != ""){%>
+                                            <p>Gender:&nbsp; <%- favoriteData[i].characterInfo.gender %></p>
+                                        <%}%>
+                                        <% if (favoriteData[i].characterInfo.race != ""){%>
+                                            <p>Race:&nbsp; <%- favoriteData[i].characterInfo.race %></p>
+                                        <%}%>
+                                        <% if (favoriteData[i].characterInfo.realm != ""){%>
+                                            <p>Realm:&nbsp; <%- favoriteData[i].characterInfo.realm %></p>
+                                        <%}%>
+                                        <% if (favoriteData[i].characterInfo.spouse != ""){%>
+                                            <p>Spouse:&nbsp; <%- favoriteData[i].characterInfo.spouse %></p>
+                                        <%}%>
+                                        <% if (favoriteData[i].characterInfo.birth != ""){%>
+                                            <p>Birth:&nbsp; <%- favoriteData[i].characterInfo.birth %></p>
+                                        <%}%>
+                                        <% if (favoriteData[i].characterInfo.death != ""){%>
+                                            <p>Death:&nbsp; <%- favoriteData[i].characterInfo.death %></p>
+                                        <%}%>
+                                       
                                         <p><a class="a"
                                                 href="https://lotr.fandom.com/wiki/<%- favoriteData[i].characterName %>"
                                                 target="_blank">Link to wiki</a></p>
