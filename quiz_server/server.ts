@@ -156,7 +156,10 @@ const getHighScores = async (): Promise<void> => {
     // loop through data and put element into gameData variable, make sure element is not empty:
     qScores.forEach((element, index) => {
       if (element.qscore != undefined) {
-        gameData.qHighscores[index] = { name: element.name, score: element.qscore };
+        gameData.qHighscores[index] = {
+          name: element.name,
+          score: element.qscore,
+        };
       }
     });
     // then get sudden death top 10 scores:
@@ -170,7 +173,10 @@ const getHighScores = async (): Promise<void> => {
     // loop through data and put element into gameData variable, make sure element is not empty:
     sScores.forEach((element, index) => {
       if (element.sdscore != undefined) {
-        gameData.sHighscores[index] = { name: element.name, score: element.sdscore };
+        gameData.sHighscores[index] = {
+          name: element.name,
+          score: element.sdscore,
+        };
       }
     });
   } catch (error: any) {
@@ -525,7 +531,10 @@ const getApiData = async (): Promise<void> => {
               findCharacterInfoForFavoriteList(
                 req.session.user!.favorites![i].characterName
               );
-            req.session.user!.favorites![i].quotesAmount = countCharactersQuotes(req.session.user!.favorites![i].characterInfo);
+            req.session.user!.favorites![i].quotesAmount =
+              countCharactersQuotes(
+                req.session.user!.favorites![i].characterInfo
+              );
           }
           gameData.headerTitle = "Favorites";
           gameData.gameType = "";
@@ -573,18 +582,20 @@ const getApiData = async (): Promise<void> => {
           userData: req.session.user,
           BtnBool: BtnBool,
           error: "",
-          success: ""
+          success: "",
         });
         break;
       case "/textfile":
         const data = [
-          { qoute: "You shall not pass!", name: 'Gandalf' },
-          { qoute: "You shall not pass!", name: 'Gandalf' },
-          { qoute: "You shall not pass!", name: 'Gandalf' },
-          { qoute: "You shall not pass!", name: 'Gandalf' },
+          { qoute: "You shall not pass!", name: "Gandalf" },
+          { qoute: "You shall not pass!", name: "Gandalf" },
+          { qoute: "You shall not pass!", name: "Gandalf" },
+          { qoute: "You shall not pass!", name: "Gandalf" },
         ];
-        const content = data.map((item) => Object.values(item).join('\t')).join('\n');
-        const filename = 'print.txt';
+        const content = data
+          .map((item) => Object.values(item).join("\t"))
+          .join("\n");
+        const filename = "print.txt";
         try {
           fs.writeFileSync(filename, content, { flag: "a" });
         } catch (error) {
@@ -597,7 +608,6 @@ const getApiData = async (): Promise<void> => {
         break;
     }
   });
-
 
   app.get("/", (req, res) => {
     gameData.gameType = "";
@@ -728,10 +738,9 @@ const getApiData = async (): Promise<void> => {
     if (
       req.body.newname.match(
         /^[\w\áàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ]+$/
-      )
-      || req.body.newname == "" && req.body.wwOld != "" && req.body.wwNew != ""
+      ) ||
+      (req.body.newname == "" && req.body.wwOld != "" && req.body.wwNew != "")
     ) {
-
       try {
         await client.connect();
         const oldName = req.session.user?.name;
@@ -740,8 +749,11 @@ const getApiData = async (): Promise<void> => {
 
         // CHANGE NAME
         if (req.body.nameSubmit) {
-          if (req.body.newname != null && !req.body.newname != undefined && req.body.newname != "") {
-
+          if (
+            req.body.newname != null &&
+            !req.body.newname != undefined &&
+            req.body.newname != ""
+          ) {
             // check to see if the name already exists:
             const nameLookUp = await client
               .db("LOTR")
@@ -753,16 +765,19 @@ const getApiData = async (): Promise<void> => {
               const result = await client
                 .db("LOTR")
                 .collection("users")
-                .updateOne({ name: oldName }, { $set: { name: req.body.newname } });
+                .updateOne(
+                  { name: oldName },
+                  { $set: { name: req.body.newname } }
+                );
 
               req.session.user!.name = req.body.newname;
 
               res.render("account", {
-                error: "", success: "Name changed!",
-                userData: req.session.user
+                error: "",
+                success: "Name changed!",
+                userData: req.session.user,
               });
               return;
-
             }
 
             // if name already exists then show error message:
@@ -770,7 +785,7 @@ const getApiData = async (): Promise<void> => {
               res.render("account", {
                 success: "",
                 error: `Name "${req.body.newname}" already exists.`,
-                userData: req.session.user
+                userData: req.session.user,
               });
               return;
             }
@@ -779,9 +794,13 @@ const getApiData = async (): Promise<void> => {
 
         // CHANGE PASSWORD
         if (req.body.passwordSubmit) {
-          if (req.body.wwNew != null && req.body.wwNew != undefined && req.body.wwNew != "") {
+          if (
+            req.body.wwNew != null &&
+            req.body.wwNew != undefined &&
+            req.body.wwNew != ""
+          ) {
             // Check if the old password is valid
-            if (await req.session.user?.ww == req.body.wwOld) {
+            if ((await req.session.user?.ww) == req.body.wwOld) {
               const result = await client
                 .db("LOTR")
                 .collection("users")
@@ -790,23 +809,21 @@ const getApiData = async (): Promise<void> => {
               res.render("account", {
                 error: "",
                 success: `Password changed!`,
-                userData: req.session.user
+                userData: req.session.user,
               });
 
               return;
-
             } else {
               // if old password is not valid then show error message
               res.render("account", {
                 success: "",
                 error: `Your current password was wrong!`,
-                userData: req.session.user
+                userData: req.session.user,
               });
               return;
             }
           }
         }
-
       } catch (exc: any) {
         console.log(exc.message);
       } finally {
@@ -817,7 +834,8 @@ const getApiData = async (): Promise<void> => {
     else {
       res.render("account", {
         success: "",
-        error: `Name "${req.body.newname}" is not valid.<br>Username can only include letters or numbers.`, userData: req.session.user
+        error: `Name "${req.body.newname}" is not valid.<br>Username can only include letters or numbers.`,
+        userData: req.session.user,
       });
       return;
     }
@@ -1135,24 +1153,15 @@ const getApiData = async (): Promise<void> => {
       //connect
       await client.connect();
 
+      if (req.session.user!.favorites == undefined) {
+        req.session.user!.favorites = [];
+      }
       // check if character already has quotes in the favorite list:
-      let characterIndex: number = -1;
-      for (
-        let i = 0;
-        i < req.session.user!.favorites!.length && characterIndex == -1;
-        i++
-      ) {
-        if (req.session.user!.favorites![i].characterName == name) {
-          characterIndex = i;
-        }
-      }
-
-      // if character already has quotes in the favorite list, then add the new quote to the characters list of favorite list quotes:
-      if (characterIndex != -1) {
-        req.session.user!.favorites![characterIndex].favoriteQuotes.push(quote);
-      }
-      // if character is not in the favorite list yet then add a new favorite list object to the users favorite list array:
-      else {
+      console.log("before check");
+      let result = req.session.user!.favorites?.find(
+        (character) => character.characterName == name
+      );
+      if (result == undefined) {
         let newFavoriteListData: FavoriteList = {
           characterName: name,
           favoriteQuotes: [],
@@ -1169,14 +1178,21 @@ const getApiData = async (): Promise<void> => {
             name: "",
             wikiUrl: "",
           },
-          quotesAmount: 0
+          quotesAmount: 0,
         };
 
         newFavoriteListData.favoriteQuotes.push(quote);
         newFavoriteListData.characterInfo =
           findCharacterInfoForFavoriteList(name);
-        newFavoriteListData.quotesAmount = countCharactersQuotes(newFavoriteListData.characterInfo);
+        newFavoriteListData.quotesAmount = countCharactersQuotes(
+          newFavoriteListData.characterInfo
+        );
         req.session.user!.favorites!.push(newFavoriteListData);
+      } else {
+        let index: number = req.session.user!.favorites!.findIndex(
+          (character) => character.characterName == name
+        );
+        req.session.user!.favorites![index].favoriteQuotes.push(quote);
       }
 
       //add to database
@@ -1203,27 +1219,14 @@ const getApiData = async (): Promise<void> => {
       //connect
       await client.connect();
 
-      // check if character already has quotes in the blacklist:
-      let characterIndex: number = -1;
-      for (
-        let i = 0;
-        i < req.session.user!.blacklisted!.length && characterIndex == -1;
-        i++
-      ) {
-        if (req.session.user!.blacklisted![i].characterName == name) {
-          characterIndex = i;
-        }
+      if (req.session.user!.blacklisted! == undefined) {
+        req.session.user!.blacklisted = [];
       }
 
-      // if character already has quotes in the blacklist, then add the new quote to the characters list of blacklist quotes:
-      if (characterIndex != -1) {
-        req.session.user!.blacklisted![characterIndex].blacklistQuotes.push(
-          quote
-        );
-        req.session.user!.blacklisted![characterIndex].reason.push(reason);
-      }
-      // if character is not in the blacklist yet then add a new blacklist object to the users blacklist array:
-      else {
+      let result = req.session.user!.blacklisted?.find(
+        (character) => character.characterName == name
+      );
+      if (result == undefined) {
         let newBlacklistData: Blacklist = {
           characterName: name,
           blacklistQuotes: [],
@@ -1233,6 +1236,11 @@ const getApiData = async (): Promise<void> => {
         newBlacklistData.blacklistQuotes.push(quote);
         newBlacklistData.reason.push(reason);
         req.session.user!.blacklisted!.push(newBlacklistData);
+      } else {
+        let index: number = req.session.user!.blacklisted!.findIndex(
+          (character) => character.characterName == name
+        );
+        req.session.user!.blacklisted![index].blacklistQuotes.push(quote);
       }
 
       //add to database
@@ -1292,13 +1300,15 @@ const getApiData = async (): Promise<void> => {
             name: "",
             wikiUrl: "",
           },
-          quotesAmount: 0
+          quotesAmount: 0,
         };
 
         newFavoriteListData.favoriteQuotes.push(quote);
         newFavoriteListData.characterInfo =
           findCharacterInfoForFavoriteList(name);
-        newFavoriteListData.quotesAmount = countCharactersQuotes(newFavoriteListData.characterInfo);
+        newFavoriteListData.quotesAmount = countCharactersQuotes(
+          newFavoriteListData.characterInfo
+        );
         req.session.user!.favorites!.push(newFavoriteListData);
       }
 
@@ -1358,4 +1368,4 @@ const getApiData = async (): Promise<void> => {
 };
 
 getApiData();
-export { };
+export {};
