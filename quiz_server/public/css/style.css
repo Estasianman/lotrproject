@@ -337,6 +337,7 @@ header h1 {
 
 .landing-page header {
     background-image: url("/images/landing/wallhaven-pkogk3.png");
+    background-size: cover;
     padding: 90px 0 100px 80px;
     border-bottom: none;
     font-size: larger;
