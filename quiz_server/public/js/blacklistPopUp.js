@@ -5,7 +5,3 @@ function showPopUp() {
   function closePopUp() {
     document.getElementById('blacklist-popup').style.display = 'none';
   }
-
-  function stopPropagation(event) {
-    event.stopPropagation();
-  }
