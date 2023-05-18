@@ -1157,7 +1157,6 @@ const getApiData = async (): Promise<void> => {
         req.session.user!.favorites = [];
       }
       // check if character already has quotes in the favorite list:
-      console.log("before check");
       let result = req.session.user!.favorites?.find(
         (character) => character.characterName == name
       );
@@ -1333,40 +1332,6 @@ const getApiData = async (): Promise<void> => {
       res.render("quiz", { dataGame: gameData, dataApi: apiData });
     }
   });
-
-  // app.post("/account", async (req, res) => {
-  //   if (req.body.wwOld == req.session.user?.ww) {
-  //     if (req.body.newname != null || undefined || "") {
-  //       req.session.user!.name = req.body.newname;
-  //     }
-  //     if (req.body.wwNew != null || undefined || "") {
-  //       req.session.user!.ww = req.body.wwNew;
-  //     }
-
-  //     try {
-  //       await client.connect();
-  //       await client
-  //         .db("LOTR")
-  //         .collection("users")
-  //         .updateOne(
-  //           { name: req.body.oldname },
-  //           { $set: { name: req.session.user!.name } }
-  //         );
-  //       await client
-  //         .db("LOTR")
-  //         .collection("users")
-  //         .updateOne(
-  //           { name: req.session.user!.name },
-  //           { $set: { ww: req.session.user!.ww } }
-  //         );
-  //     } catch (exc) {
-  //       console.log(exc);
-  //     } finally {
-  //       await client.close();
-  //       res.redirect("/account");
-  //     }
-  //   }
-  // });
 
   app.listen(app.get("port"), () =>
     console.log("[server] http://localhost:" + app.get("port"))

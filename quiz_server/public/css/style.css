@@ -199,6 +199,7 @@ header h1 {
     color: var(--light-yellow-color);
     padding-top: 3rem;
     text-shadow: 4px 2px 2px #000000;
+    letter-spacing: 5px;
 }
 
 #index-container {
