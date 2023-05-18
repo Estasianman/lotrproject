@@ -578,6 +578,9 @@ header h1 {
 }
 
 #quote-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     text-align: center;
     margin: 0 auto;
     width: 100%;
@@ -636,32 +639,35 @@ header h1 {
     border-bottom: 0.5px var(--dark-yellow-color) solid;
 }
 
+#list-btns {
+    display: flex;
+    flex-direction: row;
+    margin: 2rem;
+    gap: 3rem;
+}
 
 #favorite-btn,
 #blacklist-btn {
     color: var(--dark-yellow-color);
     font-size: 30px;
-    padding: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    background: black;
+    border: 2px solid black;
+    border-radius: 10px;
+    transition: 0.5s transform, 0.5s box-shadow, 0.5s color, 0.5s background-color;
+    box-shadow: 3px 3px 2px 2px #02234047;
     cursor: pointer;
-    background: none;
-    border: none;
 }
+
+#blacklist-btn {
+    transform: scaleX(-1);
+}
+
 
 #favorite-btn:hover,
 #blacklist-btn:hover {
     color: var(--light-yellow-color);
 }
 
-#blacklist-btn {
-    float: left;
-}
-
-#favorite-btn {
-    float: right;
-}
 
 #blacklist-field {
     display: none;
