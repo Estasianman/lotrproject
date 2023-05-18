@@ -1214,7 +1214,7 @@ const getApiData = async (): Promise<void> => {
   app.post("/addToBlacklist", async (req, res) => {
     let name: string = apiData.correctCharacterName;
     let quote: string = apiData.quote.dialog;
-    let reason: string = "";
+    let reason: string = req.body.blacklistreason;
     try {
       //connect
       await client.connect();
@@ -1241,6 +1241,12 @@ const getApiData = async (): Promise<void> => {
           (character) => character.characterName == name
         );
         req.session.user!.blacklisted![index].blacklistQuotes.push(quote);
+        let reasonIndex: number = req.session.user!.blacklisted[
+          index
+        ].blacklistQuotes.findIndex(
+          (characterQuote) => characterQuote == quote
+        );
+        req.session.user!.blacklisted![index].reason[reasonIndex] == reason;
       }
 
       //add to database
