@@ -3,7 +3,11 @@
         <div id="quote-container">
             <h2>Quote: <span id="game-counter">(<%- dataGame.gameCounter %> / 10)</span></h2>
             <form action="/addToBlacklist" method="POST">
-                <button onclick="" id="blacklist-btn"><i class="fa-solid fa-thumbs-down"></i></button>
+                <button onclick="showTextField()" id="blacklist-btn"><i class="fa-solid fa-thumbs-down"></i></button>
+                <div id="blacklist-field">
+                    <input type="text" name="blacklist-reason" placeholder="Type your reason for blacklisting this quote">
+                    <button type="submit">Add to blacklist</button>
+                    </div> 
             </form>
             <p id="quote">" <%- dataApi.quote.dialog %> "</p>
             <form action="/addToFavorites" method="POST">
