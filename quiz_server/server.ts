@@ -586,27 +586,30 @@ const getApiData = async (): Promise<void> => {
         });
         break;
       case "/printAllQuotes":
-        let characterId = parseInt(req.params.characterId);
-        let characterQuotes: string[] = [...req.session.user!.favorites![characterId].favoriteQuotes];
-
-        const data = [
-          { qoute: "You shall not pass!", name: "Gandalf" },
-          { qoute: "You shall not pass!", name: "Gandalf" },
-          { qoute: "You shall not pass!", name: "Gandalf" },
-          { qoute: "You shall not pass!", name: "Gandalf" },
-        ];
-
-        const content = data
-          .map((item) => Object.values(item).join("\t"))
-          .join("\n");
-        const filename = "print.txt";
-        try {
-          fs.writeFileSync(filename, content, { flag: "a" });
-        } catch (error) {
-          console.log("no such file");
+        let allQuotes: string[] = [];
+        let counter: number = 0;
+        // Put all of users favorite quotes into an array:
+        for (let i = 0; i < req.session.user!.favorites!.length; i++) {
+          for (let k = 0; k < req.session.user!.favorites![i].favoriteQuotes.length; k++) {
+            allQuotes[counter] = `${req.session.user!.favorites![i].characterName}\n`;
+            allQuotes[counter] += req.session.user!.favorites![i].favoriteQuotes[k];
+            counter++;
+          }
         }
+        // Add newline after each array element:
+        let printText: string = allQuotes.join("\n");
+        const filename = "All_Quotes.txt";
+        // Print to txt file:
+        try {
+          fs.writeFileSync(filename, printText, { flag: "a" });
+          res.download(__dirname);
 
-        res.download(__dirname);
+        } catch (error: any) {
+          console.log(error.message);
+        }
+        finally {
+          res.redirect("/favorites");
+        }
 
       default:
         break;
@@ -618,23 +621,23 @@ const getApiData = async (): Promise<void> => {
     let characterName: string = req.session.user!.favorites![characterId].characterName;
     let characterQuotes: string[] = [...req.session.user!.favorites![characterId].favoriteQuotes];
 
-    characterQuotes.forEach((element, index) =>{
-      characterQuotes[index] = `${index+1}. ${characterQuotes[index]}`;
+    characterQuotes.forEach((element, index) => {
+      characterQuotes[index] = `${index + 1}. ${characterQuotes[index]}`;
     })
-
+    // Add newline after each array element:
     let printText: string = `${characterName}\n`;
     printText += characterQuotes.join(`\n`);
 
     const filename = `${characterName}_Quotes.txt`;
-
+    // Print to txt file:
     try {
       fs.writeFileSync(filename, printText, { flag: "a" });
       res.download(__dirname);
 
-    } catch (error:any) {
+    } catch (error: any) {
       console.log(error.message);
     }
-    finally{
+    finally {
       res.redirect("/favorites");
     }
   });

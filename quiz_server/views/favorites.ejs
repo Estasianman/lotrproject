@@ -1,8 +1,5 @@
 <%- include("partials/header") %>
 
-
-<script defer src="/js/textfile.js"></script>
-
 <section id="favorites-list">
     <div class="accordion">
         <ul>
@@ -37,7 +34,7 @@
 
                                 <%}%>
   
-                               <p><a class="a" id="print-quotes" href="/printQuotes/<%- i %>">Print Quotes List</a></p>
+                               <p><a class="a" id="print-quotes" href="/printQuotes/<%- i %>">Print Character Quotes</a></p>
 
                                 <div class="accordion-panel more-content">
                                     <h2 id="panel<%-i+2%>-title">
@@ -89,6 +86,7 @@
 
         </ul>
     </div>
+    <a class="a" id="print-quotes" href="/printAllQuotes"><button>Print All Quotes</button></a>
 </section>
 </main>
 </body>
