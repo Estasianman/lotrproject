@@ -458,7 +458,7 @@ const getApiData = async (): Promise<void> => {
     "/favorites",
     "/blacklist",
     "/account",
-    "/textfile",
+    "/printAllQuotes"
   ];
 
   app.get(routes, checkSession, async (req, res) => {
@@ -585,13 +585,17 @@ const getApiData = async (): Promise<void> => {
           success: "",
         });
         break;
-      case "/textfile":
+      case "/printAllQuotes":
+        let characterId = parseInt(req.params.characterId);
+        let characterQuotes: string[] = [...req.session.user!.favorites![characterId].favoriteQuotes];
+
         const data = [
           { qoute: "You shall not pass!", name: "Gandalf" },
           { qoute: "You shall not pass!", name: "Gandalf" },
           { qoute: "You shall not pass!", name: "Gandalf" },
           { qoute: "You shall not pass!", name: "Gandalf" },
         ];
+
         const content = data
           .map((item) => Object.values(item).join("\t"))
           .join("\n");
@@ -606,6 +610,32 @@ const getApiData = async (): Promise<void> => {
 
       default:
         break;
+    }
+  });
+
+  app.get("/printQuotes/:characterId", (req, res) => {
+    let characterId = parseInt(req.params.characterId);
+    let characterName: string = req.session.user!.favorites![characterId].characterName;
+    let characterQuotes: string[] = [...req.session.user!.favorites![characterId].favoriteQuotes];
+
+    characterQuotes.forEach((element, index) =>{
+      characterQuotes[index] = `${index+1}. ${characterQuotes[index]}`;
+    })
+
+    let printText: string = `${characterName}\n`;
+    printText += characterQuotes.join(`\n`);
+
+    const filename = `${characterName}_Quotes.txt`;
+
+    try {
+      fs.writeFileSync(filename, printText, { flag: "a" });
+      res.download(__dirname);
+
+    } catch (error:any) {
+      console.log(error.message);
+    }
+    finally{
+      res.redirect("/favorites");
     }
   });
 
