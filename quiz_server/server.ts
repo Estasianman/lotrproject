@@ -674,8 +674,8 @@ const getApiData = async (): Promise<void> => {
           });
           return;
         }
-      } catch (exc: any) {
-        console.log(exc.message);
+      } catch (error: any) {
+        console.log(error.message);
       } finally {
         await client.close();
       }
@@ -717,8 +717,8 @@ const getApiData = async (): Promise<void> => {
           res.render("login", { error: `Username or password was incorrect.` });
           return;
         }
-      } catch (exc: any) {
-        console.log(exc.message);
+      } catch (error: any) {
+        console.log(error.message);
       } finally {
         await client.close();
       }
@@ -824,8 +824,8 @@ const getApiData = async (): Promise<void> => {
             }
           }
         }
-      } catch (exc: any) {
-        console.log(exc.message);
+      } catch (error: any) {
+        console.log(error.message);
       } finally {
         await client.close();
       }
@@ -843,6 +843,7 @@ const getApiData = async (): Promise<void> => {
 
   // NOTE: quiz scores are saved into the databank from the app.post highscore
   app.post("/quiz", async (req, res) => {
+    gameData.headerTitle = "10 Rounds";
     gameData.userCorrectFeedback.rightMovie = 0;
     gameData.userCorrectFeedback.rightCharacter = 0;
     // get user/player answers from quiz
@@ -900,6 +901,7 @@ const getApiData = async (): Promise<void> => {
   });
 
   app.post("/sudden_death", async (req, res) => {
+    gameData.headerTitle = "Sudden Death";
     gameData.userCorrectFeedback.rightMovie = 0;
     gameData.userCorrectFeedback.rightCharacter = 0;
     // get user/player answers from quiz
@@ -953,8 +955,8 @@ const getApiData = async (): Promise<void> => {
             );
           await getHighScores();
           res.render("highscore", { dataGame: gameData, dataApi: apiData });
-        } catch (exc: any) {
-          console.log(exc.message);
+        } catch (error: any) {
+          console.log(error.message);
         } finally {
           await client.close();
         }
@@ -1016,8 +1018,8 @@ const getApiData = async (): Promise<void> => {
           );
         await getHighScores();
         res.render("highscore", { dataGame: gameData, dataApi: apiData });
-      } catch (exc: any) {
-        console.log(exc.message);
+      } catch (error: any) {
+        console.log(error.message);
       } finally {
         await client.close();
       }
@@ -1058,8 +1060,8 @@ const getApiData = async (): Promise<void> => {
             { name: req.session.user!.name },
             { $set: { favorites: req.session.user!.favorites } }
           );
-      } catch (exc) {
-        console.log(exc);
+      } catch (error: any) {
+        console.log(error.message);
       } finally {
         await client.close();
         if (req.session.user!.favorites!.length == 0) {
@@ -1104,8 +1106,8 @@ const getApiData = async (): Promise<void> => {
             { name: req.session.user?.name },
             { $set: { blacklisted: req.session.user?.blacklisted } }
           );
-      } catch (exc) {
-        console.log(exc);
+      } catch (error: any) {
+        console.log(error.message);
       } finally {
         await client.close();
         if (req.session.user!.blacklisted!.length == 0) {
@@ -1136,8 +1138,8 @@ const getApiData = async (): Promise<void> => {
             { name: req.session.user?.name },
             { $set: { blacklisted: req.session.user!.blacklisted } }
           );
-      } catch (exc) {
-        console.log(exc);
+      } catch (error: any) {
+        console.log(error.message);
       } finally {
         await client.close();
         res.redirect("/blacklist");
@@ -1202,8 +1204,8 @@ const getApiData = async (): Promise<void> => {
           { name: req.session.user!.name },
           { $set: { favorites: req.session.user!.favorites } }
         );
-    } catch (exc: any) {
-      console.log(exc.message);
+    } catch (error: any) {
+      console.log(error.message);
     } finally {
       await client.close();
       res.render("quiz", { dataGame: gameData, dataApi: apiData });
@@ -1256,8 +1258,8 @@ const getApiData = async (): Promise<void> => {
           { name: req.session.user!.name },
           { $set: { blacklisted: req.session.user!.blacklisted } }
         );
-    } catch (exc: any) {
-      console.log(exc.message);
+    } catch (error: any) {
+      console.log(error.message);
     } finally {
       await client.close();
       res.render("quiz", { dataGame: gameData, dataApi: apiData });
@@ -1325,8 +1327,8 @@ const getApiData = async (): Promise<void> => {
           { name: req.session.user!.name },
           { $set: { favorites: req.session.user!.favorites } }
         );
-    } catch (exc: any) {
-      console.log(exc.message);
+    } catch (error: any) {
+      console.log(error.message);
     } finally {
       await client.close();
       res.render("quiz", { dataGame: gameData, dataApi: apiData });
