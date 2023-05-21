@@ -1288,8 +1288,37 @@ input[type="radio"] {
 }
 
 #more-info a:hover,
-#print-quotes:hover {
+#print-quotes:hover,
+#favorites-list > a button:hover {
     color: var(--light-yellow-color);
+}
+
+#favorites-list > a {
+    display: grid;
+    cursor: pointer;
+    margin: 0;
+    padding: 1rem 0 1rem 0;
+    text-decoration: none;
+    width: max-content;
+    margin: 0 auto;
+}
+
+#favorites-list > a button {
+    cursor: pointer;
+    font-weight: bold;
+    display: inline-block;
+    text-align: center;
+    padding: 6px 15px;
+    min-height: 50px;
+    font-size: 24px;
+    text-decoration: none;
+    color: var(--dark-yellow-color);
+    background-color: black;
+    border-radius: 8px;
+    outline: none;
+    transition: 0.5s;
+    margin: 0.5rem;
+    justify-self: center;
 }
 
 .accordion-trigger {
