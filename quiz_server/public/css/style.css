@@ -1479,23 +1479,6 @@ input[type="radio"] {
         margin: 0.5rem;
     }
 
-    #quote-section {
-        flex-direction: column;
-        justify-content: center;
-        margin: 0 auto;
-        height: auto;
-        padding: 0;
-        max-height: 100% !important;
-    }
-
-    #quote-article {
-        flex-direction: column;
-        justify-content: center;
-        margin: 0 auto;
-        height: auto;
-        padding: 0;
-    }
-
     #quote-section>h3 {
         padding: 0.5rem 0 0 0;
     }
@@ -1536,12 +1519,6 @@ input[type="radio"] {
 
     .character {
         margin-top: 0.5rem;
-    }
-
-    #quote-section {
-        position: sticky;
-        left: 0;
-        bottom: 0;
     }
 
     #quote {
