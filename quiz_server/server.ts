@@ -1,7 +1,9 @@
 import express from "express";
 import * as fs from "fs";
-const axios = require("axios");
+import axios from "axios";
 import { MongoClient } from "mongodb";
+
+// Import interface types:
 import {
   Player,
   Blacklist,
@@ -13,25 +15,32 @@ import {
   qDoc,
   Movie,
   Movies,
-  MovieDoc,
-  RandomFunction,
-  CombineArrayElements,
   ApiData,
-  Highscores,
   GameVariables,
 } from "./types";
+
+// Import all helper functions:
+import { findCharacterInfoForFavoriteList } from "./helperFunctions/findCharacterInfo";
+import { countCharactersQuotes } from "./helperFunctions/countCharacterQuotes";
+import { getRandomNumber } from "./helperFunctions/randomNumberGenerator";
+import { addArrayElements, addCharacterPhotoArrayElements, addMoviePhotoArrayElements } from "./helperFunctions/combineArrayElements";
+import { getHighScores } from "./helperFunctions/getHighScores";
+
+// Set up mongo client:
 const uri =
   "mongodb+srv://server:server123@rikcluster.mh2n1dx.mongodb.net/?retryWrites=true&w=majority";
 const app = express();
 import session from "express-session";
 let client = new MongoClient(uri);
 
+// Declare session interface:
 declare module "express-session" {
   export interface SessionData {
     user: Player;
   }
 }
 
+// Set up express app:
 app.use(express.json({ limit: "1mb" }));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
@@ -52,6 +61,7 @@ app.use(
   })
 );
 
+// Variable used to store data for each quiz round:
 let apiData: ApiData = {
   quote: {
     _id: "",
@@ -78,6 +88,7 @@ let characters: Characters = {
   pages: 0,
 };
 
+// Variable used to store both api and game data during quiz:
 let gameData: GameVariables = {
   movieArray: [],
   correctMovieName: "",
@@ -101,91 +112,6 @@ let gameData: GameVariables = {
   sHighscores: [],
 };
 
-// find Doc (character info) to put in favorite list data
-const findCharacterInfoForFavoriteList = (nameToFind: string): Doc => {
-  let foundCharacterInfo: Doc = {
-    _id: "",
-    height: "",
-    race: "",
-    gender: Gender.Empty,
-    birth: "",
-    spouse: "",
-    death: "",
-    realm: "",
-    hair: "",
-    name: "",
-    wikiUrl: "",
-  };
-
-  let found: boolean = false;
-
-  for (let i = 0; i < characters.docs.length && !found; i++) {
-    if (characters.docs[i].name == nameToFind) {
-      foundCharacterInfo = characters.docs[i];
-      found = true;
-    }
-  }
-  return foundCharacterInfo;
-};
-
-// function to count how many quotes a character has in api:
-const countCharactersQuotes = (character: Doc): number => {
-  let counter: number = 0;
-  for (let i = 0; i < quotes.docs.length; i++) {
-    if (character._id == quotes.docs[i].character) {
-      counter++;
-    }
-  }
-  return counter;
-};
-
-// function to get top 10 highscores from databank:
-const getHighScores = async (): Promise<void> => {
-  gameData.qHighscores.slice(0, gameData.qHighscores.length);
-  gameData.sHighscores.slice(0, gameData.sHighscores.length);
-  try {
-    await client.connect();
-    // first get the 10 round quiz top 10 scores:
-    const data = await client
-      .db("LOTR")
-      .collection("users")
-      .find({})
-      .sort({ qscore: -1 })
-      .limit(10);
-    let qScores = await data.toArray();
-    // loop through data and put element into gameData variable, make sure element is not empty:
-    qScores.forEach((element, index) => {
-      if (element.qscore != undefined) {
-        gameData.qHighscores[index] = {
-          name: element.name,
-          score: element.qscore,
-        };
-      }
-    });
-    // then get sudden death top 10 scores:
-    const data2 = await client
-      .db("LOTR")
-      .collection("users")
-      .find({})
-      .sort({ sdscore: -1 })
-      .limit(10);
-    let sScores = await data2.toArray();
-    // loop through data and put element into gameData variable, make sure element is not empty:
-    sScores.forEach((element, index) => {
-      if (element.sdscore != undefined) {
-        gameData.sHighscores[index] = {
-          name: element.name,
-          score: element.sdscore,
-        };
-      }
-    });
-  } catch (error: any) {
-    console.log(error.message);
-  } finally {
-    await client.close();
-  }
-};
-
 //check if user is logged in
 const checkSession = (req: any, res: any, next: any): void => {
   if (req.session.user) {
@@ -195,7 +121,7 @@ const checkSession = (req: any, res: any, next: any): void => {
   }
 };
 
-//main function
+// main function
 const getApiData = async (): Promise<void> => {
   //authorization token
   let token: string = "UOzmNvWKAN3QRiFrHRIh";
@@ -221,83 +147,7 @@ const getApiData = async (): Promise<void> => {
     return;
   }
 
-  //random number generator
-  const getRandomNumber: RandomFunction = (min, max) =>
-    Math.floor(Math.random() * (max - min) + min);
-
-  // get movie photo url function
-  const getMoviePhotos = (name: string): string => {
-    let photoSource: string = "";
-
-    name = name.replace(/ /g, "_");
-    switch (name) {
-      case "The_Unexpected_Journey":
-        photoSource = "/images/an-unexpected-journey.jpg";
-        break;
-      case "The_Desolation_of_Smaug":
-        photoSource = "/images/the-desolation-of-smaug.jpg";
-        break;
-      case "The_Battle_of_the_Five_Armies":
-        photoSource = "/images/battle-of-five-armies.jpg";
-        break;
-      case "The_Fellowship_of_the_Ring":
-        photoSource = "/images/fellowship.jpg";
-        break;
-      case "The_Two_Towers":
-        photoSource = "/images/two-towers.jpg";
-        break;
-      case "The_Return_of_the_King":
-        photoSource = "/images/return-of-the-king.jpg";
-        break;
-      default:
-        break;
-    }
-    return photoSource;
-  };
-
-  // put character and movie info data into gameData array
-  const addArrayElements: CombineArrayElements = (
-    arrayEmpty,
-    arrayToTransfer
-  ) => {
-    for (let i = 0; i < 3; i++) {
-      arrayEmpty[i] = arrayToTransfer[i];
-    }
-  };
-
-  // put character photo url's into gameData array
-  const addCharacterPhotoArrayElements: CombineArrayElements = (
-    arrayEmpty,
-    characterArray
-  ) => {
-    for (let i = 0; i < 3; i++) {
-      let name: string = "";
-
-      // if the character is Gothmog or Haldir, then use a specific string
-      if (characterArray[i].name == "Gothmog (Lieutenant of Morgul)") {
-        arrayEmpty[i] = `/images/characters/Gothmog.jpg`;
-        characterArray[i].name = "Gothmog";
-      } else if (characterArray[i].name == "Haldir (Haladin)") {
-        arrayEmpty[i] = `/images/characters/Haldir.jpg`;
-      }
-      // Else just put the character name after this string
-      else {
-        name = characterArray[i].name.replace(/ /g, "_");
-        arrayEmpty[i] = `/images/characters/${name}.jpg`;
-      }
-    }
-  };
-
-  // put movie photo url's into gameData array
-  const addMoviePhotoArrayElements: CombineArrayElements = (
-    arrayEmpty,
-    MovieArray
-  ) => {
-    for (let i = 0; i < 3; i++) {
-      arrayEmpty[i] = getMoviePhotos(MovieArray[i].name);
-    }
-  };
-
+  // function which is called each round to get a new quote and characters and movies data:
   const main = async (req: any): Promise<void> => {
     // get users blacklisted quotes
     let blacklistedQuotes: string[] = [];
@@ -1371,4 +1221,5 @@ const getApiData = async (): Promise<void> => {
 };
 
 getApiData();
-export {};
+
+export {characters, quotes, gameData, client};
