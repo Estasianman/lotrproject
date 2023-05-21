@@ -1550,4 +1550,11 @@ input[type="radio"] {
     }
 }
 
+@media all and (max-width:308px) {
+    .main {
+        margin-top: 212px;
+        transition: margin-top 0.5s;
+    }
+}
+
 /*#endregion*/
