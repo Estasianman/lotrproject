@@ -1,7 +1,9 @@
 import express from "express";
 import * as fs from "fs";
-const axios = require("axios");
+import axios from "axios";
 import { MongoClient } from "mongodb";
+
+// Import interface types:
 import {
   Player,
   Blacklist,
@@ -13,25 +15,32 @@ import {
   qDoc,
   Movie,
   Movies,
-  MovieDoc,
-  RandomFunction,
-  CombineArrayElements,
   ApiData,
-  Highscores,
   GameVariables,
 } from "./types";
+
+// Import all helper functions:
+import { findCharacterInfoForFavoriteList } from "./helperFunctions/findCharacterInfo";
+import { countCharactersQuotes } from "./helperFunctions/countCharacterQuotes";
+import { getRandomNumber } from "./helperFunctions/randomNumberGenerator";
+import { addArrayElements, addCharacterPhotoArrayElements, addMoviePhotoArrayElements } from "./helperFunctions/combineArrayElements";
+import { getHighScores } from "./helperFunctions/getHighScores";
+
+// Set up mongo client:
 const uri =
   "mongodb+srv://server:server123@rikcluster.mh2n1dx.mongodb.net/?retryWrites=true&w=majority";
 const app = express();
 import session from "express-session";
 let client = new MongoClient(uri);
 
+// Declare session interface:
 declare module "express-session" {
   export interface SessionData {
     user: Player;
   }
 }
 
+// Set up express app:
 app.use(express.json({ limit: "1mb" }));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
@@ -52,6 +61,7 @@ app.use(
   })
 );
 
+// Variable used to store data for each quiz round:
 let apiData: ApiData = {
   quote: {
     _id: "",
@@ -78,6 +88,7 @@ let characters: Characters = {
   pages: 0,
 };
 
+// Variable used to store both api and game data during quiz:
 let gameData: GameVariables = {
   movieArray: [],
   correctMovieName: "",
@@ -101,85 +112,6 @@ let gameData: GameVariables = {
   sHighscores: [],
 };
 
-// find Doc (character info) to put in favorite list data
-const findCharacterInfoForFavoriteList = (nameToFind: string): Doc => {
-  let foundCharacterInfo: Doc = {
-    _id: "",
-    height: "",
-    race: "",
-    gender: Gender.Empty,
-    birth: "",
-    spouse: "",
-    death: "",
-    realm: "",
-    hair: "",
-    name: "",
-    wikiUrl: "",
-  };
-
-  let found: boolean = false;
-
-  for (let i = 0; i < characters.docs.length && !found; i++) {
-    if (characters.docs[i].name == nameToFind) {
-      foundCharacterInfo = characters.docs[i];
-      found = true;
-    }
-  }
-  return foundCharacterInfo;
-};
-
-// function to count how many quotes a character has in api:
-const countCharactersQuotes = (character: Doc): number => {
-  let counter: number = 0;
-  for (let i = 0; i < quotes.docs.length; i++) {
-    if (character._id == quotes.docs[i].character) {
-      counter++;
-    }
-  }
-  return counter;
-};
-
-// function to get top 10 highscores from databank:
-const getHighScores = async (): Promise<void> => {
-  gameData.qHighscores.slice(0, gameData.qHighscores.length);
-  gameData.sHighscores.slice(0, gameData.sHighscores.length);
-  try {
-    await client.connect();
-    // first get the 10 round quiz top 10 scores:
-    const data = await client
-      .db("LOTR")
-      .collection("users")
-      .find({})
-      .sort({ qscore: -1 })
-      .limit(10);
-    let qScores = await data.toArray();
-    // loop through data and put element into gameData variable, make sure element is not empty:
-    qScores.forEach((element, index) => {
-      if (element.qscore != undefined) {
-        gameData.qHighscores[index] = { name: element.name, score: element.qscore };
-      }
-    });
-    // then get sudden death top 10 scores:
-    const data2 = await client
-      .db("LOTR")
-      .collection("users")
-      .find({})
-      .sort({ sdscore: -1 })
-      .limit(10);
-    let sScores = await data2.toArray();
-    // loop through data and put element into gameData variable, make sure element is not empty:
-    sScores.forEach((element, index) => {
-      if (element.sdscore != undefined) {
-        gameData.sHighscores[index] = { name: element.name, score: element.sdscore };
-      }
-    });
-  } catch (error: any) {
-    console.log(error.message);
-  } finally {
-    await client.close();
-  }
-};
-
 //check if user is logged in
 const checkSession = (req: any, res: any, next: any): void => {
   if (req.session.user) {
@@ -189,7 +121,7 @@ const checkSession = (req: any, res: any, next: any): void => {
   }
 };
 
-//main function
+// main function
 const getApiData = async (): Promise<void> => {
   //authorization token
   let token: string = "UOzmNvWKAN3QRiFrHRIh";
@@ -215,83 +147,7 @@ const getApiData = async (): Promise<void> => {
     return;
   }
 
-  //random number generator
-  const getRandomNumber: RandomFunction = (min, max) =>
-    Math.floor(Math.random() * (max - min) + min);
-
-  // get movie photo url function
-  const getMoviePhotos = (name: string): string => {
-    let photoSource: string = "";
-
-    name = name.replace(/ /g, "_");
-    switch (name) {
-      case "The_Unexpected_Journey":
-        photoSource = "/images/an-unexpected-journey.jpg";
-        break;
-      case "The_Desolation_of_Smaug":
-        photoSource = "/images/the-desolation-of-smaug.jpg";
-        break;
-      case "The_Battle_of_the_Five_Armies":
-        photoSource = "/images/battle-of-five-armies.jpg";
-        break;
-      case "The_Fellowship_of_the_Ring":
-        photoSource = "/images/fellowship.jpg";
-        break;
-      case "The_Two_Towers":
-        photoSource = "/images/two-towers.jpg";
-        break;
-      case "The_Return_of_the_King":
-        photoSource = "/images/return-of-the-king.jpg";
-        break;
-      default:
-        break;
-    }
-    return photoSource;
-  };
-
-  // put character and movie info data into gameData array
-  const addArrayElements: CombineArrayElements = (
-    arrayEmpty,
-    arrayToTransfer
-  ) => {
-    for (let i = 0; i < 3; i++) {
-      arrayEmpty[i] = arrayToTransfer[i];
-    }
-  };
-
-  // put character photo url's into gameData array
-  const addCharacterPhotoArrayElements: CombineArrayElements = (
-    arrayEmpty,
-    characterArray
-  ) => {
-    for (let i = 0; i < 3; i++) {
-      let name: string = "";
-
-      // if the character is Gothmog or Haldir, then use a specific string
-      if (characterArray[i].name == "Gothmog (Lieutenant of Morgul)") {
-        arrayEmpty[i] = `/images/characters/Gothmog.jpg`;
-        characterArray[i].name = "Gothmog";
-      } else if (characterArray[i].name == "Haldir (Haladin)") {
-        arrayEmpty[i] = `/images/characters/Haldir.jpg`;
-      }
-      // Else just put the character name after this string
-      else {
-        name = characterArray[i].name.replace(/ /g, "_");
-        arrayEmpty[i] = `/images/characters/${name}.jpg`;
-      }
-    }
-  };
-
-  // put movie photo url's into gameData array
-  const addMoviePhotoArrayElements: CombineArrayElements = (
-    arrayEmpty,
-    MovieArray
-  ) => {
-    for (let i = 0; i < 3; i++) {
-      arrayEmpty[i] = getMoviePhotos(MovieArray[i].name);
-    }
-  };
-
+  // function which is called each round to get a new quote and characters and movies data:
   const main = async (req: any): Promise<void> => {
     // get users blacklisted quotes
     let blacklistedQuotes: string[] = [];
@@ -452,7 +308,7 @@ const getApiData = async (): Promise<void> => {
     "/favorites",
     "/blacklist",
     "/account",
-    "/textfile",
+    "/printAllQuotes"
   ];
 
   app.get(routes, checkSession, async (req, res) => {
@@ -525,7 +381,10 @@ const getApiData = async (): Promise<void> => {
               findCharacterInfoForFavoriteList(
                 req.session.user!.favorites![i].characterName
               );
-            req.session.user!.favorites![i].quotesAmount = countCharactersQuotes(req.session.user!.favorites![i].characterInfo);
+            req.session.user!.favorites![i].quotesAmount =
+              countCharactersQuotes(
+                req.session.user!.favorites![i].characterInfo
+              );
           }
           gameData.headerTitle = "Favorites";
           gameData.gameType = "";
@@ -573,31 +432,65 @@ const getApiData = async (): Promise<void> => {
           userData: req.session.user,
           BtnBool: BtnBool,
           error: "",
-          success: ""
+          success: "",
         });
         break;
-      case "/textfile":
-        const data = [
-          { qoute: "You shall not pass!", name: 'Gandalf' },
-          { qoute: "You shall not pass!", name: 'Gandalf' },
-          { qoute: "You shall not pass!", name: 'Gandalf' },
-          { qoute: "You shall not pass!", name: 'Gandalf' },
-        ];
-        const content = data.map((item) => Object.values(item).join('\t')).join('\n');
-        const filename = 'print.txt';
-        try {
-          fs.writeFileSync(filename, content, { flag: "a" });
-        } catch (error) {
-          console.log("no such file");
+      case "/printAllQuotes":
+        let allQuotes: string[] = [];
+        let counter: number = 0;
+        // Put all of users favorite quotes into an array:
+        for (let i = 0; i < req.session.user!.favorites!.length; i++) {
+          for (let k = 0; k < req.session.user!.favorites![i].favoriteQuotes.length; k++) {
+            allQuotes[counter] = `${req.session.user!.favorites![i].characterName}\n`;
+            allQuotes[counter] += req.session.user!.favorites![i].favoriteQuotes[k];
+            counter++;
+          }
         }
+        // Add newline after each array element:
+        let printText: string = allQuotes.join("\n");
+        const filename = "All_Quotes.txt";
+        // Print to txt file:
+        try {
+          fs.writeFileSync(filename, printText, { flag: "a" });
+          res.download(__dirname);
 
-        res.download(__dirname);
+        } catch (error: any) {
+          console.log(error.message);
+        }
+        finally {
+          res.redirect("/favorites");
+        }
 
       default:
         break;
     }
   });
 
+  app.get("/printQuotes/:characterId", (req, res) => {
+    let characterId = parseInt(req.params.characterId);
+    let characterName: string = req.session.user!.favorites![characterId].characterName;
+    let characterQuotes: string[] = [...req.session.user!.favorites![characterId].favoriteQuotes];
+
+    characterQuotes.forEach((element, index) => {
+      characterQuotes[index] = `${index + 1}. ${characterQuotes[index]}`;
+    })
+    // Add newline after each array element:
+    let printText: string = `${characterName}\n`;
+    printText += characterQuotes.join(`\n`);
+
+    const filename = `${characterName}_Quotes.txt`;
+    // Print to txt file:
+    try {
+      fs.writeFileSync(filename, printText, { flag: "a" });
+      res.download(__dirname);
+
+    } catch (error: any) {
+      console.log(error.message);
+    }
+    finally {
+      res.redirect("/favorites");
+    }
+  });
 
   app.get("/", (req, res) => {
     gameData.gameType = "";
@@ -664,8 +557,8 @@ const getApiData = async (): Promise<void> => {
           });
           return;
         }
-      } catch (exc: any) {
-        console.log(exc.message);
+      } catch (error: any) {
+        console.log(error.message);
       } finally {
         await client.close();
       }
@@ -707,8 +600,8 @@ const getApiData = async (): Promise<void> => {
           res.render("login", { error: `Username or password was incorrect.` });
           return;
         }
-      } catch (exc: any) {
-        console.log(exc.message);
+      } catch (error: any) {
+        console.log(error.message);
       } finally {
         await client.close();
       }
@@ -728,10 +621,9 @@ const getApiData = async (): Promise<void> => {
     if (
       req.body.newname.match(
         /^[\w\áàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ]+$/
-      )
-      || req.body.newname == "" && req.body.wwOld != "" && req.body.wwNew != ""
+      ) ||
+      (req.body.newname == "" && req.body.wwOld != "" && req.body.wwNew != "")
     ) {
-
       try {
         await client.connect();
         const oldName = req.session.user?.name;
@@ -740,8 +632,11 @@ const getApiData = async (): Promise<void> => {
 
         // CHANGE NAME
         if (req.body.nameSubmit) {
-          if (req.body.newname != null && !req.body.newname != undefined && req.body.newname != "") {
-
+          if (
+            req.body.newname != null &&
+            !req.body.newname != undefined &&
+            req.body.newname != ""
+          ) {
             // check to see if the name already exists:
             const nameLookUp = await client
               .db("LOTR")
@@ -753,16 +648,19 @@ const getApiData = async (): Promise<void> => {
               const result = await client
                 .db("LOTR")
                 .collection("users")
-                .updateOne({ name: oldName }, { $set: { name: req.body.newname } });
+                .updateOne(
+                  { name: oldName },
+                  { $set: { name: req.body.newname } }
+                );
 
               req.session.user!.name = req.body.newname;
 
               res.render("account", {
-                error: "", success: "Name changed!",
-                userData: req.session.user
+                error: "",
+                success: "Name changed!",
+                userData: req.session.user,
               });
               return;
-
             }
 
             // if name already exists then show error message:
@@ -770,7 +668,7 @@ const getApiData = async (): Promise<void> => {
               res.render("account", {
                 success: "",
                 error: `Name "${req.body.newname}" already exists.`,
-                userData: req.session.user
+                userData: req.session.user,
               });
               return;
             }
@@ -779,9 +677,13 @@ const getApiData = async (): Promise<void> => {
 
         // CHANGE PASSWORD
         if (req.body.passwordSubmit) {
-          if (req.body.wwNew != null && req.body.wwNew != undefined && req.body.wwNew != "") {
+          if (
+            req.body.wwNew != null &&
+            req.body.wwNew != undefined &&
+            req.body.wwNew != ""
+          ) {
             // Check if the old password is valid
-            if (await req.session.user?.ww == req.body.wwOld) {
+            if ((await req.session.user?.ww) == req.body.wwOld) {
               const result = await client
                 .db("LOTR")
                 .collection("users")
@@ -790,25 +692,23 @@ const getApiData = async (): Promise<void> => {
               res.render("account", {
                 error: "",
                 success: `Password changed!`,
-                userData: req.session.user
+                userData: req.session.user,
               });
 
               return;
-
             } else {
               // if old password is not valid then show error message
               res.render("account", {
                 success: "",
                 error: `Your current password was wrong!`,
-                userData: req.session.user
+                userData: req.session.user,
               });
               return;
             }
           }
         }
-
-      } catch (exc: any) {
-        console.log(exc.message);
+      } catch (error: any) {
+        console.log(error.message);
       } finally {
         await client.close();
       }
@@ -817,7 +717,8 @@ const getApiData = async (): Promise<void> => {
     else {
       res.render("account", {
         success: "",
-        error: `Name "${req.body.newname}" is not valid.<br>Username can only include letters or numbers.`, userData: req.session.user
+        error: `Name "${req.body.newname}" is not valid.<br>Username can only include letters or numbers.`,
+        userData: req.session.user,
       });
       return;
     }
@@ -825,6 +726,7 @@ const getApiData = async (): Promise<void> => {
 
   // NOTE: quiz scores are saved into the databank from the app.post highscore
   app.post("/quiz", async (req, res) => {
+    gameData.headerTitle = "10 Rounds";
     gameData.userCorrectFeedback.rightMovie = 0;
     gameData.userCorrectFeedback.rightCharacter = 0;
     // get user/player answers from quiz
@@ -882,6 +784,7 @@ const getApiData = async (): Promise<void> => {
   });
 
   app.post("/sudden_death", async (req, res) => {
+    gameData.headerTitle = "Sudden Death";
     gameData.userCorrectFeedback.rightMovie = 0;
     gameData.userCorrectFeedback.rightCharacter = 0;
     // get user/player answers from quiz
@@ -935,8 +838,8 @@ const getApiData = async (): Promise<void> => {
             );
           await getHighScores();
           res.render("highscore", { dataGame: gameData, dataApi: apiData });
-        } catch (exc: any) {
-          console.log(exc.message);
+        } catch (error: any) {
+          console.log(error.message);
         } finally {
           await client.close();
         }
@@ -998,8 +901,8 @@ const getApiData = async (): Promise<void> => {
           );
         await getHighScores();
         res.render("highscore", { dataGame: gameData, dataApi: apiData });
-      } catch (exc: any) {
-        console.log(exc.message);
+      } catch (error: any) {
+        console.log(error.message);
       } finally {
         await client.close();
       }
@@ -1040,8 +943,8 @@ const getApiData = async (): Promise<void> => {
             { name: req.session.user!.name },
             { $set: { favorites: req.session.user!.favorites } }
           );
-      } catch (exc) {
-        console.log(exc);
+      } catch (error: any) {
+        console.log(error.message);
       } finally {
         await client.close();
         if (req.session.user!.favorites!.length == 0) {
@@ -1086,8 +989,8 @@ const getApiData = async (): Promise<void> => {
             { name: req.session.user?.name },
             { $set: { blacklisted: req.session.user?.blacklisted } }
           );
-      } catch (exc) {
-        console.log(exc);
+      } catch (error: any) {
+        console.log(error.message);
       } finally {
         await client.close();
         if (req.session.user!.blacklisted!.length == 0) {
@@ -1118,8 +1021,8 @@ const getApiData = async (): Promise<void> => {
             { name: req.session.user?.name },
             { $set: { blacklisted: req.session.user!.blacklisted } }
           );
-      } catch (exc) {
-        console.log(exc);
+      } catch (error: any) {
+        console.log(error.message);
       } finally {
         await client.close();
         res.redirect("/blacklist");
@@ -1135,24 +1038,14 @@ const getApiData = async (): Promise<void> => {
       //connect
       await client.connect();
 
+      if (req.session.user!.favorites == undefined) {
+        req.session.user!.favorites = [];
+      }
       // check if character already has quotes in the favorite list:
-      let characterIndex: number = -1;
-      for (
-        let i = 0;
-        i < req.session.user!.favorites!.length && characterIndex == -1;
-        i++
-      ) {
-        if (req.session.user!.favorites![i].characterName == name) {
-          characterIndex = i;
-        }
-      }
-
-      // if character already has quotes in the favorite list, then add the new quote to the characters list of favorite list quotes:
-      if (characterIndex != -1) {
-        req.session.user!.favorites![characterIndex].favoriteQuotes.push(quote);
-      }
-      // if character is not in the favorite list yet then add a new favorite list object to the users favorite list array:
-      else {
+      let result = req.session.user!.favorites?.find(
+        (character) => character.characterName == name
+      );
+      if (result == undefined) {
         let newFavoriteListData: FavoriteList = {
           characterName: name,
           favoriteQuotes: [],
@@ -1169,14 +1062,21 @@ const getApiData = async (): Promise<void> => {
             name: "",
             wikiUrl: "",
           },
-          quotesAmount: 0
+          quotesAmount: 0,
         };
 
         newFavoriteListData.favoriteQuotes.push(quote);
         newFavoriteListData.characterInfo =
           findCharacterInfoForFavoriteList(name);
-        newFavoriteListData.quotesAmount = countCharactersQuotes(newFavoriteListData.characterInfo);
+        newFavoriteListData.quotesAmount = countCharactersQuotes(
+          newFavoriteListData.characterInfo
+        );
         req.session.user!.favorites!.push(newFavoriteListData);
+      } else {
+        let index: number = req.session.user!.favorites!.findIndex(
+          (character) => character.characterName == name
+        );
+        req.session.user!.favorites![index].favoriteQuotes.push(quote);
       }
 
       //add to database
@@ -1187,8 +1087,8 @@ const getApiData = async (): Promise<void> => {
           { name: req.session.user!.name },
           { $set: { favorites: req.session.user!.favorites } }
         );
-    } catch (exc: any) {
-      console.log(exc.message);
+    } catch (error: any) {
+      console.log(error.message);
     } finally {
       await client.close();
       res.render("quiz", { dataGame: gameData, dataApi: apiData });
@@ -1198,32 +1098,19 @@ const getApiData = async (): Promise<void> => {
   app.post("/addToBlacklist", async (req, res) => {
     let name: string = apiData.correctCharacterName;
     let quote: string = apiData.quote.dialog;
-    let reason: string = "";
+    let reason: string = req.body.blacklistreason;
     try {
       //connect
       await client.connect();
 
-      // check if character already has quotes in the blacklist:
-      let characterIndex: number = -1;
-      for (
-        let i = 0;
-        i < req.session.user!.blacklisted!.length && characterIndex == -1;
-        i++
-      ) {
-        if (req.session.user!.blacklisted![i].characterName == name) {
-          characterIndex = i;
-        }
+      if (req.session.user!.blacklisted! == undefined) {
+        req.session.user!.blacklisted = [];
       }
 
-      // if character already has quotes in the blacklist, then add the new quote to the characters list of blacklist quotes:
-      if (characterIndex != -1) {
-        req.session.user!.blacklisted![characterIndex].blacklistQuotes.push(
-          quote
-        );
-        req.session.user!.blacklisted![characterIndex].reason.push(reason);
-      }
-      // if character is not in the blacklist yet then add a new blacklist object to the users blacklist array:
-      else {
+      let result = req.session.user!.blacklisted?.find(
+        (character) => character.characterName == name
+      );
+      if (result == undefined) {
         let newBlacklistData: Blacklist = {
           characterName: name,
           blacklistQuotes: [],
@@ -1233,6 +1120,17 @@ const getApiData = async (): Promise<void> => {
         newBlacklistData.blacklistQuotes.push(quote);
         newBlacklistData.reason.push(reason);
         req.session.user!.blacklisted!.push(newBlacklistData);
+      } else {
+        let index: number = req.session.user!.blacklisted!.findIndex(
+          (character) => character.characterName == name
+        );
+        req.session.user!.blacklisted![index].blacklistQuotes.push(quote);
+        let reasonIndex: number = req.session.user!.blacklisted[
+          index
+        ].blacklistQuotes.findIndex(
+          (characterQuote) => characterQuote == quote
+        );
+        req.session.user!.blacklisted![index].reason[reasonIndex] == reason;
       }
 
       //add to database
@@ -1243,8 +1141,8 @@ const getApiData = async (): Promise<void> => {
           { name: req.session.user!.name },
           { $set: { blacklisted: req.session.user!.blacklisted } }
         );
-    } catch (exc: any) {
-      console.log(exc.message);
+    } catch (error: any) {
+      console.log(error.message);
     } finally {
       await client.close();
       res.render("quiz", { dataGame: gameData, dataApi: apiData });
@@ -1292,13 +1190,15 @@ const getApiData = async (): Promise<void> => {
             name: "",
             wikiUrl: "",
           },
-          quotesAmount: 0
+          quotesAmount: 0,
         };
 
         newFavoriteListData.favoriteQuotes.push(quote);
         newFavoriteListData.characterInfo =
           findCharacterInfoForFavoriteList(name);
-        newFavoriteListData.quotesAmount = countCharactersQuotes(newFavoriteListData.characterInfo);
+        newFavoriteListData.quotesAmount = countCharactersQuotes(
+          newFavoriteListData.characterInfo
+        );
         req.session.user!.favorites!.push(newFavoriteListData);
       }
 
@@ -1310,47 +1210,13 @@ const getApiData = async (): Promise<void> => {
           { name: req.session.user!.name },
           { $set: { favorites: req.session.user!.favorites } }
         );
-    } catch (exc: any) {
-      console.log(exc.message);
+    } catch (error: any) {
+      console.log(error.message);
     } finally {
       await client.close();
       res.render("quiz", { dataGame: gameData, dataApi: apiData });
     }
   });
-
-  // app.post("/account", async (req, res) => {
-  //   if (req.body.wwOld == req.session.user?.ww) {
-  //     if (req.body.newname != null || undefined || "") {
-  //       req.session.user!.name = req.body.newname;
-  //     }
-  //     if (req.body.wwNew != null || undefined || "") {
-  //       req.session.user!.ww = req.body.wwNew;
-  //     }
-
-  //     try {
-  //       await client.connect();
-  //       await client
-  //         .db("LOTR")
-  //         .collection("users")
-  //         .updateOne(
-  //           { name: req.body.oldname },
-  //           { $set: { name: req.session.user!.name } }
-  //         );
-  //       await client
-  //         .db("LOTR")
-  //         .collection("users")
-  //         .updateOne(
-  //           { name: req.session.user!.name },
-  //           { $set: { ww: req.session.user!.ww } }
-  //         );
-  //     } catch (exc) {
-  //       console.log(exc);
-  //     } finally {
-  //       await client.close();
-  //       res.redirect("/account");
-  //     }
-  //   }
-  // });
 
   app.listen(app.get("port"), () =>
     console.log("[server] http://localhost:" + app.get("port"))
@@ -1358,4 +1224,5 @@ const getApiData = async (): Promise<void> => {
 };
 
 getApiData();
-export { };
+
+export {characters, quotes, gameData, client};
