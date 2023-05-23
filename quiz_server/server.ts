@@ -23,7 +23,11 @@ import {
 import { findCharacterInfoForFavoriteList } from "./helperFunctions/findCharacterInfo";
 import { countCharactersQuotes } from "./helperFunctions/countCharacterQuotes";
 import { getRandomNumber } from "./helperFunctions/randomNumberGenerator";
-import { addArrayElements, addCharacterPhotoArrayElements, addMoviePhotoArrayElements } from "./helperFunctions/combineArrayElements";
+import {
+  addArrayElements,
+  addCharacterPhotoArrayElements,
+  addMoviePhotoArrayElements,
+} from "./helperFunctions/combineArrayElements";
 import { getHighScores } from "./helperFunctions/getHighScores";
 
 // Set up mongo client:
@@ -308,7 +312,7 @@ const getApiData = async (): Promise<void> => {
     "/favorites",
     "/blacklist",
     "/account",
-    "/printAllQuotes"
+    "/printAllQuotes",
   ];
 
   app.get(routes, checkSession, async (req, res) => {
@@ -440,9 +444,16 @@ const getApiData = async (): Promise<void> => {
         let counter: number = 0;
         // Put all of users favorite quotes into an array:
         for (let i = 0; i < req.session.user!.favorites!.length; i++) {
-          for (let k = 0; k < req.session.user!.favorites![i].favoriteQuotes.length; k++) {
-            allQuotes[counter] = `${req.session.user!.favorites![i].characterName}\n`;
-            allQuotes[counter] += req.session.user!.favorites![i].favoriteQuotes[k];
+          for (
+            let k = 0;
+            k < req.session.user!.favorites![i].favoriteQuotes.length;
+            k++
+          ) {
+            allQuotes[counter] = `${
+              req.session.user!.favorites![i].characterName
+            }\n`;
+            allQuotes[counter] +=
+              req.session.user!.favorites![i].favoriteQuotes[k];
             counter++;
           }
         }
@@ -453,11 +464,9 @@ const getApiData = async (): Promise<void> => {
         try {
           fs.writeFileSync(filename, printText, { flag: "a" });
           res.download(__dirname);
-
         } catch (error: any) {
           console.log(error.message);
-        }
-        finally {
+        } finally {
           res.redirect("/favorites");
         }
 
@@ -468,12 +477,15 @@ const getApiData = async (): Promise<void> => {
 
   app.get("/printQuotes/:characterId", (req, res) => {
     let characterId = parseInt(req.params.characterId);
-    let characterName: string = req.session.user!.favorites![characterId].characterName;
-    let characterQuotes: string[] = [...req.session.user!.favorites![characterId].favoriteQuotes];
+    let characterName: string =
+      req.session.user!.favorites![characterId].characterName;
+    let characterQuotes: string[] = [
+      ...req.session.user!.favorites![characterId].favoriteQuotes,
+    ];
 
     characterQuotes.forEach((element, index) => {
       characterQuotes[index] = `${index + 1}. ${characterQuotes[index]}`;
-    })
+    });
     // Add newline after each array element:
     let printText: string = `${characterName}\n`;
     printText += characterQuotes.join(`\n`);
@@ -483,11 +495,9 @@ const getApiData = async (): Promise<void> => {
     try {
       fs.writeFileSync(filename, printText, { flag: "a" });
       res.download(__dirname);
-
     } catch (error: any) {
       console.log(error.message);
-    }
-    finally {
+    } finally {
       res.redirect("/favorites");
     }
   });
@@ -1041,6 +1051,10 @@ const getApiData = async (): Promise<void> => {
       if (req.session.user!.favorites == undefined) {
         req.session.user!.favorites = [];
       }
+
+      let index: number = req.session.user!.favorites!.findIndex(
+        (character) => character.characterName == name
+      );
       // check if character already has quotes in the favorite list:
       let result = req.session.user!.favorites?.find(
         (character) => character.characterName == name
@@ -1072,10 +1086,12 @@ const getApiData = async (): Promise<void> => {
           newFavoriteListData.characterInfo
         );
         req.session.user!.favorites!.push(newFavoriteListData);
+      } else if (
+        req.session.user!.favorites[index].favoriteQuotes.find(
+          (cquote) => cquote == quote
+        )
+      ) {
       } else {
-        let index: number = req.session.user!.favorites!.findIndex(
-          (character) => character.characterName == name
-        );
         req.session.user!.favorites![index].favoriteQuotes.push(quote);
       }
 
@@ -1107,6 +1123,9 @@ const getApiData = async (): Promise<void> => {
         req.session.user!.blacklisted = [];
       }
 
+      let index: number = req.session.user!.blacklisted!.findIndex(
+        (character) => character.characterName == name
+      );
       let result = req.session.user!.blacklisted?.find(
         (character) => character.characterName == name
       );
@@ -1120,10 +1139,12 @@ const getApiData = async (): Promise<void> => {
         newBlacklistData.blacklistQuotes.push(quote);
         newBlacklistData.reason.push(reason);
         req.session.user!.blacklisted!.push(newBlacklistData);
+      } else if (
+        req.session.user!.blacklisted[index].blacklistQuotes.find(
+          (bquote) => bquote == quote
+        )
+      ) {
       } else {
-        let index: number = req.session.user!.blacklisted!.findIndex(
-          (character) => character.characterName == name
-        );
         req.session.user!.blacklisted![index].blacklistQuotes.push(quote);
         let reasonIndex: number = req.session.user!.blacklisted[
           index
@@ -1225,4 +1246,4 @@ const getApiData = async (): Promise<void> => {
 
 getApiData();
 
-export {characters, quotes, gameData, client};
+export { characters, quotes, gameData, client };
