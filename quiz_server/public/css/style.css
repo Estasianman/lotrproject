@@ -1274,12 +1274,32 @@ input[type="radio"] {
     margin-top: 1rem;
     padding: 1rem;
     width: auto;
+    color: var(--dark-yellow-color);
 }
 
 #more-info {
     font-size: 20px;
+    max-width: max-content;
+    justify-self: center;
+    text-align: left;
 }
 
+#more-info p:first-child {
+    text-align: center;
+    color: #fff;
+    border-bottom: 1px #fff solid;
+}
+
+#more-info p:last-child{
+    text-align: center;
+    font-size: 22px;
+    border-top: 1px #fff solid;
+}
+
+#more-info p span {
+    color: #fff;
+    align-self: center;
+}
 #more-info a,
 #print-quotes {
     color: var(--dark-yellow-color);

@@ -20,7 +20,12 @@
       <tr>
         <td><%- i+1 %></td>
         <td><%- dataGame.qHighscores[i].name %></td>
-        <td><%- dataGame.qHighscores[i].score %>&nbsp;pts</td>
+        <% if (dataGame.qHighscores[i].score <= 1){%>
+          <td><%- dataGame.qHighscores[i].score %>&nbsp;pt</td>
+        <%}else{%>
+          <td><%- dataGame.qHighscores[i].score %>&nbsp;pts</td>
+        <%}%>
+        
       </tr>
 
       <%}%>
@@ -33,7 +38,12 @@
       <tr>
         <td><%- i+1 %></td>
         <td><%- dataGame.sHighscores[i].name %></td>
-        <td><%- dataGame.sHighscores[i].score %>&nbsp;pts</td>
+        <% if (dataGame.sHighscores[i].score <= 1){%>
+          <td><%- dataGame.sHighscores[i].score %>&nbsp;pt</td>
+        <%}else{%>
+          <td><%- dataGame.sHighscores[i].score %>&nbsp;pts</td>
+        <%}%>
+        
       </tr>
 
       <%}%>

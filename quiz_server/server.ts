@@ -1043,10 +1043,9 @@ const getApiData = async (): Promise<void> => {
   app.post("/addToFavorites", async (req, res) => {
     let name: string = apiData.correctCharacterName;
     let quote: string = apiData.quote.dialog;
+    let alreadyInSystem: boolean = false;
 
     try {
-      //connect
-      await client.connect();
 
       if (req.session.user!.favorites == undefined) {
         req.session.user!.favorites = [];
@@ -1056,10 +1055,7 @@ const getApiData = async (): Promise<void> => {
         (character) => character.characterName == name
       );
       // check if character already has quotes in the favorite list:
-      let result = req.session.user!.favorites?.find(
-        (character) => character.characterName == name
-      );
-      if (result == undefined) {
+      if (index == -1) {
         let newFavoriteListData: FavoriteList = {
           characterName: name,
           favoriteQuotes: [],
@@ -1087,22 +1083,24 @@ const getApiData = async (): Promise<void> => {
         );
         req.session.user!.favorites!.push(newFavoriteListData);
       } else if (
-        req.session.user!.favorites[index].favoriteQuotes.find(
-          (cquote) => cquote == quote
-        )
-      ) {
+        req.session.user!.favorites[index].favoriteQuotes.find((cquote) => cquote == quote)) {
+          alreadyInSystem = true;
       } else {
         req.session.user!.favorites![index].favoriteQuotes.push(quote);
       }
 
-      //add to database
-      await client
-        .db("LOTR")
-        .collection("users")
-        .updateOne(
-          { name: req.session.user!.name },
-          { $set: { favorites: req.session.user!.favorites } }
-        );
+      if (!alreadyInSystem) {
+           //connect
+        await client.connect();
+        //add to database
+        await client
+          .db("LOTR")
+          .collection("users")
+          .updateOne(
+            { name: req.session.user!.name },
+            { $set: { favorites: req.session.user!.favorites } }
+          );
+      }
     } catch (error: any) {
       console.log(error.message);
     } finally {
@@ -1115,21 +1113,17 @@ const getApiData = async (): Promise<void> => {
     let name: string = apiData.correctCharacterName;
     let quote: string = apiData.quote.dialog;
     let reason: string = req.body.blacklistreason;
+    let alreadyInSystem: boolean = false;
+
     try {
-      //connect
-      await client.connect();
 
       if (req.session.user!.blacklisted! == undefined) {
         req.session.user!.blacklisted = [];
       }
 
-      let index: number = req.session.user!.blacklisted!.findIndex(
-        (character) => character.characterName == name
-      );
-      let result = req.session.user!.blacklisted?.find(
-        (character) => character.characterName == name
-      );
-      if (result == undefined) {
+      let index: number = req.session.user!.blacklisted!.findIndex((character) => character.characterName == name);
+
+      if (index == -1) {
         let newBlacklistData: Blacklist = {
           characterName: name,
           blacklistQuotes: [],
@@ -1139,29 +1133,26 @@ const getApiData = async (): Promise<void> => {
         newBlacklistData.blacklistQuotes.push(quote);
         newBlacklistData.reason.push(reason);
         req.session.user!.blacklisted!.push(newBlacklistData);
-      } else if (
-        req.session.user!.blacklisted[index].blacklistQuotes.find(
-          (bquote) => bquote == quote
-        )
-      ) {
+
+      } else if (req.session.user!.blacklisted[index].blacklistQuotes.find((bquote) => bquote == quote)) {
+        alreadyInSystem = true;
       } else {
         req.session.user!.blacklisted![index].blacklistQuotes.push(quote);
-        let reasonIndex: number = req.session.user!.blacklisted[
-          index
-        ].blacklistQuotes.findIndex(
-          (characterQuote) => characterQuote == quote
-        );
-        req.session.user!.blacklisted![index].reason[reasonIndex] == reason;
+        req.session.user!.blacklisted![index].reason.push(reason);
       }
 
-      //add to database
-      await client
-        .db("LOTR")
-        .collection("users")
-        .updateOne(
-          { name: req.session.user!.name },
-          { $set: { blacklisted: req.session.user!.blacklisted } }
-        );
+      if (!alreadyInSystem) {
+        //connect
+        await client.connect();
+        //add to database
+        await client
+          .db("LOTR")
+          .collection("users")
+          .updateOne(
+            { name: req.session.user!.name },
+            { $set: { blacklisted: req.session.user!.blacklisted } }
+          );
+      }
     } catch (error: any) {
       console.log(error.message);
     } finally {
