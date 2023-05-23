@@ -6,7 +6,7 @@
             <h3>Score: <span id="points"> <%- dataGame.score %></span></h3>
             <div id="list-btns">
                 <form id="blacklist-form" action="/addToBlacklist" method="POST">
-                    <div onclick="showPopUp()" id="blacklist-btn"><i class="fa-solid fa-thumbs-down"></i></div>
+                    <div onclick="showPopUp()" id="blacklist-btn" title="Add to blacklist"><i class="fa-solid fa-thumbs-down"></i></div>
                     <div id="blacklist-popup">
                         <h4>Why don't you like this quote?</h4>
                         <input type="text" name="blacklistreason" placeholder="Type your reason for blacklisting this quote">
@@ -15,7 +15,7 @@
                         </div> 
                 </form>
             <form action="/addToFavorites" method="POST">
-                <button id="favorite-btn"><i class="fa-solid fa-thumbs-up"></i></button>
+                <button id="favorite-btn" title="Add to favorites"><i class="fa-solid fa-thumbs-up"></i></button>
             </form>
             </div>
         </div>
