@@ -665,24 +665,22 @@ header h1 {
 #list-btns {
     display: flex;
     flex-direction: row;
-    margin: 2rem;
+    margin: 1rem;
     gap: 3rem;
 }
 
 #favorite-btn,
 #blacklist-btn {
-    color: var(--dark-yellow-color);
-    font-size: 30px;
-    background: black;
-    border: 2px solid black;
-    border-radius: 10px;
-    transition: 0.5s transform, 0.5s box-shadow, 0.5s color, 0.5s background-color;
-    box-shadow: 2px 2px 1px 1px #02234047;
+    color: var(--black-color);
+    font-size: 50px;
+    background:none;
+    border: none;
     cursor: pointer;
 }
 
 #blacklist-btn {
     transform: scaleX(-1);
+    margin-top: 10px;
 }
 
 
@@ -736,6 +734,7 @@ header h1 {
 
   #blacklist-popup #close-popup {
     cursor: pointer;
+    margin-top: 10px;
   }
   
 
