@@ -332,7 +332,7 @@ const getApiData = async (): Promise<void> => {
         main(req);
         gameData.headerTitle = "10 Rounds";
         gameData.gameType = "quiz";
-        res.render("quiz", { dataGame: gameData, dataApi: apiData });
+        res.render("quiz", { dataGame: gameData, dataApi: apiData, addedToListFeedback: "" });
         break;
       case "/sudden_death":
         // reset game variables when user starts a new game:
@@ -344,7 +344,7 @@ const getApiData = async (): Promise<void> => {
         main(req);
         gameData.headerTitle = "Sudden Death";
         gameData.gameType = "sudden_death";
-        res.render("quiz", { dataGame: gameData, dataApi: apiData });
+        res.render("quiz", { dataGame: gameData, dataApi: apiData, addedToListFeedback: "" });
         break;
       case "/highscore":
         await getHighScores();
@@ -793,7 +793,7 @@ const getApiData = async (): Promise<void> => {
     // call main function to get new quote, characters, and movies
     main(req);
 
-    res.render("quiz", { dataGame: gameData, dataApi: apiData });
+    res.render("quiz", { dataGame: gameData, dataApi: apiData, addedToListFeedback: "" });
   });
 
   app.post("/sudden_death", async (req, res) => {
@@ -828,7 +828,7 @@ const getApiData = async (): Promise<void> => {
       // call main function to get new quote, characters, and movies:
       main(req);
 
-      res.render("quiz", { dataGame: gameData, dataApi: apiData });
+      res.render("quiz", { dataGame: gameData, dataApi: apiData, addedToListFeedback: "" });
     } else if (gameData.gameCounter != 0) {
       // Both are wrong.
 
@@ -870,7 +870,7 @@ const getApiData = async (): Promise<void> => {
       // call main function to get new quote, characters, and movies
       main(req);
 
-      res.render("quiz", { dataGame: gameData, dataApi: apiData });
+      res.render("quiz", { dataGame: gameData, dataApi: apiData, addedToListFeedback: "" });
     }
   });
 
@@ -1047,6 +1047,7 @@ const getApiData = async (): Promise<void> => {
     let name: string = apiData.correctCharacterName;
     let quote: string = apiData.quote.dialog;
     let alreadyInSystem: boolean = false;
+    let addedFeedback: string = "";
 
     try {
 
@@ -1093,6 +1094,7 @@ const getApiData = async (): Promise<void> => {
       }
 
       if (!alreadyInSystem) {
+        addedFeedback = "Quote added to your favorites list";
         //connect
         await client.connect();
         //add to database
@@ -1108,7 +1110,7 @@ const getApiData = async (): Promise<void> => {
       console.log(error.message);
     } finally {
       await client.close();
-      res.render("quiz", { dataGame: gameData, dataApi: apiData });
+      res.render("quiz", { dataGame: gameData, dataApi: apiData, addedToListFeedback: addedFeedback });
     }
   });
 
@@ -1117,6 +1119,7 @@ const getApiData = async (): Promise<void> => {
     let quote: string = apiData.quote.dialog;
     let reason: string = req.body.blacklistreason;
     let alreadyInSystem: boolean = false;
+    let addedFeedback: string = "";
 
     try {
 
@@ -1145,6 +1148,7 @@ const getApiData = async (): Promise<void> => {
       }
 
       if (!alreadyInSystem) {
+        addedFeedback = "Quote added to your blacklist"
         //connect
         await client.connect();
         //add to database
@@ -1160,76 +1164,7 @@ const getApiData = async (): Promise<void> => {
       console.log(error.message);
     } finally {
       await client.close();
-      res.render("quiz", { dataGame: gameData, dataApi: apiData });
-    }
-  });
-
-  app.post("/addToFavorites", async (req, res) => {
-    let name = apiData.correctCharacterName;
-    let quote = apiData.quote.dialog;
-    try {
-      //connect
-      await client.connect();
-
-      // check if character already has quotes in the favorite list:
-      let characterIndex: number = -1;
-      for (
-        let i = 0;
-        i < req.session.user!.favorites!.length && characterIndex == -1;
-        i++
-      ) {
-        if (req.session.user!.favorites![i].characterName == name) {
-          characterIndex = i;
-        }
-      }
-
-      // if character already has quotes in the favorite list, then add the new quote to the characters list of favorite list quotes:
-      if (characterIndex != -1) {
-        req.session.user!.favorites![characterIndex].favoriteQuotes.push(quote);
-      }
-      // if character is not in the favorite list yet then add a new favorite list object to the users favorite list array:
-      else {
-        let newFavoriteListData: FavoriteList = {
-          characterName: name,
-          favoriteQuotes: [],
-          characterInfo: {
-            _id: "",
-            height: "",
-            race: "",
-            gender: Gender.Empty,
-            birth: "",
-            spouse: "",
-            death: "",
-            realm: "",
-            hair: "",
-            name: "",
-            wikiUrl: "",
-          },
-          quotesAmount: 0,
-        };
-
-        newFavoriteListData.favoriteQuotes.push(quote);
-        newFavoriteListData.characterInfo =
-          findCharacterInfoForFavoriteList(name);
-        newFavoriteListData.quotesAmount = countCharactersQuotes(
-          newFavoriteListData.characterInfo
-        );
-        req.session.user!.favorites!.push(newFavoriteListData);
-      }
-
-      //add to database
-      await client
-        .db("LOTR")
-        .collection("users")
-        .updateOne(
-          { name: req.session.user!.name },
-          { $set: { favorites: req.session.user!.favorites } }
-        );
-    } catch (error: any) {
-      console.log(error.message);
-    } finally {
-      await client.close();
-      res.render("quiz", { dataGame: gameData, dataApi: apiData });
+      res.render("quiz", { dataGame: gameData, dataApi: apiData, addedToListFeedback: addedFeedback });
     }
   });
 

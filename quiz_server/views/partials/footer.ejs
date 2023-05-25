@@ -2,5 +2,17 @@
     <footer>
         <p>&copy;2023 <a href="/index">The Oldies</a> - <a href="/privacy">Privacy Policy</a></p>
     </footer>
+    <% if (dataGame.gameType=="quiz" || dataGame.gameType=="sudden_death" ) {%>
+        <script>
+              window.onload = () => {
+                let timeoutId = 0;
+                let feedbackmessage = document.getElementById('addedToList');
+                clearTimeout(timeoutId); // cancel any existing timeout
+                timeoutId = setTimeout(() => {
+                    feedbackmessage.textContent = "";
+                }, 5000); // hide the message after 5 seconds
+              };
+          </script> 
+        <%}%>
 </body>
 </html>
