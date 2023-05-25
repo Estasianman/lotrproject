@@ -1475,13 +1475,47 @@ input[type="radio"] {
     color: #FFF;
 }
 
-#footer-container {
+
+
+
+
+/*#endregion*/
+
+/*#region------------------------------PRIVACY POLICY----------------------------*/
+
+#privacy {
+    color: #fff;
+    max-width: 75%;
+    align-self: center;
+    padding: 1rem;
+}
+
+#privacy h1 {
+    color: var(--light-yellow-color);
+    font-size: 30px;
+    text-align: center;
+}
+
+#privacy h2 {
+    color: var(--light-yellow-color);
+}
+
+#privacy ul {
+    display: block;
+    list-style:disc;
+}
+
+/*#endregion*/
+
+/*#region------------------------------FOOTER----------------------------*/
+
+footer {
     text-transform: uppercase;
     width: 100%;
     /* color: white; */
-    color: #858b94    ;
+    color: #858b94;
     /* background-image: url("/images/quotes-background.jpg"); */
-    font-size: 12px;
+    font-size: 14px;
     display: flex;
     flex-direction: row;
     height: auto;
@@ -1491,7 +1525,16 @@ input[type="radio"] {
     /* border-top: 3px solid black; */
 }
 
+footer a {
+    color: #858b94;
+    text-decoration: none;
+    vertical-align: bottom;
+    transition: 0.5s;
+}
 
+footer a:hover {
+    color: #fff
+}
 
 /*#endregion*/
 

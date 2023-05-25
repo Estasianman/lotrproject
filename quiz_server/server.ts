@@ -313,6 +313,7 @@ const getApiData = async (): Promise<void> => {
     "/blacklist",
     "/account",
     "/printAllQuotes",
+    "/privacy"
   ];
 
   app.get(routes, checkSession, async (req, res) => {
@@ -468,7 +469,10 @@ const getApiData = async (): Promise<void> => {
         } finally {
           res.redirect("/favorites");
         }
-
+       break;
+       case "/privacy":
+        res.render("privacy", { dataGame: gameData, dataApi: apiData });
+       break; 
       default:
         break;
     }
