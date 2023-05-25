@@ -1542,11 +1542,6 @@ footer a:hover {
 
 
 
-/* 
-@media all and (max-width: 1000px){
-   
-    
-} */
 
 
 @media all and (max-width:885px) {
@@ -1628,15 +1623,38 @@ footer a:hover {
         margin-top: 105px;
         transition: margin-top 0.5s;
     }
+
+    .highscore h2, .highscore h2 span {
+        font-size: 32px;
+    }
+
+    #highscore-table {
+        margin: 0.5rem 0.25rem 0.5rem 0.25rem;
+    }
+
+    #highscore-table th {
+        font-size: 30px;
+    }
+
+    #highscore-table td {
+        font-size: 24px;
+        padding: 0.5rem;
+    }
 }
 
 @media all and (max-width:308px) {
     .main {
-        margin-top: 106px;
+        margin-top: 240px;
         transition: margin-top 0.5s;
     }
 
-    
+    .dropdown-content {
+        flex-direction: column;
+    }
+
+    .dropdown-content a {
+        font-size: 24px;
+    }
 }
 
 /*#endregion*/
