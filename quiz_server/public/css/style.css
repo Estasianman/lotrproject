@@ -1472,6 +1472,18 @@ input[type="radio"] {
     color: #FFF;
 }
 
+#footer-container {
+    text-transform: uppercase;
+    width: 100%;
+    color: #9c7949;
+    font-size: 12px;
+    display: flex;
+    flex-direction: row;
+    height: auto;
+    padding: 2px 0 2px 0;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
 
 
 
