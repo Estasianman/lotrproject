@@ -1,7 +1,15 @@
 <%- include("partials/header") %>
 
         <div id="quote-container">
-            <h2>Quote: <span id="game-counter">(<%- dataGame.gameCounter %> / 10)</span></h2>
+            <% if (dataGame.gameType=="quiz" ){ %>
+                <h2>Quote: <span id="game-counter">(<%- dataGame.gameCounter %> / 10)</span></h2>
+
+                <%} else if (dataGame.gameType=="sudden_death" ) {%>
+                    <h2>Quote: <span id="game-counter">(<%- dataGame.gameCounter %> /
+                                &infin;)</span></h2>
+
+                    <%}%>
+
             <p id="quote">" <%- dataApi.quote.dialog %> "</p>
             <h3>Score: <span id="points"> <%- dataGame.score %></span></h3>
             <div id="list-btns">
