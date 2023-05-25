@@ -449,11 +449,10 @@ const getApiData = async (): Promise<void> => {
             k < req.session.user!.favorites![i].favoriteQuotes.length;
             k++
           ) {
-            allQuotes[counter] = `${
-              req.session.user!.favorites![i].characterName
-            }\n`;
+            allQuotes[counter] = `${req.session.user!.favorites![i].favoriteQuotes
+              } - `;
             allQuotes[counter] +=
-              req.session.user!.favorites![i].favoriteQuotes[k];
+              req.session.user!.favorites![i].characterName;
             counter++;
           }
         }
@@ -484,7 +483,7 @@ const getApiData = async (): Promise<void> => {
     ];
 
     characterQuotes.forEach((element, index) => {
-      characterQuotes[index] = `${index + 1}. ${characterQuotes[index]}`;
+      characterQuotes[index] = `${characterQuotes[index]}`;
     });
     // Add newline after each array element:
     let printText: string = `${characterName}\n`;
@@ -1084,13 +1083,13 @@ const getApiData = async (): Promise<void> => {
         req.session.user!.favorites!.push(newFavoriteListData);
       } else if (
         req.session.user!.favorites[index].favoriteQuotes.find((cquote) => cquote == quote)) {
-          alreadyInSystem = true;
+        alreadyInSystem = true;
       } else {
         req.session.user!.favorites![index].favoriteQuotes.push(quote);
       }
 
       if (!alreadyInSystem) {
-           //connect
+        //connect
         await client.connect();
         //add to database
         await client
