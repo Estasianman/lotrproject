@@ -665,24 +665,22 @@ header h1 {
 #list-btns {
     display: flex;
     flex-direction: row;
-    margin: 2rem;
+    margin: 1rem;
     gap: 3rem;
 }
 
 #favorite-btn,
 #blacklist-btn {
-    color: var(--dark-yellow-color);
-    font-size: 30px;
-    background: black;
-    border: 2px solid black;
-    border-radius: 10px;
-    transition: 0.5s transform, 0.5s box-shadow, 0.5s color, 0.5s background-color;
-    box-shadow: 2px 2px 1px 1px #02234047;
+    color: var(--black-color);
+    font-size: 50px;
+    background:none;
+    border: none;
     cursor: pointer;
 }
 
 #blacklist-btn {
     transform: scaleX(-1);
+    margin-top: 10px;
 }
 
 
@@ -695,17 +693,12 @@ header h1 {
     position: relative;
 }
 
-
-
-
-
 #blacklist-popup {
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     width: 400px;
-    max-width: 80%;
     padding: 1rem;
     background-color: white;
     border-radius: 10px;
@@ -720,8 +713,8 @@ header h1 {
   }
   
   #blacklist-popup input[type="text"] {
-    width: 100%;
-    margin-bottom: 1rem;
+    width: 80%;
+    margin:5px;
     padding: 0.5rem;
     font-size: 16px;
     border: 1px solid #ccc;
@@ -730,12 +723,18 @@ header h1 {
   
   #blacklist-popup button {
     padding: 0.5rem 1rem;
+    margin: 1px;
     font-size: 16px;
     background-color: var(--dark-yellow-color);
     color: white;
     border: none;
     border-radius: 4px;
     cursor: pointer;
+  }
+
+  #blacklist-popup #close-popup {
+    cursor: pointer;
+    margin-top: 10px;
   }
   
 
@@ -1275,12 +1274,32 @@ input[type="radio"] {
     margin-top: 1rem;
     padding: 1rem;
     width: auto;
+    color: var(--dark-yellow-color);
 }
 
 #more-info {
     font-size: 20px;
+    max-width: max-content;
+    justify-self: center;
+    text-align: left;
 }
 
+#more-info p:first-child {
+    text-align: center;
+    color: #fff;
+    border-bottom: 1px #fff solid;
+}
+
+#more-info p:last-child{
+    text-align: center;
+    font-size: 22px;
+    border-top: 1px #fff solid;
+}
+
+#more-info p span {
+    color: #fff;
+    align-self: center;
+}
 #more-info a,
 #print-quotes {
     color: var(--dark-yellow-color);
