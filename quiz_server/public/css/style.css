@@ -1579,14 +1579,12 @@ footer a:hover {
         margin-top: 70px;
         transition: margin-top 0.5s;
     }
-}
-
-@media all and (max-width: 700px) {
 
     #index-container {
         flex-direction: column;
     }
 }
+
 
 @media all and (max-width:550px) {
 
@@ -1679,6 +1677,6 @@ footer a:hover {
     .dropdown-content a {
         font-size: 24px;
     }
-}
+} 
 
 /*#endregion*/
