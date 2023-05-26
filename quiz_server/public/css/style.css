@@ -743,11 +743,37 @@ header h1 {
   }
 
   #addedToList{
-    color: green;
-    font-size: 24px;
+    color: rgb(8, 165, 8);
+    font-size: 18px;
     font-weight: bold;
   }
-  
+
+  .pulse-fade{
+    animation: pulse2 1s infinite ease-in-out alternate, fade 12s 1;
+    animation-play-state: running;
+  }
+
+  @keyframes pulse2 {
+    from {
+        transform: scale(1);
+
+    }
+
+    to {
+        transform: scale(1.1);
+    }
+}
+
+@keyframes fade {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
+}
+
 
 /*#endregion*/
 

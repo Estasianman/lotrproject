@@ -445,15 +445,10 @@ const getApiData = async (): Promise<void> => {
         let counter: number = 0;
         // Put all of users favorite quotes into an array:
         for (let i = 0; i < req.session.user!.favorites!.length; i++) {
-          for (
-            let k = 0;
-            k < req.session.user!.favorites![i].favoriteQuotes.length;
-            k++
-          ) {
-            allQuotes[counter] = `${req.session.user!.favorites![i].favoriteQuotes
-              } - `;
-            allQuotes[counter] +=
-              req.session.user!.favorites![i].characterName;
+          for (let k = 0;k < req.session.user!.favorites![i].favoriteQuotes.length;k++) {
+            
+            allQuotes[counter] = `${req.session.user!.favorites![i].favoriteQuotes} - `;
+            allQuotes[counter] += req.session.user!.favorites![i].characterName;
             counter++;
           }
         }
@@ -487,7 +482,7 @@ const getApiData = async (): Promise<void> => {
     ];
 
     characterQuotes.forEach((element, index) => {
-      characterQuotes[index] = `${characterQuotes[index]}`;
+      characterQuotes[index] = `${index+1}. ${characterQuotes[index]}`;
     });
     // Add newline after each array element:
     let printText: string = `${characterName}\n`;
