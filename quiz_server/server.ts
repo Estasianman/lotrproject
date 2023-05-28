@@ -1113,6 +1113,9 @@ const getApiData = async (): Promise<void> => {
     let name: string = apiData.correctCharacterName;
     let quote: string = apiData.quote.dialog;
     let reason: string = req.body.blacklistreason;
+    if (reason == ""){
+      reason = "The eye of sauron is watching you..";
+    }
     let alreadyInSystem: boolean = false;
     let addedFeedback: string = "";
 
