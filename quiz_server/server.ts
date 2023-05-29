@@ -445,15 +445,14 @@ const getApiData = async (): Promise<void> => {
         let counter: number = 0;
         // Put all of users favorite quotes into an array:
         for (let i = 0; i < req.session.user!.favorites!.length; i++) {
-          for (let k = 0;k < req.session.user!.favorites![i].favoriteQuotes.length;k++) {
-            
-            allQuotes[counter] = `${req.session.user!.favorites![i].favoriteQuotes} - `;
-            allQuotes[counter] += req.session.user!.favorites![i].characterName;
+          for (let k = 0; k < req.session.user!.favorites![i].favoriteQuotes.length; k++) {
+
+            allQuotes[counter] = `${req.session.user!.favorites![i].favoriteQuotes[k]} - ${req.session.user!.favorites![i].characterName}`;
             counter++;
           }
         }
         // Add newline after each array element:
-        let printText: string = allQuotes.join("\n");
+        let printText: string = allQuotes.join("\n") + "\n";
         const filename = "All_Quotes.txt";
         // Print to txt file:
         try {
@@ -464,10 +463,10 @@ const getApiData = async (): Promise<void> => {
         } finally {
           res.redirect("/favorites");
         }
-       break;
-       case "/privacy":
+        break;
+      case "/privacy":
         res.render("privacy", { dataGame: gameData, dataApi: apiData });
-       break; 
+        break;
       default:
         break;
     }
@@ -482,11 +481,11 @@ const getApiData = async (): Promise<void> => {
     ];
 
     characterQuotes.forEach((element, index) => {
-      characterQuotes[index] = `${index+1}. ${characterQuotes[index]}`;
+      characterQuotes[index] = `${index + 1}. ${characterQuotes[index]}`;
     });
     // Add newline after each array element:
     let printText: string = `${characterName}\n`;
-    printText += characterQuotes.join(`\n`);
+    printText += characterQuotes.join(`\n`) + "\n";
 
     const filename = `${characterName}_Quotes.txt`;
     // Print to txt file:
@@ -1113,7 +1112,7 @@ const getApiData = async (): Promise<void> => {
     let name: string = apiData.correctCharacterName;
     let quote: string = apiData.quote.dialog;
     let reason: string = req.body.blacklistreason;
-    if (reason == ""){
+    if (reason == "") {
       reason = "The eye of sauron is watching you..";
     }
     let alreadyInSystem: boolean = false;
@@ -1146,7 +1145,7 @@ const getApiData = async (): Promise<void> => {
       }
 
       if (!alreadyInSystem) {
-        addedFeedback = "Quote added to your blacklist"
+        addedFeedback = "Quote added to your blacklist";
         //connect
         await client.connect();
         //add to database
