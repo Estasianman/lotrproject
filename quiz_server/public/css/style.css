@@ -381,7 +381,7 @@ header h1 {
 .landing-page .buttons {
     position: absolute;
     right: 100px;
-    top: 50px;
+    top: 20px;
 }
 
 .landing-page .buttons button {
@@ -1614,6 +1614,10 @@ footer a:hover {
     #index-container {
         flex-direction: column;
     }
+
+    .landing-page .buttons {
+        right: 20px;
+    }
 }
 
 
@@ -1638,6 +1642,10 @@ footer a:hover {
     #quote {
         font-size: 24px;
     }
+
+    .landing-page .buttons {
+        right: 20px;
+    }
 }
 
 @media all and (max-width:450px) {
@@ -1658,6 +1666,10 @@ footer a:hover {
         min-height: 75px;
         
       }
+
+      .landing-page .buttons {
+        right: 20px;
+    }
    
 }
 
@@ -1710,6 +1722,10 @@ footer a:hover {
         width: 175px;
         height: 125px;
     }
+
+    .landing-page .buttons {
+        right: 20px;
+    }
     
 }
 
@@ -1735,6 +1751,14 @@ footer a:hover {
     .landing-page main figure img {
         width: 150px;
         height: 100px;
+    }
+
+    .landing-page header {
+        padding-left: 40px;
+    }
+
+    .landing-page .buttons {
+        right: 20px;
     }
 } 
 
