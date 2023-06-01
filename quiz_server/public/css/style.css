@@ -1684,6 +1684,11 @@ footer a:hover {
         transition: margin-top 0.5s;
     }
 
+    
+    .index-choice img {
+        max-width: 280px;
+    }
+
     .highscore h2,
     .highscore h2 span {
         font-size: 32px;
