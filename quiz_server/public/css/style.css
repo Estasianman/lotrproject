@@ -1740,6 +1740,10 @@ footer a:hover {
         font-size: 24px;
     }
 
+    .index-choice img {
+        max-width: 260px;
+    }
+
     #aside {
         margin: 0;
         padding: 0;
