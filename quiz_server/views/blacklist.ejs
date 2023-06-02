@@ -24,7 +24,7 @@
                                     <article class="quote">
                                         <p><%- j+1 %>.&nbsp; " <%- blacklistData[i].blacklistQuotes[j] %> "</p>
                                         <div id="blacklist-reason">Reason: &nbsp; <%= blacklistData[i].reason[j] %> 
-                                            <img class="a edit-reason" id="edit-reason" src="../images/edit.png" alt="edit-reason" aria-expanded="false">
+                                            <img title="Edit reason" class="a edit-reason" id="edit-reason" src="../images/edit.png" alt="edit-reason" aria-expanded="false">
                                             <container id="edit-reason-input-container" role="region" aria-hidden="true">
                                         <form action="/editReason/<%- i %>/<%- j %>" method="POST">
 

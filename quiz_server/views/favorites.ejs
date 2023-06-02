@@ -28,7 +28,7 @@
 
                                     </article>
                                     <article id="delete-quote-article"><a class="a" id="delete-quote"
-                                            href="/deleteFavoriteQuote/<%- i %>/<%- j %>"><img
+                                            href="/deleteFavoriteQuote/<%- i %>/<%- j %>"><img title="Delete quote"
                                                 src="../images/delete.png" alt="delete-quote"></a></article>
                                 </container>
 
@@ -50,31 +50,31 @@
                                             <p><%- favoriteData[i].characterName %> has
                                                 <%- favoriteData[i].quotesAmount %> quotes in our system</p>
                                             <%if (favoriteData[i].characterInfo.height != ""){%>
-                                            <p>&nbsp;&#x2022;&nbsp;Height:&nbsp;<span> <%- favoriteData[i].characterInfo.height %></span>
+                                            <p>&#x2022;&nbsp;Height:&nbsp;<span> <%- favoriteData[i].characterInfo.height %></span>
                                             </p>
                                             <%}%>
                                         <% if (favoriteData[i].characterInfo.hair != ""){%>
-                                            <p>&nbsp;&#x2022;&nbsp;Hair:&nbsp;<span> <%- favoriteData[i].characterInfo.hair %></span></p>
+                                            <p>&#x2022;&nbsp;Hair:&nbsp;<span> <%- favoriteData[i].characterInfo.hair %></span></p>
                                             <%}%>
                                         <% if (favoriteData[i].characterInfo.gender != ""){%>
-                                            <p>&nbsp;&#x2022;&nbsp;Gender:&nbsp;<span> <%- favoriteData[i].characterInfo.gender %></span>
+                                            <p>&#x2022;&nbsp;Gender:&nbsp;<span> <%- favoriteData[i].characterInfo.gender %></span>
                                             </p>
                                             <%}%>
                                         <% if (favoriteData[i].characterInfo.race != ""){%>
-                                            <p>&nbsp;&#x2022;&nbsp;Race:&nbsp;<span> <%- favoriteData[i].characterInfo.race %></span></p>
+                                            <p>&#x2022;&nbsp;Race:&nbsp;<span> <%- favoriteData[i].characterInfo.race %></span></p>
                                             <%}%>
                                         <% if (favoriteData[i].characterInfo.realm != ""){%>
-                                            <p>&nbsp;&#x2022;&nbsp;Realm:&nbsp;<span> <%- favoriteData[i].characterInfo.realm %></span></p>
+                                            <p>&#x2022;&nbsp;Realm:&nbsp;<span> <%- favoriteData[i].characterInfo.realm %></span></p>
                                             <%}%>
                                         <% if (favoriteData[i].characterInfo.spouse != ""){%>
-                                            <p>&nbsp;&#x2022;&nbsp;Spouse:&nbsp;<span> <%- favoriteData[i].characterInfo.spouse %></span>
+                                            <p>&#x2022;&nbsp;Spouse:&nbsp;<span> <%- favoriteData[i].characterInfo.spouse %></span>
                                             </p>
                                             <%}%>
                                         <% if (favoriteData[i].characterInfo.birth != ""){%>
-                                            <p>&nbsp;&#x2022;&nbsp;Birth:&nbsp;<span> <%- favoriteData[i].characterInfo.birth %></span></p>
+                                            <p>&#x2022;&nbsp;Birth:&nbsp;<span> <%- favoriteData[i].characterInfo.birth %></span></p>
                                             <%}%>
                                         <% if (favoriteData[i].characterInfo.death != ""){%>
-                                            <p>&nbsp;&#x2022;&nbsp;Death:&nbsp;<span> <%- favoriteData[i].characterInfo.death %></span></p>
+                                            <p>&#x2022;&nbsp;Death:&nbsp;<span> <%- favoriteData[i].characterInfo.death %></span></p>
                                             <%}%>
                                        
                                         <p><a class="a"

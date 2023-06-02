@@ -1481,7 +1481,7 @@ input[type="radio"] {
     transition: 100ms;
 }
 
-.quote:has(+ #delete-quote-article:hover) {
+.quote:has(+ #delete-quote-article #delete-quote:hover) {
     text-decoration: red line-through;
     opacity: 0.85;
 }
@@ -1629,7 +1629,11 @@ footer a:hover {
 
     #favorites-list .name button,
     #blacklist .name button {
-        font-size: 20px;
+        font-size: 24px;
+    }
+
+    .accordion-trigger.more-info {
+        font-size: 22px !important;
     }
 
     #more-info {
@@ -1733,10 +1737,6 @@ footer a:hover {
         margin-inline: auto;
     }
 
-    .accordion-trigger.more-info {
-        font-size: 20px !important;
-    }
-
     #favorite-quote-container>article>p {
         font-size: 20px;
     }
@@ -1745,6 +1745,39 @@ footer a:hover {
         font-size: 18px;
     }
 
+    .accordion .quote {
+        font-size: 22px;
+    }
+    
+    #favorite-quote-container,
+    #blacklist-quote-container {
+    flex-direction: column;
+    }
+
+    .accordion .quote {
+        border-bottom: none;
+        padding: 0.25rem 0 0.25rem 0;
+        margin: 0;
+    }
+
+    .accordion-panel {
+        padding: 2rem 1rem 2rem 1rem;
+    }
+    
+    #delete-quote-article{
+        max-width: none;
+        width: 100%;
+        padding-bottom: 0.25rem;
+        border-bottom: 1px var(--dark-yellow-color) solid;
+    }
+
+    #delete-quote {
+        width: max-content;
+    }
+
+    .more-content {
+        padding: 0.5rem;
+    }
 
 }
 
@@ -1782,6 +1815,11 @@ footer a:hover {
 
     .landing-page .buttons {
         right: 20px;
+    }
+
+    #addedToList {
+        font-size: 16px;
+        padding: 0;
     }
 }
 
