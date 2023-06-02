@@ -30,6 +30,7 @@ body {
     line-height: normal;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     min-height: 100vh;
+
 }
 
 
@@ -51,6 +52,8 @@ main {
     width: 100%;
     height: auto;
     display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     background-image: inherit;
     flex: 1;
     background-image: url("../images/background2.jpg");
@@ -334,6 +337,7 @@ header h1 {
     height: auto;
     width: 100%;
     color: red;
+
 }
 
 .landing-page p {
@@ -418,6 +422,7 @@ header h1 {
     width: 200px;
     height: 150px;
     padding: 30px;
+
 }
 
 .landing-page figure:hover {
@@ -454,6 +459,7 @@ header h1 {
 
 .login-page input[type="submit"]:hover {
     color: black;
+
 }
 
 .form {
@@ -481,6 +487,7 @@ header h1 {
 
 .form label {
     font-size: 24px;
+
 }
 
 #login-submit {
@@ -564,11 +571,17 @@ header h1 {
     flex-direction: column;
     flex-wrap: wrap;
     justify-content: space-between;
+    /* background: linear-gradient(0deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 1) 20%, rgba(223, 220, 220, 1) 100%); */
     background-image: url("/images/accountbg.jpg");
     background-size: cover;
 }
 
 .account-page header {
+    /* background-image: url("/images/landing/wallhaven-pkogk3.png");
+    padding: 140px 0 138px 80px;
+    border-bottom: none;
+    font-size: larger;
+    max-height: 278px; */
     background-image: none;
     border-bottom: none;
 }
@@ -911,6 +924,7 @@ input[type="radio"] {
 
 #character-photos {
     border-top: 2px solid #000000;
+    /* padding-top: 15px; */
 }
 
 #character-photos li {
@@ -920,6 +934,7 @@ input[type="radio"] {
 #character-photos #names-button {
     background-color: #000000;
     color: var(--light-yellow-color);
+    /* min-width: 225px; */
     margin: -5px 0 0 0;
     padding: 0.25rem 0 0.25rem 0;
     border-top-left-radius: 0;
@@ -950,6 +965,7 @@ input[type="radio"] {
     border-top: none;
     color: rgb(255, 208, 0);
     font-weight: bold;
+
 }
 
 
@@ -968,6 +984,7 @@ input[type="radio"] {
     width: min-content;
     height: auto;
     flex-shrink: 1;
+
 }
 
 #movie-output,
@@ -1015,6 +1032,7 @@ input[type="radio"] {
 #submit-button:hover {
     color: var(--light-yellow-color);
 }
+
 
 .movie {
     border-bottom: 2px solid;
@@ -1114,6 +1132,7 @@ input[type="radio"] {
     color: #e8d069;
     width: 100%;
     height: auto;
+
 }
 
 .highscore h2 {
@@ -1464,7 +1483,7 @@ input[type="radio"] {
     transition: 100ms;
 }
 
-.quote:has(+ #delete-quote-article #delete-quote:hover) {
+.quote:has(+ #delete-quote-article:hover) {
     text-decoration: red line-through;
     opacity: 0.85;
 }
@@ -1505,18 +1524,16 @@ input[type="radio"] {
     list-style: disc;
 }
 
-
-
 /*#endregion*/
 
 /*#region------------------------------FOOTER----------------------------*/
 
-
-
 footer {
     text-transform: uppercase;
     width: 100%;
+    /* color: white; */
     color: #858b94;
+    /* background-image: url("/images/quotes-background.jpg"); */
     font-size: 14px;
     display: flex;
     flex-direction: row;
@@ -1524,6 +1541,7 @@ footer {
     padding: 2px 0 2px 0;
     justify-content: space-around;
     flex-wrap: wrap;
+    /* border-top: 3px solid black; */
 }
 
 footer a {
@@ -1536,8 +1554,6 @@ footer a {
 footer a:hover {
     color: #fff
 }
-
-
 
 /*#endregion*/
 
@@ -1615,11 +1631,7 @@ footer a:hover {
 
     #favorites-list .name button,
     #blacklist .name button {
-        font-size: 24px;
-    }
-
-    .accordion-trigger.more-info {
-        font-size: 22px !important;
+        font-size: 20px;
     }
 
     #more-info {
@@ -1628,6 +1640,7 @@ footer a:hover {
         justify-self: center;
         text-align: left;
     }
+
 }
 
 @media all and (max-width:450px) {
@@ -1641,15 +1654,18 @@ footer a:hover {
     }
 
     #blacklist-popup textarea {
+
         max-width: 200px;
         max-height: 300px;
         min-width: 75px;
         min-height: 75px;
+
     }
 
     .landing-page .buttons {
         right: 20px;
     }
+
 }
 
 @media all and (max-width:430px) {
@@ -1668,7 +1684,7 @@ footer a:hover {
         transition: margin-top 0.5s;
     }
 
-
+    
     .index-choice img {
         max-width: 280px;
     }
@@ -1713,53 +1729,6 @@ footer a:hover {
         right: 20px;
     }
 
-    #favorites-list,
-    #blacklist {
-        width: 100%;
-        margin-inline: auto;
-    }
-
-    #favorite-quote-container>article>p {
-        font-size: 20px;
-    }
-
-    #favorites-list>a button {
-        font-size: 18px;
-    }
-
-    .accordion .quote {
-        font-size: 22px;
-    }
-
-    #favorite-quote-container,
-    #blacklist-quote-container {
-        flex-direction: column;
-    }
-
-    .accordion .quote {
-        border-bottom: none;
-        padding: 0.25rem 0 0.25rem 0;
-        margin: 0;
-    }
-
-    .accordion-panel {
-        padding: 2rem 1rem 2rem 1rem;
-    }
-
-    #delete-quote-article {
-        max-width: none;
-        width: 100%;
-        padding-bottom: 0.25rem;
-        border-bottom: 1px var(--dark-yellow-color) solid;
-    }
-
-    #delete-quote {
-        width: max-content;
-    }
-
-    .more-content {
-        padding: 0.5rem;
-    }
 }
 
 @media all and (max-width:308px) {
@@ -1780,6 +1749,12 @@ footer a:hover {
         max-width: 260px;
     }
 
+    .index-tutorial p {
+        width: 235px;
+        font-size: 15px;
+        left: -112px;
+    }
+
     #aside {
         margin: 0;
         padding: 0;
@@ -1796,11 +1771,6 @@ footer a:hover {
 
     .landing-page .buttons {
         right: 20px;
-    }
-
-    #addedToList {
-        font-size: 16px;
-        padding: 0;
     }
 }
 
